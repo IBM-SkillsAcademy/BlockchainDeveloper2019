@@ -18,6 +18,37 @@
           }
         }
       }
+    },
+    "/api/v1/auth/register-user": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enrollmentID"
+                ],
+                "properties": {
+                  "enrollmentID": {
+                    "type": "string",
+                    "example": "user1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User registered"
+          }
+        }
+      }
     }
   },
 
