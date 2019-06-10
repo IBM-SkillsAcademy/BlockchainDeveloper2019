@@ -16,7 +16,6 @@ const ca = new FabricCAServices(caURL);
 // Create a new file system based wallet for managing identities.
 const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
-console.log(`Wallet path: ${walletPath}`);
 
 exports.enrollAdmin = async (req, res) => {
   try {
@@ -38,17 +37,18 @@ exports.enrollAdmin = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(err.statusCode).send(err.message);
+    return res.status(err.statusCode).send(err.message);
   }
 };
 
 exports.registerUser = async (req, res) => {
   try {
+    const enrollmentID = req.body.enrollmentID;
     // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(req.body.enrollmentID);
+    const userExists = await wallet.exists(enrollmentID);
     if (userExists) {
       return res.status(409).send({
-        message: `An identity for the user ${req.body.enrollmentID} already exists in the wallet`
+        message: `An identity for the user ${enrollmentID} already exists in the wallet`
       });
     }
 
@@ -69,15 +69,15 @@ exports.registerUser = async (req, res) => {
     const adminIdentity = gateway.getCurrentIdentity();
 
     // Register the user, enroll the user, and import the new identity into the wallet.
-    const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: req.body.enrollmentID, role: 'client' }, adminIdentity);
-    const enrollment = await ca.enroll({ enrollmentID: req.body.enrollmentID, enrollmentSecret: secret });
+    const secret = await ca.register({ affiliation: 'org1.department1', enrollmentID: enrollmentID, role: 'client' }, adminIdentity);
+    const enrollment = await ca.enroll({ enrollmentID: enrollmentID, enrollmentSecret: secret });
     const userIdentity = X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
-    wallet.import(req.body.enrollmentID, userIdentity);
+    wallet.import(enrollmentID, userIdentity);
     return res.send({
-      message: `Successfully registered and enrolled admin user ${req.body.enrollmentID} and imported it into the wallet`
+      message: `Successfully registered and enrolled admin user ${enrollmentID} and imported it into the wallet`
     });
   } catch (err) {
     console.log(err);
-    res.status(err.statusCode).send(err.message);
+    return res.status(err.statusCode).send(err.message);
   }
 };
