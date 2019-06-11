@@ -80,7 +80,7 @@
                 "properties": {
                   "carID": {
                     "type": "string",
-                    "example": "CAR13"
+                    "example": "vehicle13"
                   },
                   "manufacturer": {
                     "type": "string",
@@ -106,6 +106,34 @@
         "responses": {
           "200": {
             "description": "Vehicle created"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles",
+        "parameters": [{
+          "in": "header",
+          "name": "id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }
