@@ -15,7 +15,7 @@ console.log(`Wallet path: ${walletPath}`);
 
 exports.createVehicle = async (req, res) => {
   try {
-    const enrollmentID = req.headers['id'];
+    const enrollmentID = req.headers['enrollment-id'];
 
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
@@ -36,10 +36,10 @@ exports.createVehicle = async (req, res) => {
     const contract = network.getContract('SampleApplicationBlockchain');
 
     // Submit the specified transaction.
-    // createCar transaction - requires 5 argument, ex: ('createVehicle', 'CAR12', 'Honda', 'Accord', 'Black', 'Tom')
+    // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
     await contract.submitTransaction(
       'createVehicle',
-      req.body.carID,
+      req.body.vehicleID,
       req.body.manufacturer,
       req.body.model,
       req.body.color,
@@ -48,7 +48,7 @@ exports.createVehicle = async (req, res) => {
     // Disconnect from the gateway.
     await gateway.disconnect();
     return res.send({
-      message: `Vehicle with ID ${req.body.carID} has been created`,
+      message: `Vehicle with ID ${req.body.vehicleID} has been created`,
       details: req.body
     });
   } catch (err) {
@@ -57,9 +57,9 @@ exports.createVehicle = async (req, res) => {
   }
 };
 
-exports.getAllVehicles = async (req, res) => {
+exports.getVehicle = async (req, res) => {
   try {
-    const enrollmentID = req.headers['id'];
+    const enrollmentID = req.headers['enrollment-id'];
 
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
@@ -80,9 +80,17 @@ exports.getAllVehicles = async (req, res) => {
     const contract = network.getContract('SampleApplicationBlockchain');
 
     // Evaluate the specified transaction.
-    // queryAllCars transaction - requires no arguments, ex: ('queryAllCars')
-    const result = await contract.evaluateTransaction('queryAllVehicles');
-    const rawResult = result.toString();
+    let result, rawResult;
+
+    if (req.params.id) {
+    // if vehicle id specified queryVehicle transaction - requires 1 argument, ex: ('queryVehicle', 'Vehicle4')
+      result = await contract.evaluateTransaction('queryVehicle', req.params.id);
+      rawResult = result.toString();
+    } else {
+      // queryAllVehicles transaction - requires no arguments, ex: ('queryAllVehicless')
+      result = await contract.evaluateTransaction('queryAllVehicles');
+      rawResult = result.toString();
+    }
     const json = JSON.parse(rawResult);
     const obj = JSON.parse(json);
     return res.send({

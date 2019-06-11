@@ -9,6 +9,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/', controller.createVehicle);
-router.get('/', controller.getAllVehicles);
+router.get('/', controller.getVehicle);
+router.get('/:id', controller.getVehicle);
 
 module.exports = router;

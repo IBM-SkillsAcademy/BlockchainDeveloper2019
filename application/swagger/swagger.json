@@ -58,7 +58,7 @@
         "summary": "Create a new vehicle",
         "parameters": [{
           "in": "header",
-          "name": "id",
+          "name": "enrollment-id",
           "required": "true",
           "schema": {
             "type": "string",
@@ -71,7 +71,7 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "carID",
+                  "vehicleID",
                   "manufacturer",
                   "model",
                   "color",
@@ -116,7 +116,7 @@
         "summary": "Get all vehicles",
         "parameters": [{
           "in": "header",
-          "name": "id",
+          "name": "enrollment-id",
           "required": "true",
           "schema": {
             "type": "string",
@@ -126,6 +126,44 @@
         "responses": {
           "200": {
             "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/{id}": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get vehicle by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "path",
+          "name": "id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "vehicle4"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle listed",
             "schema": {
               "type": "object",
               "properties": {
