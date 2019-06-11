@@ -17,7 +17,7 @@ const ca = new FabricCAServices(caURL);
 const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 
-exports.enrollAdmin = async (req, res) => {
+exports.enrollAdmin = async (req, res, next) => {
   try {
     // Check to see if we've already enrolled the admin user.
     const adminExists = await wallet.exists('admin');
@@ -37,11 +37,11 @@ exports.enrollAdmin = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };
 
-exports.registerUser = async (req, res) => {
+exports.registerUser = async (req, res, next) => {
   try {
     const enrollmentID = req.body.enrollmentID;
     // Check to see if we've already enrolled the user.
@@ -78,6 +78,6 @@ exports.registerUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(err.statusCode).send(err.message);
+    next(err);
   }
 };

@@ -11,5 +11,6 @@ router.use(bodyParser.json());
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/:id', controller.getVehicle);
+router.post('/change-owner', controller.changeOwner);
 
 module.exports = router;

@@ -78,7 +78,7 @@
                   "owner"
                 ],
                 "properties": {
-                  "carID": {
+                  "vehicleID": {
                     "type": "string",
                     "example": "vehicle13"
                   },
@@ -172,6 +172,51 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/change-owner": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Change vehicle ownership",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "owner"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle4"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Dave"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle ownership changed"
           }
         }
       }
