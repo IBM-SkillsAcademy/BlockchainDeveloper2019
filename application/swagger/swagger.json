@@ -158,7 +158,7 @@
           "required": "true",
           "schema": {
             "type": "string",
-            "example": "vehicle4"
+            "example": "vehicle13"
           }
         }],
         "responses": {
@@ -203,7 +203,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle4"
+                    "example": "vehicle13"
                   },
                   "owner": {
                     "type": "string",
@@ -217,6 +217,46 @@
         "responses": {
           "200": {
             "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/delete": {
+      "delete": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Delete vehicle",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle deleted"
           }
         }
       }
