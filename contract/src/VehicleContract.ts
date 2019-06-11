@@ -146,4 +146,12 @@ export class VehicleContract extends Contract {
         console.info('============= END : changevehicleOwner ===========');
     }
 
+    public async deleteVehicle(ctx: Context, vehicleNumber: string) {
+        console.info('============= START : delete vehicle ===========');
+
+        await ctx.stub.deleteState(vehicleNumber);
+
+        console.info('============= END : delete vehicle ===========');
+    }
+
 }
