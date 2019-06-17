@@ -1,6 +1,6 @@
 {
     "name": "SampleApplicationBlockchain",
-    "version": "0.0.1",
+    "version": "0.0.7",
     "description": "Sample Application used for Blockchain Developer Course V2",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -22,7 +22,11 @@
     "license": "Apache-2.0",
     "dependencies": {
         "fabric-contract-api": "1.4.1",
-        "fabric-shim": "1.4.1"
+        "fabric-shim": "1.4.1",
+        "get-params": "^0.1.2",
+        "pkijs": "^2.1.76",
+        "reflect-metadata": "^0.1.13",
+        "uuid": "^3.3.2"
     },
     "devDependencies": {
         "@types/chai": "^4.1.7",

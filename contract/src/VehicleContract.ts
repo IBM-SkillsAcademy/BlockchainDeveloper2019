@@ -1,7 +1,19 @@
 import { Context, Contract } from 'fabric-contract-api';
 import { Vehicle } from './vehicle';
+import { OrderList } from './orderList';
+import {  VehicleContext } from "./utils/vehicleContext";
+import { Order, OrderStatus } from './order';
 
 export class VehicleContract extends Contract {
+
+    constructor() {
+        // Unique name when multiple contracts per chaincode file
+        super('org.vehiclelifecycle.vehicle');
+    }
+
+    createContext() {
+        return new VehicleContext();
+    }
 
     public async initLedger(ctx: Context) {
         console.info('============= START : Initialize Ledger ===========');
@@ -153,5 +165,37 @@ export class VehicleContract extends Contract {
 
         console.info('============= END : delete vehicle ===========');
     }
+
+
+    public async placeorder(ctx: VehicleContext, orderId: string, owner : string ,
+        
+         make: string, model: string, color: string
+        )
+    {
+
+        const vehicleDetails: Vehicle = {
+            color,
+            docType: 'vehicle',
+            make,
+            model,
+            owner,
+        };
+        const order = Order.createInstance( orderId, owner, OrderStatus.ISSUED,vehicleDetails);
+        console.info("After creatig order instance "+order);
+        await ctx.getOrderList().add(order)
+    
+
+    }
+    public async updateOrderStatusInProgress(ctx :VehicleContext, orderId:string )
+    {
+      
+        const order =await ctx.getOrderList().getOrder(orderId);
+        order.orderStatus=OrderStatus.INPROGRESS;
+        await ctx.getOrderList().updateOrder(order);
+    }
+    public async getOrder(ctx :VehicleContext, orderId:string)
+     {
+     return await ctx.getOrderList().getOrder(orderId)   
+      }
 
 }
