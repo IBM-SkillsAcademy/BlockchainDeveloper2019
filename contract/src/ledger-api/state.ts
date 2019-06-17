@@ -2,8 +2,6 @@
 SPDX-License-Identifier: Apache-2.0
 */
 
-
-
 import { Object as ContractObject, Property } from 'fabric-contract-api';
 import { newLogger } from 'fabric-shim';
 
@@ -22,20 +20,20 @@ export class State  {
     }
 
     public static deserialize(data: Buffer, supportedClasses: Map<string, IState<State>>): State {
-              let json = JSON.parse(data.toString());
-        let objClass = supportedClasses[json.class];
-        if (!objClass) {
+              const json = JSON.parse(data.toString());
+              const objClass = supportedClasses[json.class];
+              if (!objClass) {
             throw new Error(`Unknown class of ${json.class}`);
         }
-        let object = new (objClass)(json);
+              const object = new (objClass)(json);
 
-        return object;
+              return object;
 
     }
 
     public static deserializeClass<T extends State>(data: string, objClass: IState<T>): T {
-        let json = JSON.parse(data.toString());
-        let object = new (objClass)(json);
+        const json = JSON.parse(data.toString());
+        const object = new (objClass)(json);
         return object;
     }
 

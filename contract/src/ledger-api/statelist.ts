@@ -27,10 +27,9 @@ export class StateList<T extends State> {
 
     public async add(state: T) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
-        
+
         const data = state.serialize();
-       
-       
+
         const buff = await this.ctx.stub.getState(key);
 
         if (buff.length > 0) {
@@ -53,7 +52,6 @@ export class StateList<T extends State> {
         return state;
     }
 
-    
     public async getAll(): Promise<T[]> {
         return this.query({});
     }
