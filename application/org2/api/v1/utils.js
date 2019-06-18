@@ -59,6 +59,9 @@ exports.getCCP = async () => {
       }
     });
 
+    const jsonProfile = JSON.stringify(ccp);
+    const profilePath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'org2Connection.json');
+    await fs.writeFileSync(profilePath, jsonProfile);
     return ccp;
   } catch (err) {
     console.log(err);
