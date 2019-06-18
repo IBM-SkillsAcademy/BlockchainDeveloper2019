@@ -63,3 +63,6 @@ typings/
 
 # hlf wallet
 wallet/
+
+# mac .DS_Store
+.DS_Store
