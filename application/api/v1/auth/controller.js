@@ -2,16 +2,8 @@
 
 const FabricCAServices = require('fabric-ca-client');
 const { FileSystemWallet, X509WalletMixin, Gateway } = require('fabric-network');
-const fs = require('fs');
 const path = require('path');
-
-const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'basicConnection.json'); // TODO: make it modular
-const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
-const ccp = JSON.parse(ccpJSON);
-
-// Create a new CA client for interacting with the CA.
-const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
-const ca = new FabricCAServices(caURL);
+const utils = require('../utils');
 
 // Create a new file system based wallet for managing identities.
 const walletPath = path.join(process.cwd(), 'wallet');
@@ -19,6 +11,13 @@ const wallet = new FileSystemWallet(walletPath);
 
 exports.enrollAdmin = async (req, res, next) => {
   try {
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Create a new CA client for interacting with the CA.
+    const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+    const ca = new FabricCAServices(caURL);
+
     // Check to see if we've already enrolled the admin user.
     const adminExists = await wallet.exists('admin');
     if (adminExists) {
@@ -44,6 +43,10 @@ exports.enrollAdmin = async (req, res, next) => {
 exports.registerUser = async (req, res, next) => {
   try {
     const enrollmentID = req.body.enrollmentID;
+
+    // get connection profile
+    const ccp = await utils.getCCP();
+
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
     if (userExists) {
@@ -77,7 +80,7 @@ exports.registerUser = async (req, res, next) => {
       message: `Successfully registered and enrolled admin user ${enrollmentID} and imported it into the wallet`
     });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     next(err);
   }
 };

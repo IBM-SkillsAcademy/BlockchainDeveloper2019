@@ -1,12 +1,8 @@
 'use strict';
 
 const { FileSystemWallet, Gateway } = require('fabric-network');
-const fs = require('fs');
 const path = require('path');
-
-const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'basicConnection.json'); // TODO: make it modular
-const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
-const ccp = JSON.parse(ccpJSON);
+const utils = require('../utils');
 
 // Create a new file system based wallet for managing identities.
 const walletPath = path.join(process.cwd(), 'wallet');
@@ -16,6 +12,8 @@ console.log(`Wallet path: ${walletPath}`);
 exports.createVehicle = async (req, res, next) => {
   try {
     const enrollmentID = req.headers['enrollment-id'];
+    // get connection profile
+    const ccp = await utils.getCCP();
 
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
@@ -60,6 +58,9 @@ exports.createVehicle = async (req, res, next) => {
 exports.getVehicle = async (req, res, next) => {
   try {
     const enrollmentID = req.headers['enrollment-id'];
+
+    // get connection profile
+    const ccp = await utils.getCCP();
 
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
@@ -106,6 +107,9 @@ exports.changeOwner = async (req, res, next) => {
   try {
     const enrollmentID = req.headers['enrollment-id'];
 
+    // get connection profile
+    const ccp = await utils.getCCP();
+
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
     if (!userExists) {
@@ -146,7 +150,9 @@ exports.deleteVehicle = async (req, res, next) => {
   try {
     const enrollmentID = req.headers['enrollment-id'];
 
-    // Check to see if we've already enrolled the user.
+    // get connection profile
+    const ccp = await utils.getCCP();
+
     const userExists = await wallet.exists(enrollmentID);
     if (!userExists) {
       return res.status(401).send({
