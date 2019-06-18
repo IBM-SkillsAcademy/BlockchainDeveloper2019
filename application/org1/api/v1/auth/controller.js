@@ -77,10 +77,10 @@ exports.registerUser = async (req, res, next) => {
     const userIdentity = X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
     wallet.import(enrollmentID, userIdentity);
     return res.send({
-      message: `Successfully registered and enrolled admin user ${enrollmentID} and imported it into the wallet`
+      message: `Successfully registered and enrolled user ${enrollmentID} and imported it into the wallet`
     });
   } catch (err) {
-    // console.log(err);
+    console.log(err);
     next(err);
   }
 };

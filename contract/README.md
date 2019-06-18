@@ -29,7 +29,7 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_ADDRESS=peer0.org1.example.com:7051" \
 -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" \
-cli peer chaincode install -n vehicle -v 0.0.1 -p /opt/gopath/src/github.com/chaincode/contract -l node
+cli peer chaincode install -n vehicle-manufacture -v 0.0.1 -p /opt/gopath/src/github.com/chaincode/contract -l node
 ```
 8. Run the command below to install the chaincode to Peer0 of Organization 2
 ```
@@ -37,7 +37,7 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
 -e "CORE_PEER_ADDRESS=peer0.org2.example.com:9051" \
 -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" \
-cli peer chaincode install -n vehicle -v 0.0.1 -p /opt/gopath/src/github.com/chaincode/contract -l node
+cli peer chaincode install -n vehicle-manufacture -v 0.0.1 -p /opt/gopath/src/github.com/chaincode/contract -l node
 ```
 9. Run the command below to instantiate the chaincode in the network
 ```
@@ -47,5 +47,5 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" \
 cli peer chaincode instantiate -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
--C mychannel -n vehicle -l node -v 0.0.1 -c '{"Args":[]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
+-C mychannel -n vehicle-manufacture -l node -v 0.0.1 -c '{"Args":[]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
 ```
