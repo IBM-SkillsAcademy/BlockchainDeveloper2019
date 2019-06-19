@@ -4,4 +4,5 @@ export class Vehicle {
     public make: string;
     public model: string;
     public owner: string;
+    public orderId: string;
 }

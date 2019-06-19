@@ -1,6 +1,6 @@
 {
     "name": "vehicle-manufacture",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Vehicle Manufacture Sample Application used for Blockchain Developer Course V2",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
