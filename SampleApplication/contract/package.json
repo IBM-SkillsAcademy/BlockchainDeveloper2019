@@ -1,6 +1,6 @@
 {
     "name": "vehicle-manufacture",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Vehicle Manufacture Sample Application used for Blockchain Developer Course V2",
     "main": "dist/index.js",
     "typings": "dist/index.d.ts",
@@ -45,7 +45,6 @@
         "sinon-chai": "^3.3.0",
         "ts-node": "^7.0.1",
         "tslint": "^5.11.0",
-        "typescript": "^3.5.1",
         "winston": "^3.2.1"
     },
     "nyc": {
