@@ -1,8 +1,8 @@
 import { Context, Contract } from 'fabric-contract-api';
-import { Order } from '../order';
-import { OrderList } from '../orderList';
-import { PolicyList } from '../policyList';
-import { Policy } from '../policy';
+import { Order } from '../assets/order';
+import { OrderList } from '../lists/orderList';
+import { PolicyList } from '../lists/policyList';
+import { Policy } from '../assets/policy';
 
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;

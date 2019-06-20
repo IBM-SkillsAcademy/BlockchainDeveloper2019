@@ -1,8 +1,8 @@
-import { StateList } from './ledger-api/statelist';
-import { Order } from './order';
-import {  VehicleContext } from "./utils/vehicleContext";
-import { IState } from './ledger-api/state';
-import { Policy } from './policy';
+import { StateList } from '../ledger-api/statelist';
+import { Order } from '../assets/order';
+import {  VehicleContext } from "../utils/vehicleContext";
+import { IState } from '../ledger-api/state';
+import { Policy } from '../assets/policy';
 
 export class PolicyList <T extends Policy> extends StateList<T>{
 

@@ -1,9 +1,9 @@
 import { Context, Contract } from 'fabric-contract-api';
-import { Vehicle } from './vehicle';
-import { OrderList } from './orderList';
-import { VehicleContext } from "./utils/vehicleContext";
-import { Order, OrderStatus } from './order';
-import { PolicyType, Policy } from './policy';
+import { Vehicle } from '../assets/vehicle';
+import { OrderList } from '../lists/orderList';
+import { VehicleContext } from "../utils/vehicleContext";
+import { Order, OrderStatus } from '../assets/order';
+import { PolicyType, Policy } from '../assets/policy';
 
 export class VehicleContract extends Contract {
 
@@ -24,70 +24,70 @@ export class VehicleContract extends Contract {
                 make: 'Toyota',
                 model: 'Prius',
                 owner: 'Tomoko',
-                orderId :'1'
+                orderId: '1'
             },
             {
                 color: 'red',
                 make: 'Ford',
                 model: 'Mustang',
                 owner: 'Brad',
-                orderId :'2'
+                orderId: '2'
             },
             {
                 color: 'green',
                 make: 'Hyundai',
                 model: 'Tucson',
                 owner: 'Jin Soo',
-                orderId :'3'
+                orderId: '3'
             },
             {
                 color: 'yellow',
                 make: 'Volkswagen',
                 model: 'Passat',
                 owner: 'Max',
-                orderId :'4'
+                orderId: '4'
             },
             {
                 color: 'black',
                 make: 'Tesla',
                 model: 'S',
                 owner: 'Adriana',
-                orderId :'5'
+                orderId: '5'
             },
             {
                 color: 'purple',
                 make: 'Peugeot',
                 model: '205',
                 owner: 'Michel',
-                orderId :'5'
+                orderId: '5'
             },
             {
                 color: 'white',
                 make: 'Chery',
                 model: 'S22L',
                 owner: 'Aarav',
-                orderId :'6'
+                orderId: '6'
             },
             {
                 color: 'violet',
                 make: 'Fiat',
                 model: 'Punto',
                 owner: 'Pari',
-                orderId :'7'
+                orderId: '7'
             },
             {
                 color: 'indigo',
                 make: 'Tata',
                 model: 'Nano',
                 owner: 'Valeria',
-                orderId :'8'
+                orderId: '8'
             },
             {
                 color: 'brown',
                 make: 'Holden',
                 model: 'Barina',
                 owner: 'Shotaro',
-                orderId :'9'
+                orderId: '9'
 
             },
         ];
@@ -109,7 +109,7 @@ export class VehicleContract extends Contract {
         return vehicleAsBytes.toString();
     }
 
-    public async createVehicle(ctx: Context, vehicleNumber: string, make: string, model: string, color: string, owner: string , orderId :string) {
+    public async createVehicle(ctx: Context, vehicleNumber: string, make: string, model: string, color: string, owner: string, orderId: string) {
         console.info('============= START : Create vehicle ===========');
 
         const vehicle: Vehicle = {
@@ -118,13 +118,13 @@ export class VehicleContract extends Contract {
             make,
             model,
             owner,
-         orderId
+            orderId
         };
 
         await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
         console.info('============= END : Create vehicle ===========');
     }
-// Regulaor retrieve all vehciles in system with details 
+    // Regulaor retrieve all vehciles in system with details 
     public async queryAllVehicles(ctx: Context): Promise<string> {
         const startKey = 'vehicle0';
         const endKey = 'vehicle999';
@@ -181,8 +181,8 @@ export class VehicleContract extends Contract {
         console.info('============= END : delete vehicle ===========');
     }
 
-// end user palce order function 
-    public async placeorder(ctx: VehicleContext, orderId: string, owner: string,
+    // end user palce order function 
+    public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
 
         make: string, model: string, color: string
     ) {
@@ -197,7 +197,9 @@ export class VehicleContract extends Contract {
         };
         const order = Order.createInstance(orderId, owner, OrderStatus.ISSUED, vehicleDetails);
         await ctx.getOrderList().add(order)
-
+    
+        // Fire Event 
+        ctx.stub.setEvent("ORDER_EVENT",order.toBuffer())
 
     }
     // Update order status to be in progress 
@@ -218,31 +220,33 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
 
-  // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset 
-    public async updateOrderDelivered(ctx: VehicleContext, orderId: string , vehicleNumber : string ) {
+    // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset 
+    public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
 
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
-        
+
         // Create Vehicle as an asset 
-       const vehicle =order.vehicleDetails;
-       await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
+        const vehicle = order.vehicleDetails;
+        await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
 
     }
 
-// Request Policy , user request the insurance policy 
+    // Request Policy , user request the insurance policy 
     public async RequestPolicy(ctx: VehicleContext, id: string,
         vin: string, insurerId: string, holderId: string, policyType: PolicyType,
         startDate: number, endDate: number) {
 
-            const data = await ctx.stub.getState(vin);
+        const data = await ctx.stub.getState(vin);
 
-            if (data.length === 0) {
-                throw new Error(`Cannot get Vehicle . No vehicle exists for VIN:  ${vin} `);
-            }
-        const policy = Policy.createInstance(id,vin, insurerId, holderId, policyType,startDate, endDate);
+        if (data.length === 0) {
+            throw new Error(`Cannot get Vehicle . No vehicle exists for VIN:  ${vin} `);
+        }
+        const policy = Policy.createInstance(id, vin, insurerId, holderId, policyType, startDate, endDate);
         await ctx.getPolicyList().add(policy)
+
+        ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
     }
 
     // get Policy with an ID 
@@ -250,4 +254,27 @@ export class VehicleContract extends Contract {
 
         return await ctx.getPolicyList().get(policyId)
     }
+
+    // Query Functions 
+
+    // Return All Policies 
+    public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
+        return await ctx.getPolicyList().getAll();
+    }
+
+    // Return All order
+    public async getOrders(ctx: VehicleContext): Promise<Order[]> {
+        return await ctx.getOrderList().getAll();
+    }
+
+    // Return All order with Specific Status 
+    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: OrderStatus): Promise<Order[]> {
+        const orders = await ctx.getOrderList().getAll();
+
+        return orders.filter((order) => {
+            return order.isOrderStatus(orderStatus);
+        });
+
+    }
+
 }

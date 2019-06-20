@@ -1,4 +1,4 @@
-import { VehicleContract } from './VehicleContract';
-export { VehicleContract } from './VehicleContract';
+import { VehicleContract } from './contracts/VehicleContract';
+export { VehicleContract } from './contracts/VehicleContract';
 
 export const contracts: any[] = [ VehicleContract ];

@@ -1,4 +1,4 @@
-import { State } from './ledger-api/state';
+import { State } from '../ledger-api/state';
 import { Object as ContractObject, Property } from 'fabric-contract-api';
 
 export enum PolicyType {
@@ -42,5 +42,7 @@ export class Policy extends State {
         {
             return new Policy({vin,insurerId,holderId,policyType,startDate,endDate})
         }
-
+        public toBuffer() {
+            return Buffer.from(JSON.stringify(this));
+        }
 }
