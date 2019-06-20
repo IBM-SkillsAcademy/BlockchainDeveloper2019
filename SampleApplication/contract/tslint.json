@@ -15,7 +15,8 @@
         "no-var-keyword": true,
         "no-trailing-whitespace": true,
         "object-literal-key-quotes": [true, "as-needed"],
-        "max-line-length": false
+        "max-line-length": false,
+        "object-literal-sort-keys": false
     },
     "rulesDirectory": []
 }

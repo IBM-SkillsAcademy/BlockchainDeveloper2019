@@ -1,9 +1,9 @@
 import { Context, Contract } from 'fabric-contract-api';
-import { Vehicle } from './vehicle';
-import { OrderList } from './orderList';
-import { VehicleContext } from "./utils/vehicleContext";
 import { Order, OrderStatus } from './order';
-import { PolicyType, Policy } from './policy';
+import { OrderList } from './orderList';
+import { Policy, PolicyType } from './policy';
+import { VehicleContext } from './utils/vehicleContext';
+import { Vehicle } from './vehicle';
 
 export class VehicleContract extends Contract {
 
@@ -12,7 +12,7 @@ export class VehicleContract extends Contract {
         super('org.vehiclelifecycle.vehicle');
     }
 
-    createContext() {
+    public createContext() {
         return new VehicleContext();
     }
 
@@ -24,70 +24,70 @@ export class VehicleContract extends Contract {
                 make: 'Toyota',
                 model: 'Prius',
                 owner: 'Tomoko',
-                orderId :'1'
+                orderId : '1',
             },
             {
                 color: 'red',
                 make: 'Ford',
                 model: 'Mustang',
                 owner: 'Brad',
-                orderId :'2'
+                orderId : '2',
             },
             {
                 color: 'green',
                 make: 'Hyundai',
                 model: 'Tucson',
                 owner: 'Jin Soo',
-                orderId :'3'
+                orderId : '3',
             },
             {
                 color: 'yellow',
                 make: 'Volkswagen',
                 model: 'Passat',
                 owner: 'Max',
-                orderId :'4'
+                orderId : '4',
             },
             {
                 color: 'black',
                 make: 'Tesla',
                 model: 'S',
                 owner: 'Adriana',
-                orderId :'5'
+                orderId : '5',
             },
             {
                 color: 'purple',
                 make: 'Peugeot',
                 model: '205',
                 owner: 'Michel',
-                orderId :'5'
+                orderId : '5',
             },
             {
                 color: 'white',
                 make: 'Chery',
                 model: 'S22L',
                 owner: 'Aarav',
-                orderId :'6'
+                orderId : '6',
             },
             {
                 color: 'violet',
                 make: 'Fiat',
                 model: 'Punto',
                 owner: 'Pari',
-                orderId :'7'
+                orderId : '7',
             },
             {
                 color: 'indigo',
                 make: 'Tata',
                 model: 'Nano',
                 owner: 'Valeria',
-                orderId :'8'
+                orderId : '8',
             },
             {
                 color: 'brown',
                 make: 'Holden',
                 model: 'Barina',
                 owner: 'Shotaro',
-                orderId :'9'
+                orderId : '9',
 
             },
         ];
@@ -109,7 +109,7 @@ export class VehicleContract extends Contract {
         return vehicleAsBytes.toString();
     }
 
-    public async createVehicle(ctx: Context, vehicleNumber: string, make: string, model: string, color: string, owner: string , orderId :string) {
+    public async createVehicle(ctx: Context, vehicleNumber: string, make: string, model: string, color: string, owner: string , orderId: string) {
         console.info('============= START : Create vehicle ===========');
 
         const vehicle: Vehicle = {
@@ -118,13 +118,14 @@ export class VehicleContract extends Contract {
             make,
             model,
             owner,
-         orderId
+            orderId,
         };
 
         await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
         console.info('============= END : Create vehicle ===========');
     }
-// Regulaor retrieve all vehciles in system with details 
+
+    // Regulaor retrieve all vehciles in system with details
     public async queryAllVehicles(ctx: Context): Promise<string> {
         const startKey = 'vehicle0';
         const endKey = 'vehicle999';
@@ -157,7 +158,7 @@ export class VehicleContract extends Contract {
         }
     }
 
-    //regulator can update vehicle owner 
+    // regulator can update vehicle owner
     public async changeVehicleOwner(ctx: Context, vehicleNumber: string, newOwner: string) {
         console.info('============= START : changevehicleOwner ===========');
 
@@ -172,82 +173,101 @@ export class VehicleContract extends Contract {
         console.info('============= END : changevehicleOwner ===========');
     }
 
-    // regulator can delete vehicle after lifecycle ended 
+    // regulator can delete vehicle after lifecycle ended
     public async deleteVehicle(ctx: Context, vehicleNumber: string) {
         console.info('============= START : delete vehicle ===========');
-
         await ctx.stub.deleteState(vehicleNumber);
-
         console.info('============= END : delete vehicle ===========');
     }
 
-// end user palce order function 
+    // end user palce order function
     public async placeorder(ctx: VehicleContext, orderId: string, owner: string,
-
-        make: string, model: string, color: string
+                            make: string, model: string, color: string,
     ) {
-
         const vehicleDetails: Vehicle = {
             color,
             docType: 'vehicle',
             make,
             model,
             owner,
-            orderId
+            orderId,
         };
         const order = Order.createInstance(orderId, owner, OrderStatus.ISSUED, vehicleDetails);
-        await ctx.getOrderList().add(order)
-
+        await ctx.getOrderList().add(order);
 
     }
-    // Update order status to be in progress 
+
+    // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
 
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.INPROGRESS;
         await ctx.getOrderList().updateOrder(order);
     }
-    public async getOrder(ctx: VehicleContext, orderId: string) {
-        return await ctx.getOrderList().getOrder(orderId)
-    }
-    // Update order status to be pending if vehicle creation process has an issue 
-    public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
 
+    public async getOrder(ctx: VehicleContext, orderId: string) {
+        return await ctx.getOrderList().getOrder(orderId);
+    }
+
+    // Update order status to be pending if vehicle creation process has an issue
+    public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.PENDING;
         await ctx.getOrderList().updateOrder(order);
     }
 
-  // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset 
-    public async updateOrderDelivered(ctx: VehicleContext, orderId: string , vehicleNumber : string ) {
-
+    // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset
+    public async updateOrderDelivered(ctx: VehicleContext, orderId: string , vehicleNumber: string ) {
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
-        
-        // Create Vehicle as an asset 
-       const vehicle =order.vehicleDetails;
-       await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
+
+        // Create Vehicle as an asset
+        const vehicle = order.vehicleDetails;
+        await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
 
     }
 
-// Request Policy , user request the insurance policy 
+    // Request Policy , user request the insurance policy
     public async RequestPolicy(ctx: VehicleContext, id: string,
-        vin: string, insurerId: string, holderId: string, policyType: PolicyType,
-        startDate: number, endDate: number) {
-
+                               vin: string, insurerId: string, holderId: string, policyType: PolicyType,
+                               startDate: number, endDate: number) {
             const data = await ctx.stub.getState(vin);
 
             if (data.length === 0) {
                 throw new Error(`Cannot get Vehicle . No vehicle exists for VIN:  ${vin} `);
             }
-        const policy = Policy.createInstance(id,vin, insurerId, holderId, policyType,startDate, endDate);
-        await ctx.getPolicyList().add(policy)
+            const policy = Policy.createInstance(id, vin, insurerId, holderId, policyType, startDate, endDate);
+            await ctx.getPolicyList().add(policy);
     }
 
-    // get Policy with an ID 
+    // get Policy with an ID
     public async getPolicy(ctx: VehicleContext, policyId: string) {
+        return await ctx.getPolicyList().get(policyId);
+    }
 
-        return await ctx.getPolicyList().get(policyId)
+    // manufacture can add or change vehicle price details
+    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+        console.info('============= START : Update Price Details ===========');
+
+        // check if vehicle exist
+        const vehicleAsBytes = await ctx.stub.getState(vehicleNumber);
+        if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
+            throw new Error(`${vehicleNumber} does not exist`);
+        }
+
+        await ctx.stub.putPrivateData('collectionVehiclePriceDetails', vehicleNumber, Buffer.from(price));
+        console.info('============= END : Update Price Details ===========');
+    }
+
+    // manufacture can get vehicle price details
+    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+        const priceAsBytes = await ctx.stub.getPrivateData('collectionVehiclePriceDetails', vehicleNumber);
+        if (!priceAsBytes || priceAsBytes.length === 0) {
+            throw new Error(`${vehicleNumber} does not exist`);
+        }
+
+        console.log(priceAsBytes.toString());
+        return priceAsBytes.toString();
     }
 }
