@@ -1,95 +1,94 @@
 {
-  "name": "Org2 Client",
-  "version": "1.0",
-  "client": {
-     "organization": "Org2",
-     "credentialStore": {
-        "path": "./hfc-key-store",
-        "cryptoStore": {
-           "path": "./hfc-key-store"
-        }
-     }
-  },
-  "channels": {
-     "mychannel": {
-        "orderers": [
-           "orderer.example.com"
-        ],
-        "peers": {
-           "peer0.org2.example.com": {
-              "endorsingPeer": true,
-              "chaincodeQuery": true,
-              "ledgerQuery": true,
-              "eventSource": true
-           },
-           "peer1.org2.example.com": {
-              "endorsingPeer": true,
-              "chaincodeQuery": false,
-              "ledgerQuery": true,
-              "eventSource": false
-           }
-        }
-     }
-  },
-  "organizations": {
-     "Org2": {
-        "mspid": "Org2MSP",
-        "peers": [
-           "peer0.org2.example.com",
-           "peer1.org2.example.com"
-        ],
-        "certificateAuthorities": [
-           "ca.org2.example.com"
-        ],
-        "adminPrivateKey": {
-           "path": "[PATH-TO-FILE]"
-        },
-        "signedCert": {
-           "path": "[PATH-TO-FILE]"
-        }
-     }
-  },
-  "orderers": {
-     "orderer.example.com": {
-        "url": "grpcs://localhost:7050",
-        "grpcOptions": {
-           "ssl-target-name-override": "orderer.example.com",
-           "grpc-max-send-message-length": -1
-        },
-        "tlsCACerts": {
-           "path": "[PATH-TO-FILE]"
-        }
-     }
-  },
-  "peers": {
-     "peer0.org2.example.com": {
-        "url": "grpcs://localhost:9051",
-        "eventUrl": "grpcs://localhost:9053",
-        "grpcOptions": {
-           "ssl-target-name-override": "peer0.org2.example.com",
-           "grpc.keepalive_time_ms": 600000
-        },
-        "tlsCACerts": {
-           "path": "[PATH-TO-FILE]"
-        }
-     }
-  },
-  "certificateAuthorities": {
-     "ca.org2.example.com": {
-        "url": "https://localhost:8054",
-        "httpOptions": {
-           "verivy": false
-        },
-        "tlsCACerts": {
-           "path": "[PATH-TO-FILE]"
-        },
-        "registrar": [
-           {
-              "enrollId": "admin",
-              "enrollSecret": "adminpw"
-           }
-        ],
-        "caName": "ca-org2"
-     }
-  }
+   "name": "Org2 Client",
+   "version": "1.0",
+   "client": {
+      "organization": "Org2",
+      "connection": {
+         "timeout": {
+            "peer": {
+               "endorser": "300"
+            }
+         }
+      }
+   },
+   "channels": {
+      "mychannel": {
+         "orderers": [
+            "orderer.example.com"
+         ],
+         "peers": {
+            "peer0.org2.example.com": {
+               "endorsingPeer": true,
+               "chaincodeQuery": true,
+               "ledgerQuery": true,
+               "eventSource": true
+            },
+            "peer1.org2.example.com": {
+               "endorsingPeer": true,
+               "chaincodeQuery": false,
+               "ledgerQuery": true,
+               "eventSource": false
+            }
+         }
+      }
+   },
+   "organizations": {
+      "Org2": {
+         "mspid": "Org2MSP",
+         "peers": [
+            "peer0.org2.example.com",
+            "peer1.org2.example.com"
+         ],
+         "certificateAuthorities": [
+            "ca.org2.example.com"
+         ],
+         "adminPrivateKey": {
+            "path": "[PATH-TO-FILE]"
+         },
+         "signedCert": {
+            "path": "[PATH-TO-FILE]"
+         }
+      }
+   },
+   "orderers": {
+      "orderer.example.com": {
+         "url": "grpcs://localhost:7050",
+         "grpcOptions": {
+            "ssl-target-name-override": "orderer.example.com",
+            "grpc-max-send-message-length": -1
+         },
+         "tlsCACerts": {
+            "path": "[PATH-TO-FILE]"
+         }
+      }
+   },
+   "peers": {
+      "peer0.org2.example.com": {
+         "url": "grpcs://localhost:9051",
+         "eventUrl": "grpcs://localhost:9053",
+         "grpcOptions": {
+            "ssl-target-name-override": "peer0.org2.example.com",
+            "grpc.keepalive_time_ms": 600000
+         },
+         "tlsCACerts": {
+            "path": "[PATH-TO-FILE]"
+         }
+      }
+   },
+   "certificateAuthorities": {
+      "ca.org2.example.com": {
+         "url": "https://localhost:8054",
+         "httpOptions": {
+            "verivy": false
+         },
+         "tlsCACerts": {
+            "path": "[PATH-TO-FILE]"
+         },
+         "registrar": [{
+            "enrollId": "admin",
+            "enrollSecret": "adminpw"
+         }],
+         "caName": "ca-org2"
+      }
+   }
 }

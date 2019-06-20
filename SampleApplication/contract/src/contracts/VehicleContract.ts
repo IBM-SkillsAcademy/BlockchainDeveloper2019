@@ -12,7 +12,7 @@ export class VehicleContract extends Contract {
         super('org.vehiclelifecycle.vehicle');
     }
 
-    createContext() {
+    public createContext() {
         return new VehicleContext();
     }
 
@@ -157,7 +157,7 @@ export class VehicleContract extends Contract {
         }
     }
 
-    //regulator can update vehicle owner 
+    // regulator can update vehicle owner
     public async changeVehicleOwner(ctx: Context, vehicleNumber: string, newOwner: string) {
         console.info('============= START : changevehicleOwner ===========');
 
@@ -172,12 +172,10 @@ export class VehicleContract extends Contract {
         console.info('============= END : changevehicleOwner ===========');
     }
 
-    // regulator can delete vehicle after lifecycle ended 
+    // regulator can delete vehicle after lifecycle ended
     public async deleteVehicle(ctx: Context, vehicleNumber: string) {
         console.info('============= START : delete vehicle ===========');
-
         await ctx.stub.deleteState(vehicleNumber);
-
         console.info('============= END : delete vehicle ===========');
     }
 
@@ -186,14 +184,13 @@ export class VehicleContract extends Contract {
 
         make: string, model: string, color: string
     ) {
-
         const vehicleDetails: Vehicle = {
             color,
             docType: 'vehicle',
             make,
             model,
             owner,
-            orderId
+            orderId,
         };
         const order = Order.createInstance(orderId, owner, OrderStatus.ISSUED, vehicleDetails);
         await ctx.getOrderList().add(order)
@@ -202,19 +199,21 @@ export class VehicleContract extends Contract {
         ctx.stub.setEvent("ORDER_EVENT",order.toBuffer())
 
     }
-    // Update order status to be in progress 
+
+    // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
 
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.INPROGRESS;
         await ctx.getOrderList().updateOrder(order);
     }
-    public async getOrder(ctx: VehicleContext, orderId: string) {
-        return await ctx.getOrderList().getOrder(orderId)
-    }
-    // Update order status to be pending if vehicle creation process has an issue 
-    public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
 
+    public async getOrder(ctx: VehicleContext, orderId: string) {
+        return await ctx.getOrderList().getOrder(orderId);
+    }
+
+    // Update order status to be pending if vehicle creation process has an issue
+    public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.PENDING;
         await ctx.getOrderList().updateOrder(order);
@@ -249,10 +248,34 @@ export class VehicleContract extends Contract {
         ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
     }
 
-    // get Policy with an ID 
+    // get Policy with an ID
     public async getPolicy(ctx: VehicleContext, policyId: string) {
+        return await ctx.getPolicyList().get(policyId);
+    }
 
-        return await ctx.getPolicyList().get(policyId)
+    // manufacture can add or change vehicle price details
+    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+        console.info('============= START : Update Price Details ===========');
+
+        // check if vehicle exist
+        const vehicleAsBytes = await ctx.stub.getState(vehicleNumber);
+        if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
+            throw new Error(`${vehicleNumber} does not exist`);
+        }
+
+        await ctx.stub.putPrivateData('collectionVehiclePriceDetails', vehicleNumber, Buffer.from(price));
+        console.info('============= END : Update Price Details ===========');
+    }
+
+    // manufacture can get vehicle price details
+    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+        const priceAsBytes = await ctx.stub.getPrivateData('collectionVehiclePriceDetails', vehicleNumber);
+        if (!priceAsBytes || priceAsBytes.length === 0) {
+            throw new Error(`${vehicleNumber} does not exist`);
+        }
+
+        console.log(priceAsBytes.toString());
+        return priceAsBytes.toString();
     }
 
     // Query Functions 

@@ -21,7 +21,8 @@ based on: https://hyperledger-fabric.readthedocs.io/en/release-1.4/build_network
 1. If you haven't done it already, clone the Hyperledger Fabric Samples from [hyperledger/fabric-samples](https://github.com/hyperledger/fabric-samples) repository
 2. Go to {path-to-fabric-samples}/fabric-samples/first-network directory and run `./byfn.sh generate`. This command will generates all of the certificates and keys for our various network entities
 3. Next, you can bring up the network up by running `./byfn.sh up -l node -s couchdb`. This command will bring up a hyperledger fabric network with 2 organization and 2 peers for each organization, it will also use couchdb as the state database and node.js as chaincode runtime
-4. For this course we will need a fabric-ca server container, which can be bring up by running `docker-compose -f docker-compose-e2e.yaml up -d` command.
+4. To add the third organization, we need to run `./eyfn.sh up -l node -s couchdb`
+5. For this course we will need a fabric-ca server container, which can be bring up by running `docker-compose -f docker-compose-e2e.yaml up -d` command.
 6. Copy our contract folder file to the docker cli container by running `docker cp {path-to-contract}/contract cli:/opt/gopath/src/github.com/chaincode/`
 7. Run the command below to install the chaincode to Peer0 of Organization 1
 ```
@@ -45,7 +46,8 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_ADDRESS=peer0.org1.example.com:7051" \
 -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" \
-cli peer chaincode instantiate -o orderer.example.com:7050 --tls \
+cli bash -c "peer chaincode instantiate -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
--C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{"Args":[]}' -P "OR ('Org1MSP.member','Org2MSP.member')"
+-C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{\"Args\":[]}' -P \"OR ('Org1MSP.member','Org2MSP.member')\" \
+--collections-config \$GOPATH/src/github.com/chaincode/contract/collections_config.json"
 ```
