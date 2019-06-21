@@ -31,7 +31,7 @@ exports.createVehicle = async (req, res, next) => {
     const network = await gateway.getNetwork('mychannel');
 
     // Get the contract from the network.
-    const contract = network.getContract('SampleApplicationBlockchain');
+    const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
     // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
@@ -78,7 +78,7 @@ exports.getVehicle = async (req, res, next) => {
     const network = await gateway.getNetwork('mychannel');
 
     // Get the contract from the network.
-    const contract = network.getContract('SampleApplicationBlockchain');
+    const contract = network.getContract('vehicle-manufacture');
 
     // Evaluate the specified transaction.
     let result, rawResult;
@@ -126,7 +126,7 @@ exports.changeOwner = async (req, res, next) => {
     const network = await gateway.getNetwork('mychannel');
 
     // Get the contract from the network.
-    const contract = network.getContract('SampleApplicationBlockchain');
+    const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
     // changeVehicleOwner transaction - requires 2 args , ex: ('changeVehicleOwner', 'vehicle4', 'Dave')
@@ -168,7 +168,7 @@ exports.deleteVehicle = async (req, res, next) => {
     const network = await gateway.getNetwork('mychannel');
 
     // Get the contract from the network.
-    const contract = network.getContract('SampleApplicationBlockchain');
+    const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
     // deleteVehicle transaction - requires 1 args , ex: ('changeVehicleOwner', 'vehicle4')

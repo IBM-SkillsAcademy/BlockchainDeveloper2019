@@ -5,31 +5,11 @@ const fs = require('fs');
 
 exports.getCCP = async () => {
   try {
-    const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'org2ConnectionTemplate.json');
+    const ccpPath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'connection-org2-template.json');
     const ccpJSON = fs.readFileSync(ccpPath, 'utf8');
     let ccp = JSON.parse(ccpJSON);
 
     // update certs
-    const org2AdminPKPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
-      'first-network', 'crypto-config', 'peerOrganizations', 'org2.example.com',
-      'users', 'Admin@org2.example.com', 'msp', 'keystore');
-    const org2AdminPKFiles = await fs.readdirSync(org2AdminPKPath);
-    org2AdminPKFiles.forEach((filename) => {
-      if (filename.includes('_sk')) {
-        ccp.organizations.Org2.adminPrivateKey.path = path.resolve(org2AdminPKPath, filename);
-      }
-    });
-
-    const org2AdminSignPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
-      'first-network', 'crypto-config', 'peerOrganizations', 'org2.example.com',
-      'users', 'Admin@org2.example.com', 'msp', 'signcerts');
-    const org2AdminSignFiles = await fs.readdirSync(org2AdminSignPath);
-    org2AdminSignFiles.forEach((filename) => {
-      if (filename.includes('.pem')) {
-        ccp.organizations.Org2.signedCert.path = path.resolve(org2AdminSignPath, filename);
-      }
-    });
-
     const ordererTLSCACertsPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
       'first-network', 'crypto-config', 'ordererOrganizations', 'example.com',
       'orderers', 'orderer.example.com', 'msp', 'tlscacerts');
@@ -50,6 +30,16 @@ exports.getCCP = async () => {
       }
     });
 
+    const peer1org2TLSCACertsPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
+      'first-network', 'crypto-config', 'peerOrganizations', 'org2.example.com',
+      'peers', 'peer1.org2.example.com', 'msp', 'tlscacerts');
+    const peer1org2TLSCACertsFiles = await fs.readdirSync(peer1org2TLSCACertsPath);
+    peer1org2TLSCACertsFiles.forEach((filename) => {
+      if (filename.includes('.pem')) {
+        ccp.peers['peer1.org2.example.com'].tlsCACerts.path = path.resolve(peer1org2TLSCACertsPath, filename);
+      }
+    });
+
     const caorg2TLSCACertsPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
       'first-network', 'crypto-config', 'peerOrganizations', 'org2.example.com', 'ca');
     const caorg2TLSCACertsFiles = await fs.readdirSync(caorg2TLSCACertsPath);
@@ -60,7 +50,7 @@ exports.getCCP = async () => {
     });
 
     const jsonProfile = JSON.stringify(ccp);
-    const profilePath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'org2Connection.json');
+    const profilePath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'connection-org2.json');
     await fs.writeFileSync(profilePath, jsonProfile);
     return ccp;
   } catch (err) {
