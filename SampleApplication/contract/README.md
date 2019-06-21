@@ -40,7 +40,15 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt" \
 cli peer chaincode install -n vehicle-manufacture -v 1.0.0 -p /opt/gopath/src/github.com/chaincode/contract -l node
 ```
-9. Run the command below to instantiate the chaincode in the network
+9. Run the command below to install the chaincode to Peer0 of Organization 3
+```
+docker exec -e "CORE_PEER_LOCALMSPID=Org3MSP" \
+-e "CORE_PEER_ADDRESS=peer0.org3.example.com:11051" \
+-e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+-e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt" \
+Org3cli peer chaincode install -n vehicle-manufacture -v 1.0.0 -p /opt/gopath/src/github.com/chaincode/contract -l node
+```
+10. Run the command below to instantiate the chaincode in the network
 ```
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_ADDRESS=peer0.org1.example.com:7051" \
@@ -48,6 +56,6 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" \
 cli bash -c "peer chaincode instantiate -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
--C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{\"Args\":[]}' -P \"OR ('Org1MSP.member','Org2MSP.member')\" \
+-C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{\"Args\":["initLedger"]}' -P \"OR ('Org1MSP.member','Org2MSP.member', 'Org3MSP.member')\" \
 --collections-config \$GOPATH/src/github.com/chaincode/contract/collections_config.json"
 ```

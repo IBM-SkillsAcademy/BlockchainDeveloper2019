@@ -1,0 +1,250 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Vehicle Manufacture Sample Application Smart Contract used for creating Blockchain Developer Course V2",
+    "version": "1.0.0",
+    "title": "Simple Application"
+  },
+  "paths": {
+    "/api/v1/auth/enroll-admin": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Enroll Admin",
+        "responses": {
+          "200": {
+            "description": "Admin enrolled"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/enroll-user": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register user",
+        "responses": {
+          "200": {
+            "description": "User registered"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Create a new vehicle",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "manufacturer",
+                  "model",
+                  "color",
+                  "owner"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "manufacturer": {
+                    "type": "string",
+                    "example": "Honda"
+                  },
+                  "model": {
+                    "type": "string",
+                    "example": "Accord"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Black"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Tom"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle created"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/{id}": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get vehicle by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "path",
+          "name": "id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/change-owner": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Change vehicle ownership",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "owner"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Dave"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/delete": {
+      "delete": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Delete vehicle",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle deleted"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+  }
+}
