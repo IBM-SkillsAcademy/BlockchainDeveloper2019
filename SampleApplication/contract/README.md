@@ -56,6 +56,6 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt" \
 cli bash -c "peer chaincode instantiate -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
--C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{\"Args\":["initLedger"]}' -P \"OR ('Org1MSP.member','Org2MSP.member', 'Org3MSP.member')\" \
+-C mychannel -n vehicle-manufacture -l node -v 1.0.0 -c '{\"Args\":[\"initLedger\"]}' -P \"OR ('Org1MSP.member','Org2MSP.member', 'Org3MSP.member')\" \
 --collections-config \$GOPATH/src/github.com/chaincode/contract/collections_config.json"
 ```
