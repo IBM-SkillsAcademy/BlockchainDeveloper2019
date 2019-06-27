@@ -4,6 +4,7 @@ import { OrderList } from '../lists/orderList';
 import { VehicleContext } from "../utils/vehicleContext";
 import { Order, OrderStatus } from '../assets/order';
 import { PolicyType, Policy } from '../assets/policy';
+import * as util from 'util';
 
 export class VehicleContract extends Contract {
 
@@ -161,6 +162,12 @@ export class VehicleContract extends Contract {
     public async changeVehicleOwner(ctx: Context, vehicleNumber: string, newOwner: string) {
         console.info('============= START : changevehicleOwner ===========');
 
+        let clientId = ctx.clientIdentity;
+        console.info(clientId.getAttributeValue('bc_role'));
+        if(clientId.assertAttributeValue('bc_role', 'Regulator') === false || !clientId.assertAttributeValue('bc_role', 'Insurer') === false){
+            throw new Error(`${clientId.getAttributeValue('bc_role')} is not allowed to change vehicle owners`);
+        }
+
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber); // get the vehicle from chaincode state
         if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
             throw new Error(`${vehicleNumber} does not exist`);
@@ -300,4 +307,10 @@ export class VehicleContract extends Contract {
 
     }
 
+    //before transaction check identity
+    async beforeTransaction(ctx: VehicleContext) {
+        let clientId = ctx.clientIdentity;
+        let attr = JSON.stringify((clientId as any).attrs);
+        console.info(`Client Identity: ${attr}`);
+    }
 }
