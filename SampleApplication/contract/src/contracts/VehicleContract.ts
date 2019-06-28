@@ -211,14 +211,10 @@ export class VehicleContract extends Contract {
 
     // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
-        console.info('============= START : update order status ===========');
-
-        await this.checkIfManufacturer(ctx, 'update order status'); // check if role === 'Manufacturer'
-
+        await this.checkIfManufacturer(ctx, 'update order status in-progress'); // check if role === 'Manufacturer'
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.INPROGRESS;
         await ctx.getOrderList().updateOrder(order);
-        console.info('============= END : update order status ===========');
     }
 
     public async getOrder(ctx: VehicleContext, orderId: string) {
@@ -227,6 +223,7 @@ export class VehicleContract extends Contract {
 
     // Update order status to be pending if vehicle creation process has an issue
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
+        await this.checkIfManufacturer(ctx, 'update order status pending'); // check if role === 'Manufacturer'
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.PENDING;
         await ctx.getOrderList().updateOrder(order);
@@ -234,7 +231,7 @@ export class VehicleContract extends Contract {
 
     // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset 
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
-
+        await this.checkIfManufacturer(ctx, 'update order status delivered'); // check if role === 'Manufacturer'
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
