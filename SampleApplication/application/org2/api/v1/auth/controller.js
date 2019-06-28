@@ -72,7 +72,7 @@ exports.registerUser = async (req, res, next) => {
     const adminIdentity = gateway.getCurrentIdentity();
 
     // Register the user, enroll the user, and import the new identity into the wallet.
-    const secret = await ca.register({ affiliation: 'org2.department1', enrollmentID: enrollmentID, role: 'client' }, adminIdentity);
+    const secret = await ca.register({ affiliation: 'org2.department1', enrollmentID: enrollmentID, role: 'client', attrs: [{ name: 'role', value: 'Regulator', ecert: true }]}, adminIdentity);
     const enrollment = await ca.enroll({ enrollmentID: enrollmentID, enrollmentSecret: secret });
     const userIdentity = X509WalletMixin.createIdentity('Org2MSP', enrollment.certificate, enrollment.key.toBytes());
     wallet.import(enrollmentID, userIdentity);
