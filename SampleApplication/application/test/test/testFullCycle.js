@@ -99,13 +99,10 @@ describe('Enrollment and Registration: ', () => {
     });
   });
 
-  describe('POST /api/v1/auth/register-user', () => {
+  describe('POST /api/v1/auth/enroll-user', () => {
     it('User should be registered succesfully', (done) => {
-      apiInsurer.post('/api/v1/auth/register-user')
+      apiInsurer.post('/api/v1/auth/enroll-user')
         .set('Content-Type', 'application/json')
-        .send({
-          enrollmentID: 'user1'
-        })
         .end((err, res) => {
           if (err) {
             return done(err);
