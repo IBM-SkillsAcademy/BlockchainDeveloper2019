@@ -28,13 +28,5 @@ These instructions will get you a copy of the project up and running on your loc
 
 6. To start using the app, please invoke `enroll-admin` and `register-user` first from the swagger
 
-## Running the test
-
-1. After running the app you can running a test suite by opening a new terminal and run
-
-    ```bash
-    npm run test
-    ```
-
 ## Notes:
 When recreating the network, we need to clear the wallet by running `rm -r wallet`
