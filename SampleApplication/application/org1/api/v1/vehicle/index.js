@@ -10,6 +10,6 @@ router.use(bodyParser.json());
 
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
-router.get('/:id', controller.getVehicle);
+router.post('/price', controller.updatePrice);
 
 module.exports = router;

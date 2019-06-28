@@ -122,6 +122,13 @@
             "type": "string",
             "example": "user1"
           }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
         }],
         "responses": {
           "200": {
@@ -138,12 +145,12 @@
         }
       }
     },
-    "/api/v1/vehicle/{id}": {
-      "get": {
+    "/api/v1/vehicle/price": {
+      "post": {
         "tags": [
           "Vehicle"
         ],
-        "summary": "Get vehicle by id",
+        "summary": "Update vehicle price",
         "parameters": [{
           "in": "header",
           "name": "enrollment-id",
@@ -152,26 +159,33 @@
             "type": "string",
             "example": "user1"
           }
-        }, {
-          "in": "path",
-          "name": "id",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "example": "vehicle13"
-          }
         }],
-        "responses": {
-          "200": {
-            "description": "Vehicle listed",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "object"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "price"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "40000"
+                  }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle created"
           }
         }
       }

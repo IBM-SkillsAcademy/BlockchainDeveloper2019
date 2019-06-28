@@ -37,9 +37,9 @@ exports.getVehicle = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result, rawResult;
 
-    if (req.params.id) {
+    if (req.query.id) {
     // if vehicle id specified queryVehicle transaction - requires 1 argument, ex: ('queryVehicle', 'vehicle4')
-      result = await contract.evaluateTransaction('queryVehicle', req.params.id);
+      result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
     } else {
       // queryAllVehicles transaction - requires no arguments, ex: ('queryAllVehicless')

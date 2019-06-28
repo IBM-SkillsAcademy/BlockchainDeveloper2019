@@ -9,7 +9,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.get('/', controller.getVehicle);
-router.get('/:id', controller.getVehicle);
 router.post('/change-owner', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
 

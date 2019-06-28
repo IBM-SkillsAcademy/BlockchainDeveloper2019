@@ -46,40 +46,9 @@
             "type": "string",
             "example": "user1"
           }
-        }],
-        "responses": {
-          "200": {
-            "description": "All vehicles listed",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/vehicle/{id}": {
-      "get": {
-        "tags": [
-          "Vehicle"
-        ],
-        "summary": "Get vehicle by id",
-        "parameters": [{
-          "in": "header",
-          "name": "enrollment-id",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "example": "user1"
-          }
         }, {
-          "in": "path",
+          "in": "query",
           "name": "id",
-          "required": "true",
           "schema": {
             "type": "string",
             "example": "vehicle13"
@@ -87,7 +56,7 @@
         }],
         "responses": {
           "200": {
-            "description": "Vehicle listed",
+            "description": "All vehicles listed",
             "schema": {
               "type": "object",
               "properties": {

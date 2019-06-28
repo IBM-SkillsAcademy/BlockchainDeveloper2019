@@ -158,11 +158,12 @@ describe('Vehicle cycle: ', () => {
     });
   });
 
-  describe('GET /api/v1/vehicle/:id', () => {
+  describe('GET /api/v1/vehicle', () => {
     it('Vehicle should be listed', (done) => {
-      apiRegulator.get('/api/v1/vehicle/' + vehicle.vehicleID)
+      apiRegulator.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
+        .query({id: vehicle.vehicleID})
         .expect(200)
         .end((err, res) => {
           if (err) {
@@ -173,6 +174,26 @@ describe('Vehicle cycle: ', () => {
         });
     });
   });
+
+  describe('POST api/v1/vehicle/price', () => {
+    const priceUpdate = {
+      vehicleID: 'vehicle113',
+      price: '40000'
+    };
+    it('Vehicle price should be able to be updated', (done) => {
+      apiManufacturer.post('/api/v1/vehicle/price')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(priceUpdate)
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          return done();
+        });
+    })
+  })
 
   describe('POST /api/v1/vehicle/change-owner', () => {
     it('Vehicle ownership should be able to be changed', (done) => {
@@ -193,11 +214,12 @@ describe('Vehicle cycle: ', () => {
     });
   });
 
-  describe('GET /api/v1/vehicle/:id', () => {
+  describe('GET /api/v1/vehicle', () => {
     it('Vehicle ownership should already changed', (done) => {
-      apiRegulator.get('/api/v1/vehicle/' + vehicle.vehicleID)
+      apiRegulator.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
+        .query({id: vehicle.vehicleID})
         .expect(200)
         .end((err, res) => {
           if (err) {
