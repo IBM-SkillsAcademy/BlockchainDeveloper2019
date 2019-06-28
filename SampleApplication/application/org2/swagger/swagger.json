@@ -3,7 +3,7 @@
   "info": {
     "description": "Vehicle Manufacture Sample Application Smart Contract used for creating Blockchain Developer Course V2",
     "version": "1.0.0",
-    "title": "Simple Application"
+    "title": "Regulator"
   },
   "paths": {
     "/api/v1/auth/enroll-admin": {
@@ -83,6 +83,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/price": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get vehicle price",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
           }
         }
       }

@@ -285,7 +285,7 @@ export class VehicleContract extends Contract {
     }
 
     // manufacture can get vehicle price details
-    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
         console.info('============= START : Get Price Details ===========');
 
         await this.checkIfManufacturerOrRegulator(ctx, 'get price details'); // check if role === 'Manufacturer' / 'Regulator'

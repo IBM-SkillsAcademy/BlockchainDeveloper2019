@@ -140,3 +140,43 @@ exports.deleteVehicle = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getPrice = async (req, res, next) => {
+  try {
+    const enrollmentID = req.headers['enrollment-id'];
+
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork('mychannel');
+
+    // Get the contract from the network.
+    const contract = network.getContract('vehicle-manufacture');
+
+    // Evaluate the specified transaction.
+    const result = await contract.evaluateTransaction('getPriceDetails', req.query.id);
+    const rawResult = result.toString();
+
+    const json = JSON.parse(rawResult);
+    const obj = JSON.parse(json);
+    return res.send({
+      result: obj
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};

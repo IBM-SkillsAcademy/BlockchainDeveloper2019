@@ -11,5 +11,6 @@ router.use(bodyParser.json());
 router.get('/', controller.getVehicle);
 router.post('/change-owner', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
+router.get('/price', controller.getPrice);
 
 module.exports = router;

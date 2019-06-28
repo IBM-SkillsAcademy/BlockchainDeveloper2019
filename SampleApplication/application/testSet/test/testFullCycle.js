@@ -175,7 +175,7 @@ describe('Vehicle cycle: ', () => {
     });
   });
 
-  describe('POST api/v1/vehicle/price', () => {
+  describe('POST /api/v1/vehicle/price', () => {
     const priceUpdate = {
       vehicleID: 'vehicle113',
       price: '40000'
@@ -190,6 +190,23 @@ describe('Vehicle cycle: ', () => {
           if (err) {
             return done(err);
           }
+          return done();
+        });
+    })
+  })
+
+  describe('GET /api/v1/vehicle/price', () => {
+    it('Manufacture or Insurer should be able to see vehicle price', (done) => {
+      apiRegulator.get('/api/v1/vehicle/price')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({id: vehicle.vehicleID})
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          res.body.result.should.equal(40000);
           return done();
         });
     })
