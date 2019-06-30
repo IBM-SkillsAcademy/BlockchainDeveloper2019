@@ -9,10 +9,6 @@ export enum PolicyType {
 
 @ContractObject()
 export class Policy extends State {
-    public static getClass() {
-        return 'org.vehiclelifecycle.Policy';   
-     }
-
    
     public readonly vin: string;
 
@@ -45,4 +41,7 @@ export class Policy extends State {
         public toBuffer() {
             return Buffer.from(JSON.stringify(this));
         }
+        public static getClass() {
+            return 'org.vehiclelifecycle.Policy';   
+         }
 }

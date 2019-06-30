@@ -3,20 +3,28 @@ import { Order } from '../assets/order';
 import { OrderList } from '../lists/orderList';
 import { PolicyList } from '../lists/policyList';
 import { Policy } from '../assets/policy';
+import { VehicleList } from '../lists/vehicleList';
+import { Vehicle } from '../assets/vehicle';
 
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
     private policyList: PolicyList<Policy>;
+    private vehicleList:VehicleList<Vehicle>;
     constructor() {
         super();
 
         this.orderList = new OrderList(this, [Order]);
-        this.policyList = new PolicyList(this, [Policy])
+        this.policyList = new PolicyList(this, [Policy]);
+        this.vehicleList = new VehicleList(this, [Vehicle]);
     }
     getOrderList() {
         return this.orderList;
     }
     getPolicyList() {
         return this.policyList;
+    }
+    getVehicleList()
+    {
+        return this.vehicleList;
     }
 }
