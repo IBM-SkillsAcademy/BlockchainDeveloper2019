@@ -205,11 +205,6 @@ export class VehicleContract extends Contract {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        const priceAsBytes = await ctx.stub.getPrivateData('collectionVehiclePriceDetails', vehicleNumber);
-        if (!priceAsBytes || priceAsBytes.length === 0) {
-            throw new Error(`${vehicleNumber} does not exist`);
-        }
-
         return await ctx.getPriceList().getPrice(vehicleNumber);
     }
 
