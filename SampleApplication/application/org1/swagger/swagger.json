@@ -145,46 +145,6 @@
         }
       }
     },
-    "/api/v1/vehicle/request-vin": {
-      "post": {
-        "tags": [
-          "Vehicle"
-        ],
-        "summary": "Request vehicle VIN",
-        "parameters": [{
-          "in": "header",
-          "name": "enrollment-id",
-          "required": "true",
-          "schema": {
-            "type": "string",
-            "example": "user1"
-          }
-        }],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "vehicleID"
-                ],
-                "properties": {
-                  "vehicleID": {
-                    "type": "string",
-                    "example": "vehicle13"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Vehicle VIN requested"
-          }
-        }
-      }
-    },
     "/api/v1/vehicle/price": {
       "post": {
         "tags": [
@@ -253,6 +213,46 @@
         "responses": {
           "200": {
             "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/request-vin": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Request vehicle VIN",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle VIN requested"
           }
         }
       }

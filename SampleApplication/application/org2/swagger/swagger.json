@@ -161,6 +161,51 @@
         }
       }
     },
+    "/api/v1/vehicle/issue-vin": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Issue vehicle VIN",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "vin"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "vin": {
+                    "type": "string",
+                    "example": "G33KS"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle VIN issued"
+          }
+        }
+      }
+    },
     "/api/v1/vehicle/delete": {
       "delete": {
         "tags": [

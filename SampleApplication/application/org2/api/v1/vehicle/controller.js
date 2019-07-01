@@ -214,7 +214,7 @@ exports.getPolicy = async (req, res, next) => {
       result = await contract.evaluateTransaction('getPolicy', req.query.id);
       rawResult = result.toString();
     } else {
-    throw new Error('Not Policy found');
+      throw new Error('Not Policy found');
     }
     const json = JSON.parse(rawResult);
     const obj = JSON.parse(json);
@@ -255,10 +255,10 @@ exports.getPolicies = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result, rawResult;
 
-      // getPolicies transaction - requires no arguments, ex: ('getPolicies')
-      result = await contract.evaluateTransaction('getPolicies');
-      rawResult = result.toString();
-    
+    // getPolicies transaction - requires no arguments, ex: ('getPolicies')
+    result = await contract.evaluateTransaction('getPolicies');
+    rawResult = result.toString();
+
     const json = JSON.parse(rawResult);
     const obj = JSON.parse(json);
     return res.send({
@@ -270,3 +270,46 @@ exports.getPolicies = async (req, res, next) => {
   }
 };
 
+exports.issueVIN = async (req, res, next) => {
+  try {
+    const enrollmentID = req.headers['enrollment-id'];
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork('mychannel');
+
+    // Get the contract from the network.
+    const contract = network.getContract('vehicle-manufacture');
+
+    // Submit the specified transaction.
+    // issueVIN transaction - requires 8 argument, ex: ('issueVIN', 'vehicle13', 'G33KS')
+    await contract.submitTransaction(
+      'issueVehicleVIN',
+      req.body.vehicleID,
+      req.body.vin
+    );
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+    return res.send({
+      message: `VIN for vehicle with ID ${req.body.vehicleID} has been requested`,
+      details: req.body
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};

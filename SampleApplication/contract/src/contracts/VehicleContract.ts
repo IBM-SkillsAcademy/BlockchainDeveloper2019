@@ -47,22 +47,22 @@ export class VehicleContract extends Contract {
         console.info('============= END : Create vehicle ===========');
     }
 
-     public async issueVehicleVIN(ctx: VehicleContext , vehicleNumber: string, vin: string) {
+    public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.vin = vin;
         vehicle.vinStatus = VinStatus.ISSUED;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
-       }
+    }
 
-       public async requestVehicleVIN(ctx: VehicleContext , vehicleNumber: string) {
-         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
-         vehicle.vinStatus = VinStatus.REQUESTED;
-         await ctx.getVehicleList().updateVehicle(vehicle);
+    public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
+        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
+        vehicle.vinStatus = VinStatus.REQUESTED;
+        await ctx.getVehicleList().updateVehicle(vehicle);
 
-        }
+    }
 
-    // Regulaor retrieve all vehciles in system with details
+    // Regulator retrieve all vehciles in system with details
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         return await ctx.getVehicleList().getAll();
 
@@ -90,7 +90,6 @@ export class VehicleContract extends Contract {
 
     // end user palce order function
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
-
                             make: string, model: string, color: string,
     ) {
         console.info('============= START : place order ===========');

@@ -220,7 +220,7 @@ exports.getPolicy = async (req, res, next) => {
       result = await contract.evaluateTransaction('getPolicy', req.query.id);
       rawResult = result.toString();
     } else {
-    throw new Error('Not Policy found');
+      throw new Error('Not Policy found');
     }
     const json = JSON.parse(rawResult);
     const obj = JSON.parse(json);
@@ -261,10 +261,10 @@ exports.getPolicies = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result, rawResult;
 
-      // getPolicies transaction - requires no arguments, ex: ('getPolicies')
-      result = await contract.evaluateTransaction('getPolicies');
-      rawResult = result.toString();
-    
+    // getPolicies transaction - requires no arguments, ex: ('getPolicies')
+    result = await contract.evaluateTransaction('getPolicies');
+    rawResult = result.toString();
+
     const json = JSON.parse(rawResult);
     const obj = JSON.parse(json);
     return res.send({
@@ -275,4 +275,3 @@ exports.getPolicies = async (req, res, next) => {
     next(err);
   }
 };
-
