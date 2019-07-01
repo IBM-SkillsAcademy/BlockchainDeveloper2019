@@ -74,7 +74,7 @@ export class VehicleContract extends Contract {
         console.info('============= START : Change Vehicle Owner ===========');
 
         // check if role === 'Regulator' / 'Insurer'
-        await this.hasRole(ctx, ['Regulator', ['Insurer']]);
+        await this.hasRole(ctx, ['Regulator', 'Insurer']);
 
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.owner = newOwner;
@@ -255,10 +255,10 @@ export class VehicleContract extends Contract {
     public async hasRole(ctx: Context, roleName: Array<string>) {
         const clientId = ctx.clientIdentity;
         for(let i = 0; i < roleName.length; i++){
-            if (!clientId.assertAttributeValue('role', roleName[i])) {
-                throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+            if (clientId.assertAttributeValue('role', roleName[i])) {
+                return true;
             }
         }
-        return true;
+        throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
 }
