@@ -6,6 +6,10 @@ const apiManufacturer = supertest('http://localhost:6001');
 const apiRegulator = supertest('http://localhost:6002');
 const apiInsurer = supertest('http://localhost:6003');
 
+beforeEach((done) => {
+  setTimeout(() => done(), 500)
+})
+
 ///////////////////// Registration Start /////////////////////
 describe('Enrollment and Registration: ', () => {
   describe('GET /api/v1/auth/enroll-admin', () => {
