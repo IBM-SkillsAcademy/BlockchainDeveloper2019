@@ -137,7 +137,7 @@ exports.createVehicle = async (req, res, next) => {
     // Disconnect from the gateway.
     await gateway.disconnect();
     return res.send({
-      message: `Vehicle with ID ${req.body.vehicleID} has been created`,
+      message: `Vehicle with ID ${req.body.orderID}:${req.body.model} has been created`,
       details: req.body
     });
   } catch (err) {
@@ -438,7 +438,7 @@ exports.requestVIN = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // requestVIN transaction - requires 8 argument, ex: ('requestVIN', 'vehicle13:Model 3')
+    // requestVIN transaction - requires 8 argument, ex: ('requestVIN', 'vehicle13:Accord')
     await contract.submitTransaction(
       'requestVehicleVIN',
       req.body.vehicleID

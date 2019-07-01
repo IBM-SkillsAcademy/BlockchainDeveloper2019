@@ -339,7 +339,7 @@ exports.issueVIN = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // issueVIN transaction - requires 8 argument, ex: ('issueVIN', 'vehicle13:Model 3', 'G33KS')
+    // issueVIN transaction - requires 8 argument, ex: ('issueVIN', 'vehicle13:Accord', 'G33KS')
     await contract.submitTransaction(
       'issueVehicleVIN',
       req.body.vehicleID,

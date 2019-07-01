@@ -110,7 +110,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13:Model 3"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -147,7 +147,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13:Model 3"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -184,7 +184,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13:Accord"
                   },
                   "owner": {
                     "type": "string",
@@ -229,7 +229,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13:Accord"
                   },
                   "vin": {
                     "type": "string",
@@ -273,7 +273,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13:Accord"
                   }
                 }
               }

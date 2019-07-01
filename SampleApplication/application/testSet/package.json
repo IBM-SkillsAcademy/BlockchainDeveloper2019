@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "mocha -s 1000 -t 60000 --recursive --exit"
+    "test": "mocha -s 1000 -t 90000 --recursive --exit"
   },
   "contributors": [
     "hdeanzak@id.ibm.com",

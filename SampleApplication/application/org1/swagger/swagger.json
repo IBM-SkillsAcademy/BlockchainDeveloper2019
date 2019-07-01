@@ -80,7 +80,7 @@
                 "properties": {
                   "orderID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13"
                   },
                   "manufacturer": {
                     "type": "string",
@@ -127,7 +127,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13:Model 3"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -213,7 +213,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13:Accord"
                   },
                   "price": {
                     "type": "string",
@@ -248,7 +248,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13:Model 3"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -284,7 +284,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13:Model 3"
+                    "example": "vehicle13:Accord"
                   }
                 }
               }
