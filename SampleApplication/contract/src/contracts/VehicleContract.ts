@@ -38,7 +38,8 @@ export class VehicleContract extends Contract {
 
     public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string ) {
         console.info('============= START : Create vehicle ===========');
-        await this.checkIfManufacturer(ctx, 'create vehicle'); // check if role === 'Manufacturer'
+
+        await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicle: Vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
 
@@ -72,7 +73,9 @@ export class VehicleContract extends Contract {
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
         console.info('============= START : Change Vehicle Owner ===========');
 
-        await this.checkIfRegulatorOrInsurer(ctx, 'Change Vehicle Owner'); // check if role === 'Regulator' / 'Insurer'
+        // check if role === 'Regulator' / 'Insurer'
+        await this.hasRole(ctx, ['Regulator', ['Insurer']]);
+
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.owner = newOwner;
         await ctx.getVehicleList().updateVehicle(vehicle);
@@ -83,8 +86,12 @@ export class VehicleContract extends Contract {
     // regulator can delete vehicle after lifecycle ended
     public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
         console.info('============= START : delete vehicle ===========');
-        await this.checkIfRegulatorOrInsurer(ctx, 'Change Vehicle Owner'); // check if role === 'Regulator' / 'Insurer'
+
+        // check if role === 'Regulator' / 'Insurer'
+        await this.hasRole(ctx, ['Regulator', 'Insurer']);
+
         ctx.getVehicleList().delete(vehicleNumber);
+
         console.info('============= END : delete vehicle ===========');
     }
 
@@ -94,7 +101,8 @@ export class VehicleContract extends Contract {
     ) {
         console.info('============= START : place order ===========');
 
-        await this.checkIfManufacturer(ctx, 'place order'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
             color,
@@ -114,7 +122,9 @@ export class VehicleContract extends Contract {
 
     // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
-        await this.checkIfManufacturer(ctx, 'update order status in-progress'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
+
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.INPROGRESS;
         await ctx.getOrderList().updateOrder(order);
@@ -126,7 +136,9 @@ export class VehicleContract extends Contract {
 
     // Update order status to be pending if vehicle creation process has an issue
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
-        await this.checkIfManufacturer(ctx, 'update order status pending'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
+
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.PENDING;
         await ctx.getOrderList().updateOrder(order);
@@ -134,7 +146,9 @@ export class VehicleContract extends Contract {
 
     // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
-        await this.checkIfManufacturer(ctx, 'update order status delivered'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
+
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
@@ -151,7 +165,8 @@ export class VehicleContract extends Contract {
                                startDate: number, endDate: number) {
         console.info('============= START : request insurance policy ===========');
 
-        await this.checkIfManufacturer(ctx, 'request insurance policy'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
 
         const data = await ctx.stub.getState(vin);
 
@@ -174,7 +189,8 @@ export class VehicleContract extends Contract {
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
         console.info('============= START : Update Price Details ===========');
 
-        await this.checkIfManufacturer(ctx, 'update price details'); // check if role === 'Manufacturer'
+        // check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
 
         // check if vehicle exist
         const vehicleAsBytes = await ctx.stub.getState(vehicleNumber);
@@ -190,7 +206,9 @@ export class VehicleContract extends Contract {
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
         console.info('============= START : Get Price Details ===========');
 
-        await this.checkIfManufacturerOrRegulator(ctx, 'get price details'); // check if role === 'Manufacturer' / 'Regulator'
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
         const priceAsBytes = await ctx.stub.getPrivateData('collectionVehiclePriceDetails', vehicleNumber);
         if (!priceAsBytes || priceAsBytes.length === 0) {
             throw new Error(`${vehicleNumber} does not exist`);
@@ -211,7 +229,10 @@ export class VehicleContract extends Contract {
     // Return All order
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         console.info('============= START : Get Orders ===========');
-        await this.checkIfManufacturerOrRegulator(ctx, 'get orders'); // check if role === 'Manufacturer' / 'Regulator'
+
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
         console.info('============= END : Get Orders ===========');
         return await ctx.getOrderList().getAll();
     }
@@ -219,7 +240,10 @@ export class VehicleContract extends Contract {
     // Return All order with Specific Status
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: OrderStatus): Promise<Order[]> {
         console.info('============= START : Get Orders by Status ===========');
-        await this.checkIfManufacturerOrRegulator(ctx, 'get price details'); // check if role === 'Manufacturer' / 'Regulator'
+
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
         const orders = await ctx.getOrderList().getAll();
         console.info('============= END : Get Orders by Status ===========');
         return orders.filter((order) => {
@@ -228,54 +252,13 @@ export class VehicleContract extends Contract {
 
     }
 
-    // Check if Manufacturer identity
-    public async checkIfManufacturer(ctx: Context, trxName: string) {
+    public async hasRole(ctx: Context, roleName: Array<string>) {
         const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Manufacturer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
+        for(let i = 0; i < roleName.length; i++){
+            if (!clientId.assertAttributeValue('role', roleName[i])) {
+                throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+            }
         }
-    }
-
-    // Check if Regulator identity
-    public async checkIfRegulator(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Regulator')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Insurer identity
-    public async checkIfInsurer(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Insurer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Manufacturer / Regulator identity
-    public async checkIfManufacturerOrRegulator(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Manufacturer') || !clientId.assertAttributeValue('role', 'Regulator')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Regulator / Insurer identity
-    public async checkIfRegulatorOrInsurer(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        // if(!clientId.assertAttributeValue('role', 'Regulator') || !clientId.assertAttributeValue('role', 'Insurer')){
-        if (!clientId.assertAttributeValue('role', 'Regulator') || clientId.assertAttributeValue('role', 'Manufacturer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
+        return true;
     }
 }
