@@ -50,6 +50,47 @@
         }
       }
     },
+    "/api/v1/vehicle/order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all vehicle orders or by status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "status",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/vehicle": {
       "get": {
         "tags": [
@@ -69,7 +110,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -106,7 +147,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -143,7 +184,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Accord"
                   },
                   "owner": {
                     "type": "string",
@@ -157,6 +198,51 @@
         "responses": {
           "200": {
             "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/issue-vin": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Issue vehicle VIN",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "vin"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "vin": {
+                    "type": "string",
+                    "example": "G33KS"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle VIN issued"
           }
         }
       }
@@ -187,7 +273,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Accord"
                   }
                 }
               }

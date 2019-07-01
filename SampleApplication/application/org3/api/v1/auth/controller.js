@@ -38,7 +38,7 @@ exports.enrollAdmin = async (req, res, next) => {
     return res.send({
       message: 'Successfully enrolled admin user "admin" and imported it into the wallet'
     });
-} catch (err) {
+  } catch (err) {
     console.log(err);
     next(err);
   }

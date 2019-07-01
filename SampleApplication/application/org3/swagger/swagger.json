@@ -51,7 +51,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13"
+            "example": "vehicle13:Accord"
           }
         }],
         "responses": {
@@ -96,7 +96,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Accord"
                   },
                   "owner": {
                     "type": "string",
@@ -140,7 +140,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Accord"
                   }
                 }
               }

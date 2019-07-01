@@ -1,30 +1,36 @@
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
+import { Policy } from '../assets/policy';
+import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { PolicyList } from '../lists/policyList';
-import { Policy } from '../assets/policy';
+import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
-import { Vehicle } from '../assets/vehicle';
+import { Price } from './../assets/price';
 
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
     private policyList: PolicyList<Policy>;
-    private vehicleList:VehicleList<Vehicle>;
+    private priceList: PriceList<Price>;
+    private vehicleList: VehicleList<Vehicle>;
     constructor() {
         super();
 
         this.orderList = new OrderList(this, [Order]);
         this.policyList = new PolicyList(this, [Policy]);
         this.vehicleList = new VehicleList(this, [Vehicle]);
+        this.priceList = new PriceList(this, [Price]);
     }
-    getOrderList() {
+    public getOrderList() {
         return this.orderList;
     }
-    getPolicyList() {
+    public getPolicyList() {
         return this.policyList;
     }
-    getVehicleList()
-    {
+    public getVehicleList() {
         return this.vehicleList;
+    }
+    public getPriceList() {
+        return this.priceList;
     }
 }

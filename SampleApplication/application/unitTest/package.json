@@ -17,6 +17,7 @@
     "fs": "0.0.1-security",
     "mocha": "^6.1.4",
     "path": "^0.12.7",
+    "shortid": "^2.2.14",
     "supertest": "^4.0.2",
     "swagger-ui-express": "^4.0.6"
   },
@@ -30,7 +31,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "mocha -s 1000 -t 30000 --recursive --exit"
+    "test": "mocha -s 1000 -t 90000 --recursive --exit"
   },
   "contributors": [
     "hdeanzak@id.ibm.com",

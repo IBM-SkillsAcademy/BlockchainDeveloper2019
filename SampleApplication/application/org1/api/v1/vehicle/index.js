@@ -8,9 +8,13 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
+router.post('/order', controller.placeOrder);
+router.get('/order', controller.getOrder);
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/price', controller.getPrice);
 router.post('/price', controller.updatePrice);
-
+router.post('/request-vin', controller.requestVIN);
+router.post('/policy', controller.getPolicy);
+router.get('/policy', controller.getPolicies);
 module.exports = router;
