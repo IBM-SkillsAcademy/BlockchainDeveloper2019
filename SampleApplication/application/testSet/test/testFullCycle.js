@@ -181,7 +181,7 @@ describe('Vehicle cycle: ', () => {
     });
   });
 
-  describe.skip('POST /api/v1/vehicle/price', () => {
+  describe('POST /api/v1/vehicle/price', () => {
     const priceUpdate = {
       vehicleID: key,
       price: '40000'
@@ -201,9 +201,9 @@ describe('Vehicle cycle: ', () => {
     })
   })
 
-  describe.skip('GET /api/v1/vehicle/price', () => {
+  describe('GET /api/v1/vehicle/price', () => {
     it('Manufacture or Insurer should be able to see vehicle price', (done) => {
-      apiRegulator.get('/api/v1/vehicle/price')
+      apiManufacturer.get('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({id: key})
@@ -212,7 +212,7 @@ describe('Vehicle cycle: ', () => {
           if (err) {
             return done(err);
           }
-          res.body.result.should.equal(40000);
+          res.body.result.price.should.equal("40000");
           return done();
         });
     })

@@ -80,7 +80,7 @@
                 "properties": {
                   "orderID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Model 3"
                   },
                   "manufacturer": {
                     "type": "string",
@@ -127,7 +127,48 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13"
+            "example": "vehicle13:Model 3"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all vehicle orders or by status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "status",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
           }
         }],
         "responses": {
@@ -172,7 +213,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Model 3"
                   },
                   "price": {
                     "type": "string",
@@ -207,7 +248,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "vehicle13"
+            "example": "vehicle13:Model 3"
           }
         }],
         "responses": {
@@ -243,7 +284,7 @@
                 "properties": {
                   "vehicleID": {
                     "type": "string",
-                    "example": "vehicle13"
+                    "example": "vehicle13:Model 3"
                   }
                 }
               }
