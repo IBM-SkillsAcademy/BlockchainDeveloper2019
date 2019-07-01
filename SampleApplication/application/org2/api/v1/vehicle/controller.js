@@ -9,6 +9,51 @@ const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 console.log(`Wallet path: ${walletPath}`);
 
+exports.getOrder = async (req, res, next) => {
+  try {
+    const enrollmentID = req.headers['enrollment-id'];
+
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork('mychannel');
+
+    // Get the contract from the network.
+    const contract = network.getContract('vehicle-manufacture');
+
+    // Evaluate the specified transaction.
+    let result, rawResult;
+
+    if (req.query.status) {
+      result = await contract.evaluateTransaction('getOrdersByStatus', req.query.status);
+      rawResult = result.toString();
+    } else {
+      result = await contract.evaluateTransaction('getOrders');
+      rawResult = result.toString();
+    }
+    const obj = JSON.parse(rawResult);
+    return res.send({
+      result: obj
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 exports.getVehicle = async (req, res, next) => {
   try {
     const enrollmentID = req.headers['enrollment-id'];

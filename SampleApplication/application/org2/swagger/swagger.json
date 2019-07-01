@@ -50,6 +50,47 @@
         }
       }
     },
+    "/api/v1/vehicle/order": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all vehicle orders or by status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "status",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/vehicle": {
       "get": {
         "tags": [
