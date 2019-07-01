@@ -166,7 +166,7 @@ describe('Vehicle cycle: ', () => {
 
   describe('GET /api/v1/vehicle', () => {
     it('Vehicle should be listed', (done) => {
-      apiRegulator.get('/api/v1/vehicle')
+      apiManufacturer.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({id: key})
