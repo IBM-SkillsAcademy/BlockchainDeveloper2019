@@ -25,6 +25,41 @@ describe('Enrollment and Registration: ', () => {
     });
   });
 
+  describe('GET /api/v1/auth/enroll-admin', () => {
+    it('Admin should be enrolled succesfully', (done) => {
+      apiRegulator.get('/api/v1/auth/enroll-admin')
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          if (res.error) {
+            res.error.status.should.equal(409);
+            console.log('\twith expected 409 conflict error');
+          }
+          return done();
+        });
+    });
+  });
+
+  describe('GET /api/v1/auth/enroll-admin', () => {
+    it('Admin should be enrolled succesfully', (done) => {
+      apiInsurer.get('/api/v1/auth/enroll-admin')
+        .set('Content-Type', 'application/json')
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          if (res.error) {
+            res.error.status.should.equal(409);
+            console.log('\twith expected 409 conflict error');
+          }
+          return done();
+        });
+    });
+  });
+
+
   describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', (done) => {
       apiManufacturer.post('/api/v1/auth/register-user')
@@ -45,23 +80,6 @@ describe('Enrollment and Registration: ', () => {
     });
   });
 
-  describe('GET /api/v1/auth/enroll-admin', () => {
-    it('Admin should be enrolled succesfully', (done) => {
-      apiRegulator.get('/api/v1/auth/enroll-admin')
-        .set('Content-Type', 'application/json')
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          if (res.error) {
-            res.error.status.should.equal(409);
-            console.log('\twith expected 409 conflict error');
-          }
-          return done();
-        });
-    });
-  });
-
   describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', (done) => {
       apiRegulator.post('/api/v1/auth/register-user')
@@ -69,23 +87,6 @@ describe('Enrollment and Registration: ', () => {
         .send({
           enrollmentID: 'user1'
         })
-        .end((err, res) => {
-          if (err) {
-            return done(err);
-          }
-          if (res.error) {
-            res.error.status.should.equal(409);
-            console.log('\twith expected 409 conflict error');
-          }
-          return done();
-        });
-    });
-  });
-
-  describe('GET /api/v1/auth/enroll-admin', () => {
-    it('Admin should be enrolled succesfully', (done) => {
-      apiInsurer.get('/api/v1/auth/enroll-admin')
-        .set('Content-Type', 'application/json')
         .end((err, res) => {
           if (err) {
             return done(err);
