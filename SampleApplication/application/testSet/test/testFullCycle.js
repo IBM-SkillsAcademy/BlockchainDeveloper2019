@@ -128,7 +128,7 @@ describe('Vehicle cycle: ', () => {
     color: 'Space Grey',
     owner: 'Stark'
   };
-  const key=`${vehicle.orderID}:${vehicle.owner}`
+  const key=`${vehicle.orderID}:${vehicle.model}`
   describe('POST /api/v1/vehicle', () => {
     it('Vehicle should be created succesfully', (done) => {
       apiManufacturer.post('/api/v1/vehicle')
