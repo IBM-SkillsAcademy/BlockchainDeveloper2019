@@ -1,5 +1,6 @@
 const chai = require('chai');
 const supertest = require('supertest');
+const shortid = require('shortid');
 
 chai.should();
 const apiManufacturer = supertest('http://localhost:6001');
@@ -126,15 +127,30 @@ describe('Enrollment and Registration: ', () => {
 ///////////////////// Vehicle Cycle Start /////////////////////
 describe('Vehicle cycle: ', () => {
   const vehicle = {
-    orderID: 'vehicle113',
+    orderID: shortid.generate(),
     manufacturer: 'Tesla',
     model: 'Model 3',
     color: 'Space Grey',
     owner: 'Stark'
   };
   const key=`${vehicle.orderID}:${vehicle.model}`
+  describe('POSt /api/v1/vehicle/order', () => {
+    it('Manufacturer can place order', (done) => {
+      apiManufacturer.post('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(vehicle)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          return done();
+        });
+        
+    })
+  });
   describe('POST /api/v1/vehicle', () => {
-    it('Vehicle should be created succesfully', (done) => {
+    it('Manufacturer can create vehicle', (done) => {
       apiManufacturer.post('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -150,7 +166,7 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-    it('All vehicles should be listed', (done) => {
+    it('All organizations can query all vehicle', (done) => {
       apiInsurer.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -165,7 +181,7 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-    it('Vehicle should be listed', (done) => {
+    it('All organizations can query vehicle by id', (done) => {
       apiManufacturer.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -186,7 +202,7 @@ describe('Vehicle cycle: ', () => {
       vehicleID: key,
       price: '40000'
     };
-    it('Vehicle price should be able to be updated', (done) => {
+    it('Manufacturer can update vehicle price', (done) => {
       apiManufacturer.post('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -202,7 +218,7 @@ describe('Vehicle cycle: ', () => {
   })
 
   describe('GET /api/v1/vehicle/price', () => {
-    it('Manufacture or Insurer should be able to see vehicle price', (done) => {
+    it('Manufacture or Insurer can see vehicle price', (done) => {
       apiManufacturer.get('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -219,7 +235,7 @@ describe('Vehicle cycle: ', () => {
   })
 
   describe('POST /api/v1/vehicle/change-owner', () => {
-    it('Vehicle ownership should be able to be changed', (done) => {
+    it('Regulator can change vehicle ownership', (done) => {
       apiRegulator.post('/api/v1/vehicle/change-owner')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -238,7 +254,7 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-    it('Vehicle ownership should already changed', (done) => {
+    it('Regulator can see that the vehicle ownership is changed', (done) => {
       apiRegulator.get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -255,7 +271,7 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('DELETE /api/v1/vehicle', () => {
-    it('Vehicle should be deleted succesfully', (done) => {
+    it('Regulator can delete vehicle from the ledger', (done) => {
       apiRegulator.delete('/api/v1/vehicle/delete')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
