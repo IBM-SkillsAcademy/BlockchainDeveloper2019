@@ -71,14 +71,14 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "vehicleID",
+                  "orderID",
                   "manufacturer",
                   "model",
                   "color",
                   "owner"
                 ],
                 "properties": {
-                  "vehicleID": {
+                  "orderID": {
                     "type": "string",
                     "example": "vehicle13"
                   },

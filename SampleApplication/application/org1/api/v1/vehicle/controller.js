@@ -83,7 +83,7 @@ exports.createVehicle = async (req, res, next) => {
     // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
     await contract.submitTransaction(
       'createVehicle',
-      req.body.vehicleID,
+      req.body.orderID,
       req.body.manufacturer,
       req.body.model,
       req.body.color,
@@ -138,8 +138,7 @@ exports.getVehicle = async (req, res, next) => {
       result = await contract.evaluateTransaction('queryAllVehicles');
       rawResult = result.toString();
     }
-    const json = JSON.parse(rawResult);
-    const obj = JSON.parse(json);
+    const obj = JSON.parse(rawResult);
     return res.send({
       result: obj
     });
@@ -219,7 +218,7 @@ exports.getPrice = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Evaluate the specified transaction.
-    const result = await contract.evaluateTransaction('getPriceDetails', req.query.id);
+    const result = await contract.submitTransaction('getPriceDetails', req.query.id);
     const rawResult = result.toString();
 
     const json = JSON.parse(rawResult);
@@ -263,7 +262,7 @@ exports.getPolicy = async (req, res, next) => {
 
     if (req.query.id) {
     // if policy id specified getPolicy transaction - requires 1 argument, ex: ('getPolicy', 'policy123')
-      result = await contract.evaluateTransaction('getPolicy', req.query.id);
+      result = await contract.submitTransaction('getPolicy', req.query.id);
       rawResult = result.toString();
     } else {
       throw new Error('Not Policy found');

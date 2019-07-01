@@ -29,7 +29,7 @@ export class Vehicle extends State {
     public orderId: string;
 
     constructor(obj) {
-        super(Vehicle.getClass(), [obj.orderId, obj.owner]);
+        super(Vehicle.getClass(), [obj.orderId, obj.model]);
         Object.assign(this, obj);
 
     }

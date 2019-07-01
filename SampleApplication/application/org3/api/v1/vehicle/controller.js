@@ -46,8 +46,7 @@ exports.getVehicle = async (req, res, next) => {
       result = await contract.evaluateTransaction('queryAllVehicles');
       rawResult = result.toString();
     }
-    const json = JSON.parse(rawResult);
-    const obj = JSON.parse(json);
+    const obj = JSON.parse(rawResult);
     return res.send({
       result: obj
     });
