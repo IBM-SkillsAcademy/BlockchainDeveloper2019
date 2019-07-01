@@ -37,16 +37,16 @@ exports.placeOrder = async (req, res, next) => {
     // placeOrder transaction - requires 5 argument, ex: ('placeOrder', 'order12', 'Tom' ', Honda', 'Accord', 'Black')
     await contract.submitTransaction(
       'placeOrder',
-      req.body.orderId,
+      req.body.orderID,
       req.body.owner,
-      req.body.make,
+      req.body.manufacturer,
       req.body.model,
       req.body.color);
 
     // Disconnect from the gateway.
     await gateway.disconnect();
     return res.send({
-      message: `Order with ID ${req.body.orderId} has been created`,
+      message: `Order with ID ${req.body.orderID} has been created`,
       details: req.body
     });
   } catch (err) {

@@ -202,7 +202,6 @@ export class VehicleContract extends Contract {
     // manufacture can get vehicle price details
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
 
-<<<<<<< HEAD
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
@@ -210,9 +209,6 @@ export class VehicleContract extends Contract {
         if (!priceAsBytes || priceAsBytes.length === 0) {
             throw new Error(`${vehicleNumber} does not exist`);
         }
-=======
-        await this.checkIfManufacturerOrRegulator(ctx, 'get price details'); // check if role === 'Manufacturer' / 'Regulator'
->>>>>>> df4ba05f2eb4c7bbf90f4ae29e867447e35282f7
 
         return await ctx.getPriceList().getPrice(vehicleNumber);
     }
@@ -236,7 +232,7 @@ export class VehicleContract extends Contract {
     }
 
     // Return All order with Specific Status
-    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: OrderStatus): Promise<Order[]> {
+    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string): Promise<Order[]> {
         console.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
@@ -245,68 +241,17 @@ export class VehicleContract extends Contract {
         const orders = await ctx.getOrderList().getAll();
         console.info('============= END : Get Orders by Status ===========');
         return orders.filter((order) => {
-            return order.isOrderStatus(orderStatus);
+            return order.isOrderStatus(OrderStatus[orderStatus]);
         });
 
     }
 
-<<<<<<< HEAD
     public async hasRole(ctx: Context, roleName: Array<string>) {
         const clientId = ctx.clientIdentity;
         for(let i = 0; i < roleName.length; i++){
             if (clientId.assertAttributeValue('role', roleName[i])) {
                 return true;
             }
-=======
-    // Check if Manufacturer identity
-    public async checkIfManufacturer(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Manufacturer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Regulator identity
-    public async checkIfRegulator(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Regulator')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Insurer identity
-    public async checkIfInsurer(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Insurer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Manufacturer / Regulator identity
-    public async checkIfManufacturerOrRegulator(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Manufacturer') && !clientId.assertAttributeValue('role', 'Regulator')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
-        }
-    }
-
-    // Check if Regulator / Insurer identity
-    public async checkIfRegulatorOrInsurer(ctx: Context, trxName: string) {
-        const clientId = ctx.clientIdentity;
-        // if(!clientId.assertAttributeValue('role', 'Regulator') || !clientId.assertAttributeValue('role', 'Insurer')){
-        if (!clientId.assertAttributeValue('role', 'Regulator') && clientId.assertAttributeValue('role', 'Manufacturer')) {
-            throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
-        } else {
-            return true;
->>>>>>> df4ba05f2eb4c7bbf90f4ae29e867447e35282f7
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }

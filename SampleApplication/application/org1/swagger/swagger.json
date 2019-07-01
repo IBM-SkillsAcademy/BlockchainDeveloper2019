@@ -146,6 +146,64 @@
       }
     },
     "/api/v1/vehicle/order": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create a new vehicle order",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderID",
+                  "manufacturer",
+                  "model",
+                  "color",
+                  "owner"
+                ],
+                "properties": {
+                  "orderID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "manufacturer": {
+                    "type": "string",
+                    "example": "Honda"
+                  },
+                  "model": {
+                    "type": "string",
+                    "example": "Accord"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Black"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Tom"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle created"
+          }
+        }
+      },
       "get": {
         "tags": [
           "Order"

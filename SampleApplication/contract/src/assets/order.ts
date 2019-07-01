@@ -44,7 +44,7 @@ export class Order extends State {
         this.orderStatus = OrderStatus.ISSUED;
     }
     public isOrderStatus(orderStatus: OrderStatus) {
-        console.log(this.orderStatus + ' order status' + orderStatus + ' ' + (this.orderStatus === orderStatus));
+        console.log(this.orderStatus + ' order status ' + orderStatus + ' ' + (this.orderStatus === orderStatus));
         return this.orderStatus === orderStatus;
     }
 }

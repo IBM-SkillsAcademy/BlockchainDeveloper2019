@@ -134,7 +134,7 @@ describe('Vehicle cycle: ', () => {
     owner: 'Stark'
   };
   const key=`${vehicle.orderID}:${vehicle.model}`
-  describe('POSt /api/v1/vehicle/order', () => {
+  describe('POST /api/v1/vehicle/order', () => {
     it('Manufacturer can place order', (done) => {
       apiManufacturer.post('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
@@ -149,6 +149,7 @@ describe('Vehicle cycle: ', () => {
         
     })
   });
+
   describe('POST /api/v1/vehicle', () => {
     it('Manufacturer can create vehicle', (done) => {
       apiManufacturer.post('/api/v1/vehicle')
