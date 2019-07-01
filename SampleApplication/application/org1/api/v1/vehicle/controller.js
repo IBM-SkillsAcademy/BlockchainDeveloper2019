@@ -221,8 +221,7 @@ exports.getPrice = async (req, res, next) => {
     const result = await contract.submitTransaction('getPriceDetails', req.query.id);
     const rawResult = result.toString();
 
-    const json = JSON.parse(rawResult);
-    const obj = JSON.parse(json);
+    const obj = JSON.parse(rawResult);
     return res.send({
       result: obj
     });
@@ -394,7 +393,7 @@ exports.requestVIN = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // requestVIN transaction - requires 8 argument, ex: ('requestVIN', 'vehicle13')
+    // requestVIN transaction - requires 8 argument, ex: ('requestVIN', 'vehicle13:Model 3')
     await contract.submitTransaction(
       'requestVehicleVIN',
       req.body.vehicleID

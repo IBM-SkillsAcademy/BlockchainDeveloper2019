@@ -1,6 +1,7 @@
 import { Context, Contract } from 'fabric-contract-api';
 import { Order, OrderStatus } from '../assets/order';
 import { Policy, PolicyType } from '../assets/policy';
+import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
@@ -172,33 +173,22 @@ export class VehicleContract extends Contract {
 
     // manufacture can add or change vehicle price details
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-        console.info('============= START : Update Price Details ===========');
 
         await this.checkIfManufacturer(ctx, 'update price details'); // check if role === 'Manufacturer'
 
         // check if vehicle exist
-        const vehicleAsBytes = await ctx.stub.getState(vehicleNumber);
-        if (!vehicleAsBytes || vehicleAsBytes.length === 0) {
-            throw new Error(`${vehicleNumber} does not exist`);
-        }
+        await ctx.getVehicleList().get(vehicleNumber);
 
-        await ctx.stub.putPrivateData('collectionVehiclePriceDetails', vehicleNumber, Buffer.from(price));
-        console.info('============= END : Update Price Details ===========');
+        const priceObject = Price.createInstance(vehicleNumber, price);
+        await ctx.getPriceList().updatePrice(priceObject);
     }
 
     // manufacture can get vehicle price details
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-        console.info('============= START : Get Price Details ===========');
 
         await this.checkIfManufacturerOrRegulator(ctx, 'get price details'); // check if role === 'Manufacturer' / 'Regulator'
-        const priceAsBytes = await ctx.stub.getPrivateData('collectionVehiclePriceDetails', vehicleNumber);
-        if (!priceAsBytes || priceAsBytes.length === 0) {
-            throw new Error(`${vehicleNumber} does not exist`);
-        }
 
-        console.log(priceAsBytes.toString());
-        console.info('============= END : Get Price Details ===========');
-        return priceAsBytes.toString();
+        return await ctx.getPriceList().getPrice(vehicleNumber);
     }
 
     // Query Functions
@@ -261,7 +251,7 @@ export class VehicleContract extends Contract {
     // Check if Manufacturer / Regulator identity
     public async checkIfManufacturerOrRegulator(ctx: Context, trxName: string) {
         const clientId = ctx.clientIdentity;
-        if (!clientId.assertAttributeValue('role', 'Manufacturer') || !clientId.assertAttributeValue('role', 'Regulator')) {
+        if (!clientId.assertAttributeValue('role', 'Manufacturer') && !clientId.assertAttributeValue('role', 'Regulator')) {
             throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
         } else {
             return true;
@@ -272,7 +262,7 @@ export class VehicleContract extends Contract {
     public async checkIfRegulatorOrInsurer(ctx: Context, trxName: string) {
         const clientId = ctx.clientIdentity;
         // if(!clientId.assertAttributeValue('role', 'Regulator') || !clientId.assertAttributeValue('role', 'Insurer')){
-        if (!clientId.assertAttributeValue('role', 'Regulator') || clientId.assertAttributeValue('role', 'Manufacturer')) {
+        if (!clientId.assertAttributeValue('role', 'Regulator') && clientId.assertAttributeValue('role', 'Manufacturer')) {
             throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit the '${trxName}' transaction`);
         } else {
             return true;

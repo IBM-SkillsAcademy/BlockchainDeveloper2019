@@ -125,7 +125,7 @@ exports.deleteVehicle = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // deleteVehicle transaction - requires 1 args , ex: ('deleteVehicle', 'vehicle13')
+    // deleteVehicle transaction - requires 1 args , ex: ('deleteVehicle', 'vehicle13:Model 3')
     const response = await contract.submitTransaction(
       'deleteVehicle',
       req.body.vehicleID);
