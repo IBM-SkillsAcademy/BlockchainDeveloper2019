@@ -19,12 +19,43 @@
         }
       }
     },
-    "/api/v1/auth/enroll-user": {
+    "/api/v1/auth/create-affiliation": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Create org3.department1 affiliation",
+        "responses": {
+          "200": {
+            "description": "Admin enrolled"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/register-user": {
       "post": {
         "tags": [
           "Auth"
         ],
         "summary": "Register user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enrollmentID"
+                ],
+                "properties": {
+                  "enrollmentID": {
+                    "type": "string",
+                    "example": "user1"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "User registered"
@@ -110,6 +141,43 @@
         "responses": {
           "200": {
             "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/policy": {
+      "get": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "Get all policies or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "insurerId:holderId"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }

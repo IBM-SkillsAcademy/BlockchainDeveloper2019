@@ -66,3 +66,9 @@ wallet/
 
 # mac .DS_Store
 .DS_Store
+
+# Vehicle-Network crypto config
+Vehicle-Network/crypto-config/
+
+# Vehicle-Network channel-artifacts
+Vehicle-Network/channel-artifacts/
