@@ -117,7 +117,7 @@ installChaincode() {
   PEER=$1
   ORG=$2
   setGlobals $PEER $ORG
-  VERSION=${3:-1.0}
+  VERSION=1.9.0
   set -x
   peer chaincode install -n vehicle-manufacture -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
   res=$?
@@ -132,7 +132,7 @@ instantiateChaincode() {
   PEER=$1
   ORG=$2
   setGlobals $PEER $ORG
-  VERSION=${3:-1.0}
+  VERSION=1.9.0
 
   # while 'peer chaincode' command can get the orderer endpoint from the peer
   # (if join was successful), let's supply it directly as we know it using
@@ -144,7 +144,7 @@ instantiateChaincode() {
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE} -v 1.0 -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE}  -v ${VERSION} -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
     res=$?
     set +x
   fi
@@ -178,6 +178,7 @@ chaincodeQuery() {
   local rc=1
   local starttime=$(date +%s)
 
+
   # continue to poll
   # we either get a successful response, or reach TIMEOUT
   while
@@ -186,7 +187,7 @@ chaincodeQuery() {
     sleep $DELAY
     echo "Attempting to Query peer${PEER}.org${ORG} ...$(($(date +%s) - starttime)) secs"
     set -x
-    peer chaincode query -C $CHANNEL_NAME -n vehicle-manufacture -c '{"Args":["queryVehicle","4567788:Tomoko"]}' >&log.txt
+    peer chaincode query -C $CHANNEL_NAME -n vehicle-manufacture -c '{"Args":["queryVehicle","4567788:Prius"]}' >&log.txt
     res=$?
     set +x
     test $res -eq 0 && VALUE=$(cat log.txt | awk '/Query Result/ {print $NF}')
@@ -205,7 +206,7 @@ chaincodeQuery() {
     echo "!!!!!!!!!!!!!!! Query result on peer${PEER}.org${ORG} is INVALID !!!!!!!!!!!!!!!!"
     echo "================== ERROR !!! FAILED to execute End-2-End Scenario =================="
     echo
-    exit 1
+   
   fi
 }
 
