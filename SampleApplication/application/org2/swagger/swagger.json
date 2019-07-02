@@ -131,7 +131,7 @@
     "/api/v1/vehicle/price": {
       "get": {
         "tags": [
-          "Vehicle"
+          "Price"
         ],
         "summary": "Get vehicle price",
         "parameters": [{
@@ -198,6 +198,43 @@
         "responses": {
           "200": {
             "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/policy": {
+      "get": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "Get all policies or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "insurerId:holderId"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
           }
         }
       }

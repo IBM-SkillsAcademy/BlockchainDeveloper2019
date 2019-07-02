@@ -200,7 +200,53 @@
         },
         "responses": {
           "200": {
-            "description": "Vehicle created"
+            "description": "Vehicle order issued"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Update vehicle order status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderNumber",
+                  "status"
+                ],
+                "properties": {
+                  "orderNumber": {
+                    "type": "string",
+                    "example": "Tom:vehicle13"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING" ,
+                      "INPROGRESS",
+                      "DELIVERED"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle order updated"
           }
         }
       },
@@ -247,7 +293,7 @@
     "/api/v1/vehicle/price": {
       "post": {
         "tags": [
-          "Vehicle"
+          "Price"
         ],
         "summary": "Update vehicle price",
         "parameters": [{
@@ -290,7 +336,7 @@
       },
       "get": {
         "tags": [
-          "Vehicle"
+          "Price"
         ],
         "summary": "Get vehicle price",
         "parameters": [{
@@ -316,7 +362,44 @@
         }
       }
     },
-    "/api/v1/vehicle/request-vin": {
+    "/api/v1/vehicle/policy": {
+      "get": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "Get all policies or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "insurerId:holderId"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/vin/request": {
       "post": {
         "tags": [
           "Vehicle"

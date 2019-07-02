@@ -11,5 +11,6 @@ router.use(bodyParser.json());
 router.get('/', controller.getVehicle);
 router.post('/change-owner', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
+router.get('/policy', controller.getPolicy);
 
 module.exports = router;
