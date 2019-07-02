@@ -15,6 +15,6 @@ router.get('/', controller.getVehicle);
 router.get('/price', controller.getPrice);
 router.post('/price', controller.updatePrice);
 router.post('/request-vin', controller.requestVIN);
-router.post('/policy', controller.getPolicy);
-router.get('/policy', controller.getPolicies);
+router.post('/policy', controller.requestPolicy);
+router.get('/policy', controller.getPolicy);
 module.exports = router;
