@@ -72,5 +72,17 @@
                 "ssl-target-name-override": "peer1.org3.example.com"
             }
         }
+    },
+    "certificateAuthorities": {
+        "ca.org3.example.com": {
+            "url": "https://localhost:9054",
+            "caName": "ca-org3",
+            "tlsCACerts": {
+                "path": "[PATH-TO-FILE]"
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
     }
 }

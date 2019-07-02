@@ -45,7 +45,7 @@ exports.getCCP = async () => {
     const caorg3TLSCACertsFiles = await fs.readdirSync(caorg3TLSCACertsPath);
     caorg3TLSCACertsFiles.forEach((filename) => {
       if (filename.includes('.pem')) {
-        ccp.certificateAuthorities['ca.org1.example.com'].tlsCACerts.path = path.resolve(caorg3TLSCACertsPath, filename);
+        ccp.certificateAuthorities['ca.org3.example.com'].tlsCACerts.path = path.resolve(caorg3TLSCACertsPath, filename);
       }
     });
 

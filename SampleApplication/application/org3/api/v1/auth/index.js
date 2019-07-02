@@ -9,6 +9,6 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.get('/enroll-admin', controller.enrollAdmin);
-router.post('/enroll-user', controller.enrollUser);
+router.post('/register-user', controller.registerUser);
 
 module.exports = router;
