@@ -131,7 +131,7 @@
     "/api/v1/vehicle/price": {
       "get": {
         "tags": [
-          "Vehicle"
+          "Price"
         ],
         "summary": "Get vehicle price",
         "parameters": [{

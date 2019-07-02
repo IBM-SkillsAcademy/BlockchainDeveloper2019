@@ -9,12 +9,13 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 router.post('/order', controller.placeOrder);
+router.put('/order', controller.updateOrder);
 router.get('/order', controller.getOrder);
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/price', controller.getPrice);
 router.post('/price', controller.updatePrice);
-router.post('/request-vin', controller.requestVIN);
+router.post('/vin/request', controller.requestVIN);
 router.post('/policy', controller.requestPolicy);
 router.get('/policy', controller.getPolicy);
 module.exports = router;
