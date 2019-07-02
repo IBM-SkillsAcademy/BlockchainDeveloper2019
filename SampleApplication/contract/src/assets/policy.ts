@@ -7,16 +7,23 @@ export enum PolicyType {
     FULLY_COMPREHENSIVE,
 }
 
+export enum PolicyStatus {
+    REQUESTED,
+    ISSUED,
+}
+
 @ContractObject()
 export class Policy extends State {
-   public  static createInstance( id: string,
-                                  vin: string, insurerId: string, holderId: string, policyType: PolicyType,
-                                  startDate: number, endDate: number) {
-            return new Policy({vin, insurerId, holderId, policyType, startDate, endDate});
-        }
-        public static getClass() {
-            return 'org.vehiclelifecycle.Policy';
-         }
+    public  static createInstance( id: string,
+                                   vin: string, insurerId: string, holderId: string, policyType: PolicyType,
+                                   startDate: number, endDate: number) {
+        const status = PolicyStatus.REQUESTED;
+        return new Policy({vin, insurerId, holderId, policyType, startDate, endDate, status});
+    }
+
+    public static getClass() {
+        return 'org.vehiclelifecycle.Policy';
+    }
 
     public readonly vin: string;
 
@@ -28,10 +35,12 @@ export class Policy extends State {
 
     public readonly holderId: string;
 
+    public status: PolicyStatus;
+
     private policyType: PolicyType;
 
     constructor(obj) {
-        super(Policy.getClass(), [obj.insurerId, obj.holderId]);
+        super(Policy.getClass(), [obj.id]);
         Object.assign(this, obj);
 
     }

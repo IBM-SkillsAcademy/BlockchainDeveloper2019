@@ -32,7 +32,7 @@ export class Order extends State {
     public vehicleDetails: Vehicle;
 
     constructor(obj) {
-        super(Order.getClass(), [obj.owner, obj.orderId]);
+        super(Order.getClass(), [obj.orderId]);
         Object.assign(this, obj);
     }
 

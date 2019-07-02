@@ -224,13 +224,13 @@
               "schema": {
                 "type": "object",
                 "required": [
-                  "orderNumber",
+                  "orderID",
                   "status"
                 ],
                 "properties": {
                   "orderNumber": {
                     "type": "string",
-                    "example": "Tom:vehicle13"
+                    "example": "vehicle13"
                   },
                   "status": {
                     "type": "string",
