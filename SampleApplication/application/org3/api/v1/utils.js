@@ -40,6 +40,15 @@ exports.getCCP = async () => {
       }
     });
 
+    const caorg3TLSCACertsPath = path.resolve(process.env.FABRIC_SAMPLES_PATH,
+      'first-network', 'org3-artifacts', 'crypto-config', 'peerOrganizations', 'org3.example.com', 'ca');
+    const caorg3TLSCACertsFiles = await fs.readdirSync(caorg3TLSCACertsPath);
+    caorg3TLSCACertsFiles.forEach((filename) => {
+      if (filename.includes('.pem')) {
+        ccp.certificateAuthorities['ca.org1.example.com'].tlsCACerts.path = path.resolve(caorg3TLSCACertsPath, filename);
+      }
+    });
+
     const jsonProfile = JSON.stringify(ccp);
     const profilePath = path.resolve(__dirname, '..', '..', '..', '..', 'gateway', 'connection-org3.json');
     await fs.writeFileSync(profilePath, jsonProfile);

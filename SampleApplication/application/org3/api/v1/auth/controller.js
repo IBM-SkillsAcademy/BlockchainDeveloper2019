@@ -1,8 +1,8 @@
 'use strict';
 
-const { FileSystemWallet, X509WalletMixin } = require('fabric-network');
+const FabricCAServices = require('fabric-ca-client');
+const { FileSystemWallet, X509WalletMixin, Gateway } = require('fabric-network');
 const path = require('path');
-const fs = require('fs');
 const utils = require('../utils');
 
 // Create a new file system based wallet for managing identities.
