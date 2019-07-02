@@ -60,6 +60,15 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
+  describe('GET /api/v1/auth/create-affiliation', () => {
+    it('Org3 affiliation should be created succesfully', mochaAsync(async () => {
+      const res = await apiInsurer
+        .get('/api/v1/auth/create-affiliation')
+        .set('Content-Type', 'application/json')
+
+      res.status.should.equal(200);
+    }));
+  });
 
   describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', mochaAsync(async () => {
@@ -91,12 +100,14 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('POST /api/v1/auth/enroll-user', () => {
+  describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', mochaAsync(async () => {
       const res = await apiInsurer
-        .post('/api/v1/auth/enroll-user')
+        .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
-
+        .send({
+          enrollmentID: 'user1'
+        })
       if (res.error) {
         res.error.status.should.equal(409);
         console.log('\twith expected 409 conflict error');
