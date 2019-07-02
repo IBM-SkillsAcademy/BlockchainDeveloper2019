@@ -50,6 +50,9 @@
             "peers": [
                 "peer0.org3.example.com",
                 "peer1.org3.example.com"
+            ],
+            "certificateAuthorities": [
+                "ca.org3.example.com"
             ]
         }
     },
