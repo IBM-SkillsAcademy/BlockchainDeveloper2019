@@ -1,6 +1,6 @@
 import { Context, Contract } from 'fabric-contract-api';
 import { Order, OrderStatus } from '../assets/order';
-import { Policy, PolicyType } from '../assets/policy';
+import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { VehicleContext } from '../utils/vehicleContext';
@@ -186,6 +186,17 @@ export class VehicleContract extends Contract {
         return await ctx.getPolicyList().get(policyId);
     }
 
+    // Update order status to be in progress
+    public async updatePolicy(ctx: VehicleContext, id: string, startDate: number, endDate: number) {
+        await this.hasRole(ctx, ['Insurer']);
+
+        const policy = await ctx.getPolicyList().get(id);
+        policy.status = PolicyStatus.ISSUED;
+        await ctx.getPolicyList().update(policy);
+
+        ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
+    }
+
     // manufacture can add or change vehicle price details
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
 
@@ -241,9 +252,9 @@ export class VehicleContract extends Contract {
 
     }
 
-    public async hasRole(ctx: Context, roleName: Array<string>) {
+    public async hasRole(ctx: Context, roleName: string[]) {
         const clientId = ctx.clientIdentity;
-        for(let i = 0; i < roleName.length; i++){
+        for (let i = 0; i < roleName.length; i++) {
             if (clientId.assertAttributeValue('role', roleName[i])) {
                 return true;
             }

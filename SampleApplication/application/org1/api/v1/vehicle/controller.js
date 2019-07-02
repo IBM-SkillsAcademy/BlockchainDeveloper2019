@@ -124,21 +124,21 @@ exports.updateOrder = async (req, res, next) => {
 
     switch (req.body.status) {
       case 'PENDING':
-        await contract.submitTransaction('updateOrderStatusPending', req.body.orderNumber);
+        await contract.submitTransaction('updateOrderStatusPending', req.body.orderID);
         break;
       case 'INPROGRESS':
-        await contract.submitTransaction('updateOrderStatusInProgress', req.body.orderNumber);
+        await contract.submitTransaction('updateOrderStatusInProgress', req.body.orderID);
         break;
       case 'DELIVERED':
-        await contract.submitTransaction('updateOrderDelivered', req.body.orderNumber);
+        await contract.submitTransaction('updateOrderDelivered', req.body.orderID);
         break;
       default:
         return res.status(400).send({
-          message: `Status invalid: ${req.body.status}`
+          message: `Status invalid: ${req.body.status}. Should be PENDING, INPROGRESS, or DELIVERED`
         });
     }
     return res.send({
-      message: `Order with number ${req.body.orderNumber} has been updated`,
+      message: `Order with number ${req.body.orderID} has been updated`,
       details: req.body
     });
   } catch (err) {

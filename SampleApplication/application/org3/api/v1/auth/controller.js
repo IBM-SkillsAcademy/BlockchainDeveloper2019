@@ -9,8 +9,6 @@ const utils = require('../utils');
 const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 
-const fixtures = path.resolve(process.env.FABRIC_SAMPLES_PATH, 'first-network', 'org3-artifacts');
-
 exports.enrollAdmin = async (req, res, next) => {
   try {
     // update ccp
@@ -46,7 +44,7 @@ exports.registerUser = async (req, res, next) => {
   try {
     const enrollmentID = req.body.enrollmentID;
 
-    //get connection profile
+    // get connection profile
     const ccp = await utils.getCCP();
 
     // Check to see if we've already enrolled the user
@@ -93,7 +91,7 @@ exports.registerUser = async (req, res, next) => {
     console.log(err);
     next(err);
   }
-}
+};
 
 exports.createAffiliation = async (req, res, next) => {
   try {
@@ -116,12 +114,11 @@ exports.createAffiliation = async (req, res, next) => {
     const ca = gateway.getClient().getCertificateAuthority();
     const adminIdentity = gateway.getCurrentIdentity();
 
-    await ca.newAffiliationService().create({ name: 'org3' }, adminIdentity)
+    await ca.newAffiliationService().create({ name: 'org3' }, adminIdentity);
 
     return res.send({
       message: `Successfully created affiliation ${'org3'}`
     });
-
   } catch (err) {
     console.log(err);
     next(err);
