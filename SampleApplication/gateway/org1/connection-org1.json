@@ -38,7 +38,7 @@
         "grpc-max-send-message-length": -1
       },
       "tlsCACerts": {
-        "path": "../../Vehicle-Network/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
+        "path": "./../../../Vehicle-Network/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem"
       }
     }
   },
@@ -53,7 +53,7 @@
     "peer0.org1.example.com": {
       "url": "grpcs://localhost:7051",
       "tlsCACerts": {
-        "path": "../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
+        "path": "./../../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
       },
       "grpcOptions": {
         "ssl-target-name-override": "peer0.org1.example.com"
@@ -62,7 +62,7 @@
     "peer1.org1.example.com": {
       "url": "grpcs://localhost:8051",
       "tlsCACerts": {
-        "path": "../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
+        "path": "./../../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/msp/tlscacerts/tlsca.org1.example.com-cert.pem"
       },
       "grpcOptions": {
         "ssl-target-name-override": "peer1.org1.example.com"
@@ -74,7 +74,7 @@
       "url": "https://localhost:7054",
       "caName": "ca-org1",
       "tlsCACerts": {
-        "path": "../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"
+        "path": "./../../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"
       },
       "httpOptions": {
         "verify": false

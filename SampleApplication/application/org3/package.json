@@ -16,6 +16,7 @@
     "fs": "0.0.1-security",
     "mocha": "^6.1.4",
     "path": "^0.12.7",
+    "pm2": "^3.5.1",
     "supertest": "^4.0.2",
     "swagger-ui-express": "^4.0.6"
   },

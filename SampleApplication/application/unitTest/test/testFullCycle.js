@@ -65,8 +65,13 @@ describe('Enrollment and Registration: ', () => {
       const res = await apiInsurer
         .get('/api/v1/auth/create-affiliation')
         .set('Content-Type', 'application/json')
-
-      res.status.should.equal(200);
+      
+      if(res.error) {
+        res.error.text.should.contain('Affiliation already exists');
+        console.log('\twith expected affiliatian exists error');
+      } else {
+        res.status.should.equal(200);
+      }
     }));
   });
 

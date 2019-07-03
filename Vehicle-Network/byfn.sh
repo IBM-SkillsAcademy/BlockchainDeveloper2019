@@ -275,7 +275,7 @@ function upgradeNetwork() {
 function networkDown() {
   # stop org3 containers also in addition to org1 and org2, in case we were running sample to add org3
   # stop kafka and zookeeper containers in case we're running with kafka consensus-type
-  docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH -f $COMPOSE_FILE_KAFKA -f $COMPOSE_FILE_RAFT2 -f $COMPOSE_FILE_CA -f $COMPOSE_FILE_ORG3 down --volumes --remove-orphans
+  docker-compose -f $COMPOSE_FILE down --volumes --remove-orphans
 
   # Don't remove the generated artifacts -- note, the ledgers are always removed
   if [ "$MODE" != "restart" ]; then
@@ -290,6 +290,8 @@ function networkDown() {
     rm -rf channel-artifacts/*.block channel-artifacts/*.tx crypto-config ./org3-artifacts/crypto-config/ channel-artifacts/org3.json
     # remove the docker-compose yaml file that was customized to the example
     rm -f docker-compose-e2e.yaml
+    # remove applications wallet
+    rm -rf ../SampleApplication/application/org*/wallet
   fi
 }
 
