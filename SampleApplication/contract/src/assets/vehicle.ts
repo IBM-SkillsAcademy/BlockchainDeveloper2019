@@ -11,14 +11,6 @@ export enum VinStatus {
 @ContractObject()
 export class Vehicle extends State {
 
-    public static createInstance( vin: string , orderId: string , owner: string , model: string , make: string , color: string) {
-            return new Vehicle({vin, orderId, owner, model, make, color , docType: 'vehicle', vinStatus: VinStatus.NOVALUE});
-        }
-
-    public static getClass() {
-        return 'org.vehiclelifecycle.Vehicle';
-     }
-
     public vin: string;
     public vinStatus: VinStatus;
     public docType?: string;
@@ -33,6 +25,18 @@ export class Vehicle extends State {
         Object.assign(this, obj);
 
     }
+    
+    public static createInstance( vin: string , orderId: string , owner: string , model: string , make: string , color: string) {
+            return new Vehicle({vin, orderId, owner, model, make, color , docType: 'vehicle', vinStatus: VinStatus.NOVALUE});
+        }
+
+    public static getClass() {
+        return 'org.vehiclelifecycle.Vehicle';
+     }
+
+ 
+
+   
      public toBuffer() {
         return Buffer.from(JSON.stringify(this));
     }

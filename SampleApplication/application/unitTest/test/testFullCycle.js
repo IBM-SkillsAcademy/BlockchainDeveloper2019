@@ -22,7 +22,7 @@ beforeEach((done) => {
 ///////////////////// Registration Start /////////////////////
 describe('Enrollment and Registration: ', () => {
   describe('GET /api/v1/auth/enroll-admin', () => {
-    it('Admin should be enrolled succesfully', mochaAsync(async () => {
+    it('Admin should be enrolled succesfully (Manufacture)', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/auth/enroll-admin')
         .set('Content-Type', 'application/json')
@@ -35,7 +35,7 @@ describe('Enrollment and Registration: ', () => {
   });
 
   describe('GET /api/v1/auth/enroll-admin', () => {
-    it('Admin should be enrolled succesfully', mochaAsync(async () => {
+    it('Admin should be enrolled succesfully (Regulator)', mochaAsync(async () => {
       const res = await apiRegulator
         .get('/api/v1/auth/enroll-admin')
         .set('Content-Type', 'application/json')
@@ -48,7 +48,7 @@ describe('Enrollment and Registration: ', () => {
   });
 
   describe('GET /api/v1/auth/enroll-admin', () => {
-    it('Admin should be enrolled succesfully', mochaAsync(async () => {
+    it('Admin should be enrolled succesfully (Insurer)', mochaAsync(async () => {
       const res = await apiInsurer
         .get('/api/v1/auth/enroll-admin')
         .set('Content-Type', 'application/json')
@@ -76,7 +76,7 @@ describe('Enrollment and Registration: ', () => {
   });
 
   describe('POST /api/v1/auth/register-user', () => {
-    it('User should be registered succesfully', mochaAsync(async () => {
+    it('User should be registered succesfully (Manufacture)', mochaAsync(async () => {
       const res = await apiManufacturer
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
@@ -91,7 +91,7 @@ describe('Enrollment and Registration: ', () => {
   });
 
   describe('POST /api/v1/auth/register-user', () => {
-    it('User should be registered succesfully', mochaAsync(async () => {
+    it('User should be registered succesfully (Regulator)', mochaAsync(async () => {
       const res = await apiRegulator
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
@@ -106,7 +106,7 @@ describe('Enrollment and Registration: ', () => {
   });
 
   describe('POST /api/v1/auth/register-user', () => {
-    it('User should be registered succesfully', mochaAsync(async () => {
+    it('User should be registered succesfully (Insurer)', mochaAsync(async () => {
       const res = await apiInsurer
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
@@ -183,7 +183,7 @@ describe('Vehicle cycle: ', () => {
           id: vehicle.orderID
         })
         .expect(200)
-      res.body.result.orderStatus.should.equal("ISSUED");
+      res.body.result.orderStatus.should.equal("0");
     }));
 
     it('Regulator can query vehicle by id', mochaAsync(async () => {
@@ -195,21 +195,21 @@ describe('Vehicle cycle: ', () => {
           id: vehicle.orderID
         })
         .expect(200)
-      res.body.result.orderStatus.should.equal("ISSUED");
+      res.body.result.orderStatus.should.equal("0");
     }));
   });
 
   describe('GET /api/v1/vehicle/order/status', () => {
-    it('Manufacturer can query vehicle by status', mochaAsync(async () => {
+    it('Manufacturer can query Order by status', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/order/status')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          status: "ISSUED"
+          status: "0"
         })
         .expect(200)
-      res.body.result[0].record.orderStatus.should.equal("ISSUED");
+      res.body.result[0].record.orderStatus.should.equal("0");
     }));
 
     it('Regulator can query vehicle by status', mochaAsync(async () => {
@@ -218,10 +218,10 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          status: "ISSUED"
+          status: "0"
         })
         .expect(200)
-      res.body.result[0].record.orderStatus.should.equal("ISSUED");
+      res.body.result[0].record.orderStatus.should.equal("0");
     }));
   });
 
