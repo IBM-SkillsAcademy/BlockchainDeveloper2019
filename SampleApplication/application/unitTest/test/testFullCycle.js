@@ -208,7 +208,7 @@ describe('Vehicle cycle: ', () => {
       price: '40000'
     };
     it('Manufacturer can update vehicle price', mochaAsync(async () => {
-      const res = apiManufacturer
+      const res = await apiManufacturer
         .post('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -217,7 +217,7 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe.skip('GET /api/v1/vehicle/price', () => {
+  describe('GET /api/v1/vehicle/price', () => {
     it('Manufacture or Insurer can see vehicle price', mochaAsync(async () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/price')
