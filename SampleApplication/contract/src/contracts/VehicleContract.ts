@@ -3,6 +3,7 @@ import { Order, OrderStatus } from '../assets/order';
 import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
+import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 
@@ -55,6 +56,8 @@ export class VehicleContract extends Contract {
         vehicle.vinStatus = VinStatus.ISSUED;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
+        // Fire Event
+        ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
     }
 
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
@@ -62,6 +65,8 @@ export class VehicleContract extends Contract {
         vehicle.vinStatus = VinStatus.REQUESTED;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
+        // Fire Event
+        ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
     }
 
     // Regulator retrieve all vehciles in system with details
@@ -154,10 +159,6 @@ export class VehicleContract extends Contract {
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
 
-        // Create Vehicle as an asset
-        const vehicle = order.vehicleDetails;
-        await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
-
     }
 
     // Request Policy , user request the insurance policy
@@ -237,18 +238,27 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getAll();
     }
 
-    // Return All order with Specific Status
-    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string): Promise<Order[]> {
+    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         console.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        const orders = await ctx.getOrderList().getAll();
-        console.info('============= END : Get Orders by Status ===========');
-        return orders.filter((order) => {
-            return order.isOrderStatus(OrderStatus[orderStatus]);
-        });
+        const queryString = {
+            selector: {
+                orderStatus,
+            },
+            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+        };
+
+        return await this.queryWithQueryString(ctx, JSON.stringify(queryString));
+
+        // const orders = await ctx.getOrderList().getAll();
+        // console.info('============= END : Get Orders by Status ===========');
+        // return orders.filter((order) => {
+        //     return order.isOrderStatus(OrderStatus[orderStatus]);
+        // });
 
     }
 
@@ -261,4 +271,49 @@ export class VehicleContract extends Contract {
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
+    /**
+     * Evaluate a queryString
+     *
+     * @param {Context} ctx the transaction context
+     * @param {String} queryString the query string to be evaluated
+     */
+    public async queryWithQueryString(ctx, queryString) {
+
+    console.log('query String');
+    console.log(JSON.stringify(queryString));
+
+    const resultsIterator = await ctx.stub.getQueryResult(queryString);
+
+    const allResults = [];
+
+    while (true) {
+        const res = await resultsIterator.next();
+
+        if (res.value && res.value.value.toString()) {
+            const jsonRes = new QueryResponse();
+
+            console.log(res.value.value.toString('utf8'));
+
+            jsonRes.key = res.value.key;
+
+            try {
+                jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
+            } catch (err) {
+                console.log(err);
+                jsonRes.record = res.value.value.toString('utf8');
+            }
+
+            allResults.push(jsonRes);
+        }
+        if (res.done) {
+            console.log('end of data');
+            await resultsIterator.close();
+            console.info(allResults);
+            console.log(JSON.stringify(allResults));
+            return JSON.stringify(allResults);
+        }
+    }
+
+}
+
 }

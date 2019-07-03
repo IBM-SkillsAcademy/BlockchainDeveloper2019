@@ -2,11 +2,22 @@ import { Object as ContractObject, Property } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 import { Vehicle } from './vehicle';
 // Order Status
-export enum  OrderStatus {ISSUED , PENDING , INPROGRESS , DELIVERED}
+export enum  OrderStatus {
+    ISSUED ="0", 
+    PENDING ="1", 
+    INPROGRESS ="2", 
+    DELIVERED="3"
+}
+
 @ContractObject()
 // Order Asset
 export class Order extends State {
 
+    public orderId: string;
+    public owner: string;
+    public orderStatus: OrderStatus;
+    public vehicleDetails: Vehicle;
+    
     public static fromBuffer(buffer) {
         return Order.deserialize(Buffer.from(JSON.parse(buffer)));
     }
@@ -26,10 +37,7 @@ export class Order extends State {
         return new Order({ orderId, owner, orderStatus, vehicleDetails});
     }
 
-    public orderId: string;
-    public owner: string;
-    public orderStatus: OrderStatus;
-    public vehicleDetails: Vehicle;
+ 
 
     constructor(obj) {
         super(Order.getClass(), [obj.orderId]);

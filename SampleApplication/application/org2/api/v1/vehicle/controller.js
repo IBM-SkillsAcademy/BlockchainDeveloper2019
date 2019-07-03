@@ -214,8 +214,7 @@ exports.getPrice = async (req, res, next) => {
     const result = await contract.evaluateTransaction('getPriceDetails', req.query.id);
     const rawResult = result.toString();
 
-    const json = JSON.parse(rawResult);
-    const obj = JSON.parse(json);
+    const obj = JSON.parse(rawResult);
     return res.send({
       result: obj
     });

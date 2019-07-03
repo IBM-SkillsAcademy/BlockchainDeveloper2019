@@ -30,6 +30,7 @@ if [ "$LANGUAGE" = "node" ]; then
 	CC_SRC_PATH="/opt/gopath/src/github.com/chaincode"
 fi
 
+COLLECTION_CFG_PATH="/opt/gopath/src/github.com/chaincode/collections_config.json"
 
 echo "Channel name : "$CHANNEL_NAME
 

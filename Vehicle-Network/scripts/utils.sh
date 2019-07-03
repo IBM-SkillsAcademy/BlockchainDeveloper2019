@@ -139,12 +139,12 @@ instantiateChaincode() {
   # the "-o" option
   if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE} -v ${VERSION} -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" --collections-config $COLLECTION_CFG_PATH >&log.txt
     res=$?
     set +x
   else
     set -x
-    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE}  -v ${VERSION} -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" >&log.txt
+    peer chaincode instantiate -o orderer.example.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n vehicle-manufacture -l ${LANGUAGE}  -v ${VERSION} -c '{"Args":["initLedger"]}' -P "AND ('Org1MSP.peer','Org2MSP.peer','Org3MSP.peer')" --collections-config $COLLECTION_CFG_PATH >&log.txt
     res=$?
     set +x
   fi
