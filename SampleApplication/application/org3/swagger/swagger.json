@@ -19,19 +19,6 @@
         }
       }
     },
-    "/api/v1/auth/create-affiliation": {
-      "get": {
-        "tags": [
-          "Auth"
-        ],
-        "summary": "Create org3.department1 affiliation",
-        "responses": {
-          "200": {
-            "description": "Admin enrolled"
-          }
-        }
-      }
-    },
     "/api/v1/auth/register-user": {
       "post": {
         "tags": [

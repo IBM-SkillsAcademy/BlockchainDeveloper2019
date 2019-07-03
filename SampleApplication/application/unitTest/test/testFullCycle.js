@@ -60,16 +60,6 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('GET /api/v1/auth/create-affiliation', () => {
-    it('Org3 affiliation should be created succesfully', mochaAsync(async () => {
-      const res = await apiInsurer
-        .get('/api/v1/auth/create-affiliation')
-        .set('Content-Type', 'application/json')
-
-      res.status.should.equal(200);
-    }));
-  });
-
   describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -139,8 +129,17 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle/order', () => {
-    it('Manufacturer and Regulator can query all vehicle order', mochaAsync(async () => {
+    it('Manufacturer can query all vehicle order', mochaAsync(async () => {
       const res = await apiManufacturer
+        .get('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+      res.body.result.length.should.above(0);
+    }));
+
+    it('Regulator can query all vehicle order', mochaAsync(async () => {
+      const res = await apiRegulator
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -150,8 +149,20 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle/order', () => {
-    it('Manufacturer and Regulator can query vehicle by status', mochaAsync(async () => {
+    it('Manufacturer can query vehicle by status', mochaAsync(async () => {
       const res = await apiManufacturer
+        .get('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          status: "ISSUED"
+        })
+        .expect(200)
+      res.body.result[0].orderStatus.should.equal(0);
+    }));
+
+    it('Regulator can query vehicle by status', mochaAsync(async () => {
+      const res = await apiRegulator
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -175,7 +186,24 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-    it('All organizations can query all vehicle', mochaAsync(async () => {
+
+    it('Manufacturer can query all vehicle', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+    }));
+
+    it('Regulator can query all vehicle', mochaAsync(async () => {
+      const res = await apiRegulator
+        .get('/api/v1/vehicle')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+    }));
+
+    it('Insurer can query all vehicle', mochaAsync(async () => {
       const res = await apiInsurer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
@@ -185,7 +213,7 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-    it('All organizations can query vehicle by id', mochaAsync(async () => {
+    it('Manufacturer can query vehicle by id', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
@@ -193,6 +221,57 @@ describe('Vehicle cycle: ', () => {
         .query({
           id: key
         })
+        .expect(200)
+    }));
+
+    it('Regulator can query vehicle by id', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: key
+        })
+        .expect(200)
+    }));
+
+    it('Insurer can query vehicle by id', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: key
+        })
+        .expect(200)
+    }));
+  });
+
+  describe('POST /api/v1/vehicle/vin/request', () => {
+    const vinRequest = {
+      vehicleID: key,
+    };
+    it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
+      const res = apiManufacturer
+        .post('/api/v1/vehicle/vin/request')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(vinRequest)
+        .expect(200)
+    }));
+  });
+
+  describe('POST /api/v1/vehicle/issue-vin', () => {
+    const vinRequest = {
+      vehicleID: key,
+      vin: 'G33KS'
+    };
+    it('Regulator can issue vehicle VIN', mochaAsync(async () => {
+      const res = apiManufacturer
+        .post('/api/v1/vehicle/request-vin')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(vinRequest)
         .expect(200)
     }));
   });
@@ -213,7 +292,19 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe.skip('GET /api/v1/vehicle/price', () => {
-    it('Manufacture or Insurer can see vehicle price', mochaAsync(async () => {
+    it('Manufacture can see vehicle price', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle/price')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: key
+        })
+        .expect(200)
+      res.body.result.price.should.equal("40000");
+    }));
+
+    it('Regulator can see vehicle price', mochaAsync(async () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
@@ -223,6 +314,19 @@ describe('Vehicle cycle: ', () => {
         })
         .expect(200)
       res.body.result.price.should.equal("40000");
+    }));
+  });
+  describe('PUT /api/v1/vehicle/order', () => {
+    it('Manufacturer can can update vehicle order status', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .put('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send({
+          vehicleID: key,
+          status: 'PENDING'
+        })
+        .expect(200)
     }));
   });
 
@@ -235,6 +339,18 @@ describe('Vehicle cycle: ', () => {
         .send({
           vehicleID: key,
           owner: 'Wayne'
+        })
+        .expect(200)
+    }));
+
+    it('Insurer can change vehicle ownership', mochaAsync(async () => {
+      const res = await apiInsurer
+        .post('/api/v1/vehicle/change-owner')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send({
+          vehicleID: key,
+          owner: 'John'
         })
         .expect(200)
     }));

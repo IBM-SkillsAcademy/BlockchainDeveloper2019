@@ -92,35 +92,3 @@ exports.registerUser = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.createAffiliation = async (req, res, next) => {
-  try {
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the admin user.
-    const adminExists = await wallet.exists('admin');
-    if (!adminExists) {
-      return res.status(401).send({
-        message: `An identity for the admin user "admin" does not exist in the wallet. Please run admin enrollment before retrying`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: 'admin', discovery: { enabled: false } });
-
-    // Get the CA client object from the gateway for interacting with the CA.
-    const ca = gateway.getClient().getCertificateAuthority();
-    const adminIdentity = gateway.getCurrentIdentity();
-
-    await ca.newAffiliationService().create({ name: 'org3' }, adminIdentity);
-
-    return res.send({
-      message: `Successfully created affiliation ${'org3'}`
-    });
-  } catch (err) {
-    console.log(err);
-    next(err);
-  }
-};
