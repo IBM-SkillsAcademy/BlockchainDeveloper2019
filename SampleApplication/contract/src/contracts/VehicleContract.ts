@@ -55,6 +55,8 @@ export class VehicleContract extends Contract {
         vehicle.vinStatus = VinStatus.ISSUED;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
+        // Fire Event
+        ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
     }
 
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
@@ -62,6 +64,8 @@ export class VehicleContract extends Contract {
         vehicle.vinStatus = VinStatus.REQUESTED;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
+        // Fire Event
+        ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
     }
 
     // Regulator retrieve all vehciles in system with details
