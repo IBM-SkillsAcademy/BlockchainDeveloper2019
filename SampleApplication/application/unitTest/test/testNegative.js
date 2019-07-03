@@ -16,7 +16,7 @@ const mochaAsync = (fn) => {
 };
 
 beforeEach((done) => {
-  setTimeout(() => done(), 1000)
+  setTimeout(() => done(), 100)
 });
 
 describe('Negative Test for Enrollment and Registration: ', () => {
