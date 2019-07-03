@@ -228,7 +228,7 @@
                   "status"
                 ],
                 "properties": {
-                  "orderNumber": {
+                  "orderID": {
                     "type": "string",
                     "example": "vehicle13"
                   },
@@ -363,6 +363,82 @@
       }
     },
     "/api/v1/vehicle/policy": {
+      "post": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "request insurance policy",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "vin",
+                  "insurerId",
+                  "holderId",
+                  "policyType",
+                  "startDate",
+                  "endDate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "policy1"
+                  },
+                  "vin": {
+                    "type": "string",
+                    "example": "G33KS"
+                  },
+                  "insurerId": {
+                    "type": "string",
+                    "example": "insurer1"
+                  },
+                  "holderId": {
+                    "type": "string",
+                    "example": "holder1"
+                  },
+                  "policyType": {
+                    "type": "string",
+                    "example": "THIRD_PARTY"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "example": "12122019"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "example": "31122019"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "Policy"
@@ -381,7 +457,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "insurerId:holderId"
+            "example": "policy1"
           }
         }],
         "responses": {

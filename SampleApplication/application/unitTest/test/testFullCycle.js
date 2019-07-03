@@ -60,6 +60,21 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
+  describe('GET /api/v1/auth/create-affiliation', () => {
+    it('Org3 affiliation should be created succesfully', mochaAsync(async () => {
+      const res = await apiInsurer
+        .get('/api/v1/auth/create-affiliation')
+        .set('Content-Type', 'application/json')
+      
+      if(res.error) {
+        res.error.text.should.contain('Affiliation already exists');
+        console.log('\twith expected affiliatian exists error');
+      } else {
+        res.status.should.equal(200);
+      }
+    }));
+  });
+
   describe('POST /api/v1/auth/register-user', () => {
     it('User should be registered succesfully', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -116,7 +131,8 @@ describe('Vehicle cycle: ', () => {
     color: 'Space Grey',
     owner: 'Stark'
   };
-  const key = `${vehicle.orderID}:${vehicle.model}`
+  const key = `${vehicle.orderID}:${vehicle.model}`;
+  const vin = 'G33KS';
   describe('POST /api/v1/vehicle/order', () => {
     it('Manufacturer can place order', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -264,7 +280,7 @@ describe('Vehicle cycle: ', () => {
   describe('POST /api/v1/vehicle/issue-vin', () => {
     const vinRequest = {
       vehicleID: key,
-      vin: 'G33KS'
+      vin: vin
     };
     it('Regulator can issue vehicle VIN', mochaAsync(async () => {
       const res = apiManufacturer
@@ -323,7 +339,7 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .send({
-          vehicleID: key,
+          orderID: vehicle.orderID,
           status: 'PENDING'
         })
         .expect(200)
@@ -364,6 +380,83 @@ describe('Vehicle cycle: ', () => {
         .set('enrollment-id', 'user1')
         .query({
           id: key
+        })
+        .expect(200)
+    }));
+  });
+
+  describe('POST /api/v1/policy', () => {
+    const policyRequest = {
+      id: 'policy1',
+      vin: vin,
+      insurerId: 'insurer1',
+      holderId: 'holder1',
+      policyType: 'THIRD_PARTY',
+      startDate: '12122019',
+      endDate: '31122019'
+    }
+    it('Manufacturer can request insurance policy for a vehicle', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .post('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(policyRequest)
+        .expect(200)
+    }));
+  });
+
+  describe('GET /api/v1/policy', () => {
+    it('Manufacturer can view all policies for vehicles', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+    }));
+    it('Regulator can view all policies for vehicles', mochaAsync(async () => {
+      const res = await apiRegulator
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+    }));
+    it('Insurer can view all policies for vehicles', mochaAsync(async () => {
+      const res = await apiInsurer
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .expect(200)
+    }));
+  });
+
+  describe('GET /api/v1/policy', () => {
+    it('Manufacturer can view policy for a vehicle', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: 'policy1'
+        })
+        .expect(200)
+    }));
+    it('Regulator can view policy for a vehicle', mochaAsync(async () => {
+      const res = await apiRegulator
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: 'policy1'
+        })
+        .expect(200)
+    }));
+    it('Insurer can view policy for a vehicle', mochaAsync(async () => {
+      const res = await apiInsurer
+        .get('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: 'policy1'
         })
         .expect(200)
     }));

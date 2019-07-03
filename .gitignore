@@ -68,10 +68,11 @@ wallet/
 .DS_Store
 
 # Vehicle-Network crypto config
-Vehicle-Network/crypto-config/
+Vehicle-Network/crypto-config/*
 
 # Vehicle-Network channel-artifacts
-Vehicle-Network/channel-artifacts/
+Vehicle-Network/channel-artifacts/*
 
 # Vehicle-Network generated yaml
-Vehicle-Network/docker-compose-cli.yaml*
+Vehicle-Network/docker-compose-cli.yaml
+Vehicle-Network/docker-compose-cli.yamlt

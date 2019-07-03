@@ -19,6 +19,19 @@
         }
       }
     },
+    "/api/v1/auth/create-affiliation": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Create Affiliation org3",
+        "responses": {
+          "200": {
+            "description": "Successsfullt created affiliation"
+          }
+        }
+      }
+    },
     "/api/v1/auth/register-user": {
       "post": {
         "tags": [
