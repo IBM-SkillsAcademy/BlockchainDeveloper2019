@@ -24,10 +24,10 @@
         "tags": [
           "Auth"
         ],
-        "summary": "Create org3.department1 affiliation",
+        "summary": "Create Affiliation org3",
         "responses": {
           "200": {
-            "description": "Admin enrolled"
+            "description": "Successsfullt created affiliation"
           }
         }
       }
@@ -100,7 +100,7 @@
         }
       }
     },
-    "/api/v1/vehicle/change-owner": {
+    "/api/v1/vehicle/owner/change": {
       "post": {
         "tags": [
           "Vehicle"

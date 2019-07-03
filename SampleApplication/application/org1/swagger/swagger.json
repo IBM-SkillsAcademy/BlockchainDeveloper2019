@@ -228,7 +228,7 @@
                   "status"
                 ],
                 "properties": {
-                  "orderNumber": {
+                  "orderID": {
                     "type": "string",
                     "example": "vehicle13"
                   },
@@ -254,7 +254,44 @@
         "tags": [
           "Order"
         ],
-        "summary": "Get all vehicle orders or by status",
+        "summary": "Get all vehicle orders or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/order/status": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get vehicle orders by status",
         "parameters": [{
           "in": "header",
           "name": "enrollment-id",
@@ -363,6 +400,82 @@
       }
     },
     "/api/v1/vehicle/policy": {
+      "post": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "request insurance policy",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "vehicleNumber",
+                  "insurerId",
+                  "holderId",
+                  "policyType",
+                  "startDate",
+                  "endDate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "policy1"
+                  },
+                  "vehicleNumber": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "insurerId": {
+                    "type": "string",
+                    "example": "insurer1"
+                  },
+                  "holderId": {
+                    "type": "string",
+                    "example": "holder1"
+                  },
+                  "policyType": {
+                    "type": "string",
+                    "example": "THIRD_PARTY"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "example": "12122019"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "example": "31122019"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
       "get": {
         "tags": [
           "Policy"
@@ -381,7 +494,7 @@
           "name": "id",
           "schema": {
             "type": "string",
-            "example": "insurerId:holderId"
+            "example": "policy1"
           }
         }],
         "responses": {

@@ -55,7 +55,44 @@
         "tags": [
           "Order"
         ],
-        "summary": "Get all vehicle orders or by status",
+        "summary": "Get all vehicle orders or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/order/status": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get vehicle orders by status",
         "parameters": [{
           "in": "header",
           "name": "enrollment-id",
@@ -239,7 +276,7 @@
         }
       }
     },
-    "/api/v1/vehicle/issue-vin": {
+    "/api/v1/vehicle/vin/issue": {
       "post": {
         "tags": [
           "Vehicle"

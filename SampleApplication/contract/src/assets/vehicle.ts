@@ -3,9 +3,9 @@ import { Object as ContractObject, Property } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 
 export enum VinStatus {
-    NOVALUE= 0,
-    REQUESTED= 1,
-    ISSUED= 2,
+    NOVALUE= 'NOVALUE',
+    REQUESTED= 'REQUESTED',
+    ISSUED= 'REQUESTED',
 }
 
 @ContractObject()
