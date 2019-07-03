@@ -26,7 +26,7 @@ exports.getOrder = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -71,7 +71,7 @@ exports.getVehicle = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -118,7 +118,7 @@ exports.changeOwner = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -160,7 +160,7 @@ exports.deleteVehicle = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -202,7 +202,7 @@ exports.getPrice = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -242,7 +242,7 @@ exports.getPolicy = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
@@ -284,7 +284,7 @@ exports.issueVIN = async (req, res, next) => {
 
     // Create a new gateway for connecting to our peer node.
     const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID, discovery: { enabled: false } });
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
 
     // Get the network (channel) our contract is deployed to.
     const network = await gateway.getNetwork('mychannel');
