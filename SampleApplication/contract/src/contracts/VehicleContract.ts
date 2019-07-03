@@ -3,9 +3,9 @@ import { Order, OrderStatus } from '../assets/order';
 import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
+import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
-import { QueryResponse } from '../utils/queryResponse';
 
 export class VehicleContract extends Contract {
 
@@ -108,7 +108,7 @@ export class VehicleContract extends Contract {
         console.info('============= START : place order ===========');
 
         // check if role === 'Manufacturer'
-       await this.hasRole(ctx, ['Manufacturer']);
+        await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
             color,
@@ -158,8 +158,6 @@ export class VehicleContract extends Contract {
         const order = await ctx.getOrderList().getOrder(orderId);
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
-
-       
 
     }
 
@@ -247,15 +245,14 @@ export class VehicleContract extends Contract {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        let queryString = {
-            "selector": {
-                "orderStatus": orderStatus
+        const queryString = {
+            selector: {
+                orderStatus,
             },
-            "use_index": ["_design/orderStatusDoc", "orderStatusIndex"]
-        }
+            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+        };
 
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString));
-         
 
         // const orders = await ctx.getOrderList().getAll();
         // console.info('============= END : Get Orders by Status ===========');
@@ -274,27 +271,26 @@ export class VehicleContract extends Contract {
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
-     /**
+    /**
      * Evaluate a queryString
      *
      * @param {Context} ctx the transaction context
      * @param {String} queryString the query string to be evaluated
-    */    
-   async queryWithQueryString(ctx, queryString) {
+     */
+    public async queryWithQueryString(ctx, queryString) {
 
-    console.log("query String");
+    console.log('query String');
     console.log(JSON.stringify(queryString));
 
-    let resultsIterator = await ctx.stub.getQueryResult(queryString);
-    
-    let allResults = [];
+    const resultsIterator = await ctx.stub.getQueryResult(queryString);
+
+    const allResults = [];
 
     while (true) {
-        let res = await resultsIterator.next();
-    
+        const res = await resultsIterator.next();
 
         if (res.value && res.value.value.toString()) {
-            let jsonRes = new QueryResponse();
+            const jsonRes = new QueryResponse();
 
             console.log(res.value.value.toString('utf8'));
 
