@@ -276,7 +276,7 @@
         }
       }
     },
-    "/api/v1/vehicle/issue-vin": {
+    "/api/v1/vehicle/vin/issue": {
       "post": {
         "tags": [
           "Vehicle"

@@ -11,10 +11,10 @@ router.use(bodyParser.json());
 router.get('/order', controller.getOrder);
 router.get('/order/status', controller.getOrder);
 router.get('/', controller.getVehicle);
-router.post('/change-owner', controller.changeOwner);
+router.post('/owner/change', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
 router.get('/price', controller.getPrice);
-router.post('/issue-vin', controller.issueVIN);
+router.post('/vin/issue', controller.issueVIN);
 router.get('/policy', controller.getPolicy);
 
 module.exports = router;

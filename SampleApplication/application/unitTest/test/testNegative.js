@@ -323,10 +323,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('POST /api/v1/vehicle/change-owner', () => {
+    describe('POST /api/v1/vehicle/owner/change', () => {
       it('Cannot change vehicle ownership using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -338,7 +338,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Regulator application if it doesent exist', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user1')
           .send({
@@ -350,7 +350,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Regulator application if missing owner param', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user1')
           .send({
@@ -361,7 +361,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot change vehicle ownership using Insurer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -373,7 +373,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Insurer application if it doesent exist', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user1')
           .send({
@@ -385,7 +385,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Insurer application if missing owner params', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/change-owner')
+          .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user1')
           .send({

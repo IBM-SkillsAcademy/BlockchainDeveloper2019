@@ -297,35 +297,6 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('POST /api/v1/vehicle/vin/request', () => {
-    const vinRequest = {
-      vehicleID: key,
-    };
-    it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
-      const res = await apiManufacturer
-        .post('/api/v1/vehicle/vin/request')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
-        .send(vinRequest)
-        .expect(200)
-    }));
-  });
-
-  describe('POST /api/v1/vehicle/issue-vin', () => {
-    const vinRequest = {
-      vehicleID: key,
-      vin: vin
-    };
-    it('Regulator can issue vehicle VIN', mochaAsync(async () => {
-      const res = await apiManufacturer
-        .post('/api/v1/vehicle/request-vin')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
-        .send(vinRequest)
-        .expect(200)
-    }));
-  });
-
   describe('POST /api/v1/vehicle/price', () => {
     const priceUpdate = {
       vehicleID: key,
@@ -381,10 +352,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('POST /api/v1/vehicle/change-owner', () => {
+  describe('POST /api/v1/vehicle/owner/change', () => {
     it('Regulator can change vehicle ownership', mochaAsync(async () => {
       const res = await apiRegulator
-        .post('/api/v1/vehicle/change-owner')
+        .post('/api/v1/vehicle/owner/change')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .send({
@@ -396,7 +367,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Insurer can change vehicle ownership', mochaAsync(async () => {
       const res = await apiInsurer
-        .post('/api/v1/vehicle/change-owner')
+        .post('/api/v1/vehicle/owner/change')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .send({
@@ -484,6 +455,35 @@ describe('Vehicle cycle: ', () => {
         .query({
           id: policyRequest.id
         })
+        .expect(200)
+    }));
+  });
+
+  describe('POST /api/v1/vehicle/vin/request', () => {
+    const vinRequest = {
+      vehicleID: key,
+    };
+    it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .post('/api/v1/vehicle/vin/request')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(vinRequest)
+        .expect(200)
+    }));
+  });
+
+  describe('POST /api/v1/vehicle/vin/issue', () => {
+    const vinRequest = {
+      vehicleID: key,
+      vin: vin
+    };
+    it('Regulator can issue vehicle VIN', mochaAsync(async () => {
+      const res = await apiRegulator
+        .post('/api/v1/vehicle/vin/issue')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send(vinRequest)
         .expect(200)
     }));
   });
