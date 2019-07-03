@@ -202,7 +202,6 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle', () => {
-
     it('Manufacturer can query all vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
@@ -268,7 +267,7 @@ describe('Vehicle cycle: ', () => {
       vehicleID: key,
     };
     it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
-      const res = apiManufacturer
+      const res = await apiManufacturer
         .post('/api/v1/vehicle/vin/request')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
@@ -283,7 +282,7 @@ describe('Vehicle cycle: ', () => {
       vin: vin
     };
     it('Regulator can issue vehicle VIN', mochaAsync(async () => {
-      const res = apiManufacturer
+      const res = await apiManufacturer
         .post('/api/v1/vehicle/request-vin')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
