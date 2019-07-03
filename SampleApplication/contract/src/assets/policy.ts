@@ -14,6 +14,23 @@ export enum PolicyStatus {
 
 @ContractObject()
 export class Policy extends State {
+
+
+public readonly vin: string;
+
+public readonly startDate: number;
+
+public readonly endDate: number;
+
+public readonly insurerId: string;
+
+public readonly holderId: string;
+
+public status: PolicyStatus;
+
+private policyType: PolicyType;
+
+
     public  static createInstance( id: string,
                                    vin: string, insurerId: string, holderId: string, policyType: PolicyType,
                                    startDate: number, endDate: number) {
@@ -25,19 +42,7 @@ export class Policy extends State {
         return 'org.vehiclelifecycle.Policy';
     }
 
-    public readonly vin: string;
-
-    public readonly startDate: number;
-
-    public readonly endDate: number;
-
-    public readonly insurerId: string;
-
-    public readonly holderId: string;
-
-    public status: PolicyStatus;
-
-    private policyType: PolicyType;
+   
 
     constructor(obj) {
         super(Policy.getClass(), [obj.id]);
