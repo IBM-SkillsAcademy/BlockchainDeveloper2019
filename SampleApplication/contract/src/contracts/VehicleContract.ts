@@ -170,9 +170,13 @@ export class VehicleContract extends Contract {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
+        console.log("Before Getting Vehicle Info "+vehicleNumber);
         // check if vehicle exist
-        await ctx.getVehicleList().get(vehicleNumber);
+        await ctx.getVehicleList().getVehicle(vehicleNumber);
 
+        console.log("After Getting Vehicle Info "+vehicleNumber);
+
+        // 
         const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
         await ctx.getPolicyList().add(policy);
 
@@ -251,12 +255,6 @@ export class VehicleContract extends Contract {
         };
 
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString));
-
-        // const orders = await ctx.getOrderList().getAll();
-        // console.info('============= END : Get Orders by Status ===========');
-        // return orders.filter((order) => {
-        //     return order.isOrderStatus(OrderStatus[orderStatus]);
-        // });
 
     }
 
