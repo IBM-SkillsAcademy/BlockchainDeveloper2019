@@ -308,7 +308,7 @@ exports.getPrice = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Evaluate the specified transaction.
-    const result = await contract.submitTransaction('getPriceDetails', req.query.id);
+    const result = await contract.evaluateTransaction('getPriceDetails', req.query.id);
     const rawResult = result.toString();
 
     const obj = JSON.parse(rawResult);
