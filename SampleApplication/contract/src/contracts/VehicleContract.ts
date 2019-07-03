@@ -5,6 +5,7 @@ import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
+import { QueryResponse } from '../utils/queryResponse';
 
 export class VehicleContract extends Contract {
 
@@ -107,7 +108,7 @@ export class VehicleContract extends Contract {
         console.info('============= START : place order ===========');
 
         // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
+       await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
             color,
@@ -158,9 +159,7 @@ export class VehicleContract extends Contract {
         order.orderStatus = OrderStatus.DELIVERED;
         await ctx.getOrderList().updateOrder(order);
 
-        // Create Vehicle as an asset
-        const vehicle = order.vehicleDetails;
-        await ctx.stub.putState(vehicleNumber, Buffer.from(JSON.stringify(vehicle)));
+       
 
     }
 
@@ -241,18 +240,28 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getAll();
     }
 
-    // Return All order with Specific Status
-    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string): Promise<Order[]> {
+    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         console.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        const orders = await ctx.getOrderList().getAll();
-        console.info('============= END : Get Orders by Status ===========');
-        return orders.filter((order) => {
-            return order.isOrderStatus(OrderStatus[orderStatus]);
-        });
+        let queryString = {
+            "selector": {
+                "orderStatus": orderStatus
+            },
+            "use_index": ["_design/orderStatusDoc", "orderStatusIndex"]
+        }
+
+        return await this.queryWithQueryString(ctx, JSON.stringify(queryString));
+         
+
+        // const orders = await ctx.getOrderList().getAll();
+        // console.info('============= END : Get Orders by Status ===========');
+        // return orders.filter((order) => {
+        //     return order.isOrderStatus(OrderStatus[orderStatus]);
+        // });
 
     }
 
@@ -265,4 +274,50 @@ export class VehicleContract extends Contract {
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
+     /**
+     * Evaluate a queryString
+     *
+     * @param {Context} ctx the transaction context
+     * @param {String} queryString the query string to be evaluated
+    */    
+   async queryWithQueryString(ctx, queryString) {
+
+    console.log("query String");
+    console.log(JSON.stringify(queryString));
+
+    let resultsIterator = await ctx.stub.getQueryResult(queryString);
+    
+    let allResults = [];
+
+    while (true) {
+        let res = await resultsIterator.next();
+    
+
+        if (res.value && res.value.value.toString()) {
+            let jsonRes = new QueryResponse();
+
+            console.log(res.value.value.toString('utf8'));
+
+            jsonRes.key = res.value.key;
+
+            try {
+                jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
+            } catch (err) {
+                console.log(err);
+                jsonRes.record = res.value.value.toString('utf8');
+            }
+
+            allResults.push(jsonRes);
+        }
+        if (res.done) {
+            console.log('end of data');
+            await resultsIterator.close();
+            console.info(allResults);
+            console.log(JSON.stringify(allResults));
+            return JSON.stringify(allResults);
+        }
+    }
+
+}
+
 }
