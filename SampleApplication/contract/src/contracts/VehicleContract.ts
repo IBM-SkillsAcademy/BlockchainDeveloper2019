@@ -163,19 +163,17 @@ export class VehicleContract extends Contract {
 
     // Request Policy , user request the insurance policy
     public async requestPolicy(ctx: VehicleContext, id: string,
-                               vin: string, insurerId: string, holderId: string, policyType: PolicyType,
+                               vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
                                startDate: number, endDate: number) {
         console.info('============= START : request insurance policy ===========');
 
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
-        const data = await ctx.stub.getState(vin);
+        // check if vehicle exist
+        await ctx.getVehicleList().get(vehicleNumber);
 
-        if (data.length === 0) {
-            throw new Error(`Cannot get Vehicle . No vehicle exists for VIN:  ${vin} `);
-        }
-        const policy = Policy.createInstance(id, vin, insurerId, holderId, policyType, startDate, endDate);
+        const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
         await ctx.getPolicyList().add(policy);
 
         ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());

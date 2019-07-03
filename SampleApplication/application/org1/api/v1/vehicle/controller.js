@@ -81,13 +81,17 @@ exports.getOrder = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Evaluate the specified transaction.
-    let result;
+    let result, rawResult;
     if (req.query.status) {
       result = await contract.evaluateTransaction('getOrdersByStatus', req.query.status);
+      rawResult = JSON.parse(result);
+    } else if (req.query.id) {
+      result = await contract.evaluateTransaction('getOrder', req.query.id);
+      rawResult = result.toString();
     } else {
       result = await contract.evaluateTransaction('getOrders');
+      rawResult = result.toString();
     }
-    const rawResult = result.toString();
     const obj = JSON.parse(rawResult);
     return res.send({
       result: obj
@@ -389,11 +393,11 @@ exports.requestPolicy = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // requestPolicy transaction - requires 8 argument, ex: ('requestPolicy', 'vin12', 'insurer12', 'holder12', 'THIRD_PARTY', 12122019 , 31122020)
+    // requestPolicy transaction - requires 8 argument, ex: ('requestPolicy', 'vehicle13:Accord', 'insurer12', 'holder12', 'THIRD_PARTY', 12122019 , 31122020)
     await contract.submitTransaction(
       'requestPolicy',
       req.body.id,
-      req.body.vin,
+      req.body.vehicleNumber,
       req.body.insurerId,
       req.body.holderId,
       req.body.policyType,

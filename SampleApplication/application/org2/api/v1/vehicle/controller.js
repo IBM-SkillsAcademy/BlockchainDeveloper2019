@@ -36,9 +36,11 @@ exports.getOrder = async (req, res, next) => {
 
     // Evaluate the specified transaction.
     let result, rawResult;
-
     if (req.query.status) {
       result = await contract.evaluateTransaction('getOrdersByStatus', req.query.status);
+      rawResult = JSON.parse(result);
+    } else if (req.query.id) {
+      result = await contract.evaluateTransaction('getOrder', req.query.id);
       rawResult = result.toString();
     } else {
       result = await contract.evaluateTransaction('getOrders');
@@ -302,7 +304,7 @@ exports.issueVIN = async (req, res, next) => {
     // Disconnect from the gateway.
     await gateway.disconnect();
     return res.send({
-      message: `VIN for vehicle with ID ${req.body.vehicleID} has been requested`,
+      message: `VIN for vehicle with ID ${req.body.vehicleID} has been issued`,
       details: req.body
     });
   } catch (err) {

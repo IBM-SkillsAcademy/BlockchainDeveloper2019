@@ -1,6 +1,6 @@
 const chai = require('chai');
 const supertest = require('supertest');
-const shortid = require('shortid');
+const generate = require('nanoid/generate')
 
 chai.should();
 const apiManufacturer = supertest('http://localhost:6001');
@@ -125,13 +125,22 @@ describe('Enrollment and Registration: ', () => {
 ///////////////////// Vehicle Cycle Start /////////////////////
 describe('Vehicle cycle: ', () => {
   const vehicle = {
-    orderID: shortid.generate(),
+    orderID: `vehicle${generate('1234567890abcdef', 4)}`,
     manufacturer: 'Tesla',
     model: 'Model3',
     color: 'Space Grey',
     owner: 'Stark'
   };
   const key = `${vehicle.orderID}:${vehicle.model}`;
+  const policyRequest = {
+    id: `policy${generate('1234567890abcdef', 4)}`,
+    vehicleNumber: key,
+    insurerId: 'insurer1',
+    holderId: 'holder1',
+    policyType: 'THIRD_PARTY',
+    startDate: '12122019',
+    endDate: '31122019'
+  }
   const vin = 'G33KS';
   describe('POST /api/v1/vehicle/order', () => {
     it('Manufacturer can place order', mochaAsync(async () => {
@@ -165,28 +174,54 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicle/order', () => {
-    it('Manufacturer can query vehicle by status', mochaAsync(async () => {
+    it('Manufacturer can query vehicle by id', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          status: "ISSUED"
+          id: vehicle.orderID
         })
         .expect(200)
-      res.body.result[0].orderStatus.should.equal(0);
+      res.body.result.orderStatus.should.equal("ISSUED");
     }));
 
-    it('Regulator can query vehicle by status', mochaAsync(async () => {
+    it('Regulator can query vehicle by id', mochaAsync(async () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          id: vehicle.orderID
+        })
+        .expect(200)
+      res.body.result.orderStatus.should.equal("ISSUED");
+    }));
+  });
+
+  describe('GET /api/v1/vehicle/order/status', () => {
+    it('Manufacturer can query vehicle by status', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle/order/status')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
           status: "ISSUED"
         })
         .expect(200)
-      res.body.result[0].orderStatus.should.equal(0);
+      res.body.result[0].record.orderStatus.should.equal("ISSUED");
+    }));
+
+    it('Regulator can query vehicle by status', mochaAsync(async () => {
+      const res = await apiRegulator
+        .get('/api/v1/vehicle/order/status')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          status: "ISSUED"
+        })
+        .expect(200)
+      res.body.result[0].record.orderStatus.should.equal("ISSUED");
     }));
   });
 
@@ -307,7 +342,7 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe.skip('GET /api/v1/vehicle/price', () => {
+  describe('GET /api/v1/vehicle/price', () => {
     it('Manufacture can see vehicle price', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/price')
@@ -387,15 +422,6 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('POST /api/v1/policy', () => {
-    const policyRequest = {
-      id: 'policy1',
-      vin: vin,
-      insurerId: 'insurer1',
-      holderId: 'holder1',
-      policyType: 'THIRD_PARTY',
-      startDate: '12122019',
-      endDate: '31122019'
-    }
     it('Manufacturer can request insurance policy for a vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
         .post('/api/v1/vehicle/policy')
@@ -437,7 +463,7 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          id: 'policy1'
+          id: policyRequest.id
         })
         .expect(200)
     }));
@@ -447,7 +473,7 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          id: 'policy1'
+          id: policyRequest.id
         })
         .expect(200)
     }));
@@ -457,7 +483,7 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          id: 'policy1'
+          id: policyRequest.id
         })
         .expect(200)
     }));
