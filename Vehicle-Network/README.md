@@ -9,4 +9,3 @@ Vehicle Manufacture Blockchain Network used for creating Blockchain Developer Co
 
 ## Teardown network
 1. To teardown the network, run `./byfn.sh down`
-2. Then run `docker rm $(docker ps -aq)` followed by `docker rmi $(docker images dev-peer* -q)`

@@ -1,4 +1,6 @@
 #!/bin/bash
+cd ../SampleApplication/contract
+npm run build
 
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" \
 -e "CORE_PEER_ADDRESS=peer0.org1.example.com:7051" \
