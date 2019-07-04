@@ -235,6 +235,37 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
+    describe('PUT /api/v1/vehicle/policy', () => {
+      it('Cannot issue insurance for policy using Insurer application if using non-existing identity', mochaAsync(async () => {
+        const res = await apiInsurer
+          .put('/api/v1/vehicle/policy')
+          .set('Content-Type', 'application/json')
+          .set('enrollment-id', 'user2')
+          .send({id: 'newPolicy'})
+          .expect(401);
+        res.body.message.should.include('An identity for the user user2 does not exist in the wallet');        
+      }));
+
+      it('Cannot issue insurance for policy using Insurer application for a policy that does not exist', mochaAsync(async () => {
+        const res = await apiInsurer
+          .put('/api/v1/vehicle/policy')
+          .set('Content-Type', 'application/json')
+          .set('enrollment-id', 'user1')
+          .send({id: 'newPolicy'})
+          .expect(500);
+        res.text.should.contain('Endorsement has failed');
+      }));
+
+      it('Cannot issue insurance for policy using Insurer application if missing id params', mochaAsync(async () => {
+        const res = await apiInsurer
+          .put('/api/v1/vehicle/policy')
+          .set('Content-Type', 'application/json')
+          .set('enrollment-id', 'user1')
+          .expect(500);
+        res.text.should.contain('undefined');        
+      }));
+    });
+
     describe('POST /api/v1/vehicle/price', () => {
       const priceUpdate = {
         vehicleID: key,
