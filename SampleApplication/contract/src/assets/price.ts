@@ -25,7 +25,7 @@ export class Price extends State {
     }
 
     public vehicleNumber: string;
-    public price: string;
+    public price: number;
 
     constructor(obj) {
         super(Price.getClass(), [obj.vehicleNumber]);

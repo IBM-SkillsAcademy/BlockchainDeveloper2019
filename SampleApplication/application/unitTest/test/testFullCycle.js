@@ -322,7 +322,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal("40000");
+      res.body.result.price.should.equal(40000);
     }));
 
     it('Regulator can see vehicle price', mochaAsync(async () => {
@@ -334,7 +334,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal("40000");
+      res.body.result.price.should.equal(40000);
     }));
   });
 
