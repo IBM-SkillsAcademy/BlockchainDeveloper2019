@@ -29,7 +29,7 @@ To monitor the application go to either `org1, org2, org3, or unitTest` folder a
     ```
     
     
-5. To add 10 Order as default orders to test pagination 
+5. To add 10 Orders as default orders to test pagination 
 run `populateOrders.sh`
 ### Running the test
 To run the test outside of the start script, you can go to `unitTest` folder and run `npm run test`
