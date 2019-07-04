@@ -145,6 +145,44 @@
         }
       }
     },
+      "/api/v1/vehicle/history": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicle history",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All history listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
     "/api/v1/vehicle/order": {
       "post": {
         "tags": [
@@ -286,6 +324,7 @@
         }
       }
     },
+   
     "/api/v1/vehicle/order/status": {
       "get": {
         "tags": [
@@ -327,6 +366,101 @@
         }
       }
     },
+     "/api/v1/vehicle/order/status/paginated": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all orders by status with pagination",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "orderStatus",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        } , 
+         {
+          "in": "query",
+          "name": "pageSize",
+          "schema": {
+            "type": "string",
+            "example" : "5"
+          }
+        } , 
+         {
+          "in": "query",
+          "name": "bookmark",
+          "schema": {
+            "type": "string",
+            "example" : ""
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All orders listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+       "/api/v1/vehicle/order/history": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all Order history",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All history listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
     "/api/v1/vehicle/price": {
       "post": {
         "tags": [
@@ -551,6 +685,7 @@
         }
       }
     },
+    
     "/api/v1/vehicle/vin/request": {
       "post": {
         "tags": [
