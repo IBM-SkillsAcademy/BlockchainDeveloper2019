@@ -1,11 +1,12 @@
 import { Object as ContractObject, Property } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
+// Query Response as container for Query result with Pagination option
+/*
+The container define attributes for fetched rocord count and bookmark that can be used to return the next result
+*/
 
 export class QueryPaginationResponse  <T extends State>
 {
-
- 
-    
     public value: T[];
     fetched_records_count :number;
     bookmark:string;
@@ -16,9 +17,4 @@ export class QueryPaginationResponse  <T extends State>
        
     }
 
-    // public serialize(): Buffer {
-    //     const obj = Object.assign(this, {value: JSON.parse(this.value.serialize().toString())});
-
-    //     return Buffer.from(JSON.stringify(obj));
-    // }
 }

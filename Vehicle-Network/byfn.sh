@@ -160,6 +160,8 @@ npm install
 echo "Build ( npm run-script build )"
 npm run-script build
 cd $ROOT
+rm -R -f channel-artifacts
+mkdir channel-artifacts
 
 }
 # Generate the needed certificates, the genesis block and start the network.
