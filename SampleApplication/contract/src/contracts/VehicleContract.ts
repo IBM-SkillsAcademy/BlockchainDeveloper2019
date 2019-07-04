@@ -206,7 +206,7 @@ export class VehicleContract extends Contract {
         // check if vehicle exist
         await ctx.getVehicleList().get(vehicleNumber);
 
-        const priceObject = Price.createInstance(vehicleNumber, price);
+        const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
         await ctx.getPriceList().updatePrice(priceObject);
     }
 
@@ -251,11 +251,31 @@ export class VehicleContract extends Contract {
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
 
-        return await this.queryWithQueryString(ctx, JSON.stringify(queryString));
-
+        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
 
-    public async hasRole(ctx: Context, roleName: string[]) {
+    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+    public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
+        console.info('============= START : Get Orders by Status ===========');
+
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
+        const minNumber = parseInt(min, 10);
+        const maxNumber = parseInt(max, 10);
+        const queryString = {
+            selector: {
+                price: {
+                    $gte: minNumber,
+                    $lte: maxNumber,
+                },
+            },
+            use_index: ['_design/priceDoc', 'priceIndex'],
+        };
+        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
+    }
+
+    public async hasRole(ctx: VehicleContext, roleName: string[]) {
         const clientId = ctx.clientIdentity;
         for (let i = 0; i < roleName.length; i++) {
             if (clientId.assertAttributeValue('role', roleName[i])) {
@@ -270,12 +290,21 @@ export class VehicleContract extends Contract {
      * @param {Context} ctx the transaction context
      * @param {String} queryString the query string to be evaluated
      */
-    public async queryWithQueryString(ctx, queryString) {
+    public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
     console.info('query String');
     console.info(JSON.stringify(queryString));
 
-    const resultsIterator = await ctx.stub.getQueryResult(queryString);
+    let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
+    if (collection === '') {
+        resultsIterator = await ctx.stub.getQueryResult(queryString);
+    } else {
+        // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
+        const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
+        resultsIterator = result.iterator;
+    }
+
+    console.log(typeof resultsIterator);
 
     const allResults = [];
 
