@@ -9,7 +9,13 @@ import {  IHistoricState ,IState, State } from './state';
 import { QueryPaginationResponse } from "../utils/queryPaginatedResponse";
 
 const logger = newLogger('STATELIST');
-
+// Utility class for collections of ledger states --  a state list
+/**
+ * StateList provides a named virtual container for a set of ledger states.
+ * Each state has a unique key which associates it with the container, rather
+ * than the container containing a link to the state. This minimizes collisions
+ * for parallel transactions on different states.
+ */
 export class StateList<T extends State> {
 
     private ctx: Context;
@@ -26,6 +32,12 @@ export class StateList<T extends State> {
         return this.ctx;
     }
 
+    /**
+     * Add a state to the list. Creates a new state in worldstate with
+     * appropriate composite key.  Note that state defines its own key.
+     * State object is serialized before writing.
+     */
+
     public async add(state: T) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
 
@@ -40,7 +52,11 @@ export class StateList<T extends State> {
         await this.ctx.stub.putState(key, data);
 
     }
-
+/**
+     * Get a state from the list using supplied keys. Form composite
+     * keys to retrieve state from world state. State data is deserialized
+     * into JSON object before being returned.
+     */
     public async get(key: string): Promise<T> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         const data = await this.ctx.stub.getState(ledgerKey);
@@ -53,10 +69,12 @@ export class StateList<T extends State> {
         return state;
     }
 
+    // Return All States
     public async getAll(): Promise<T[]> {
         return this.query({});
     }
 
+    // Get Count of specific state
     public async count(): Promise<number> {
         const data = await this.ctx.stub.getStateByPartialCompositeKey(this.name, []);
         let counter = 0;
@@ -76,6 +94,13 @@ export class StateList<T extends State> {
         return counter;
     }
 
+     /**
+     * Update a state in the list. Puts the new state in world state with
+     * appropriate composite key.  Note that state defines its own key.
+     * A state is serialized before writing. Logic is very similar to
+     * addState() but kept separate becuase it is semantically distinct.
+     */
+
     public async update(state: any) {
         if (!(state instanceof State)) {
             throw new Error(`Cannot use ${state.constructor.name} as type State`);
@@ -92,7 +117,7 @@ export class StateList<T extends State> {
 
         await this.ctx.stub.putState(key, data);
     }
-
+// Check if the key exists 
     public async exists(key: string) {
         try {
             await this.get(key);
@@ -102,6 +127,7 @@ export class StateList<T extends State> {
         }
     }
 
+    // Query used for advanced queries 
     public async query(query: any) {
         const {stub} = this.ctx;
         if (!query.selector) {
@@ -125,7 +151,7 @@ export class StateList<T extends State> {
         }
         return states;
     }
-
+// Delete State with composit Key
     public delete(key: string) {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         return this.ctx.stub.deleteState(ledgerKey);
@@ -165,6 +191,7 @@ export class StateList<T extends State> {
         return state;
     }
 
+    // Return the History of specific asset , which will return all transaction over this asset
     public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         const keyHistory = await this.ctx.stub.getHistoryForKey(ledgerKey);
@@ -188,6 +215,7 @@ export class StateList<T extends State> {
 
         return history;
     }
+    // Query ledger with pagination option 
     public async queryWithPagination(queryString: string, pageSize: number , bookmark :string ): Promise<QueryPaginationResponse<T>> {
         let result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize,bookmark)
         const queryPaginatedRes: QueryPaginationResponse<T> =new QueryPaginationResponse(result.metadata.fetched_records_count,result.metadata.bookmark)

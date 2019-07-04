@@ -8,6 +8,11 @@ import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
 import { Price } from './../assets/price';
 
+/* Custom Context that extend chain code Context class 
+ Used to define
+A smart contract transaction context allows smart contracts to define and maintain user variables across transaction invocations
+https://hyperledger-fabric.readthedocs.io/en/latest/developapps/transactioncontext.html
+*/
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
     private policyList: PolicyList<Policy>;
@@ -21,6 +26,7 @@ export class VehicleContext extends Context {
         this.vehicleList = new VehicleList(this, [Vehicle]);
         this.priceList = new PriceList(this, [Price]);
     }
+    
     public getOrderList() {
         return this.orderList;
     }

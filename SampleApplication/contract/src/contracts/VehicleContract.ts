@@ -1,4 +1,7 @@
+
+// Fabric smart contract classes
 import { Context, Contract } from 'fabric-contract-api';
+// Vehicle Manufacure classes 
 import { Order, OrderStatus } from '../assets/order';
 import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 import { Price } from '../assets/price';
@@ -6,6 +9,8 @@ import { Vehicle, VinStatus } from '../assets/vehicle';
 import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
+
+// Main Chaincode class contains all transactions that users can submit by extending Fabric Contract class 
 
 export class VehicleContract extends Contract {
 
@@ -17,7 +22,7 @@ export class VehicleContract extends Contract {
     public createContext() {
         return new VehicleContext();
     }
-
+   // init Ledger fucntion to be executed at the chaincode inistantiation
     public async initLedger(ctx: VehicleContext) {
         console.info('============= START : Initialize Ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
@@ -32,7 +37,7 @@ export class VehicleContract extends Contract {
         }
         console.info('============= END : Initialize Ledger ===========');
     }
-
+    // return vehicle details with ID 
     public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
 
         return await ctx.getVehicleList().get(vehicleNumber);
@@ -49,8 +54,10 @@ export class VehicleContract extends Contract {
 
         console.info('============= END : Create vehicle ===========');
     }
-
+    // Issue VIN for Vehcile the this action performed by Regulator 
     public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
+        
+        await this.hasRole(ctx, ['Regulator']);
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.vin = vin;
         vehicle.vinStatus = VinStatus.ISSUED;
@@ -59,8 +66,11 @@ export class VehicleContract extends Contract {
         // Fire Event
         ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
     }
-
+    // Issue VIN for Vehcile the this action performed by Manufacturer 
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
+        
+        await this.hasRole(ctx, ['Manufacturer']);
+
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.vinStatus = VinStatus.REQUESTED;
         await ctx.getVehicleList().updateVehicle(vehicle);
@@ -135,7 +145,7 @@ export class VehicleContract extends Contract {
         order.orderStatus = OrderStatus.INPROGRESS;
         await ctx.getOrderList().updateOrder(order);
     }
-
+    // Return order with ID
     public async getOrder(ctx: VehicleContext, orderId: string) {
         return await ctx.getOrderList().getOrder(orderId);
     }
@@ -150,7 +160,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
 
-    // When Order completed and will be ready to be delivered , update order status and create new Vehicle as an asset
+    // When Order completed and will be ready to be delivered , update order status and Manufacture now can create new Vehicle as an asset
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
@@ -274,7 +284,7 @@ export class VehicleContract extends Contract {
         };
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
-
+    // Function to check if the user has right toperform the role bases on his role 
     public async hasRole(ctx: VehicleContext, roleName: string[]) {
         const clientId = ctx.clientIdentity;
         for (let i = 0; i < roleName.length; i++) {
@@ -287,7 +297,7 @@ export class VehicleContract extends Contract {
     /**
      * Evaluate a queryString
      *
-     * @param {Context} ctx the transaction context
+     * @param {VehicleContext } ctx the transaction context
      * @param {String} queryString the query string to be evaluated
      */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
@@ -347,15 +357,19 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
-    public async getOrdersByStatusPaginated(ctx:VehicleContext, orderStatus:string, pagesize:string,bookmark)
+    // Get Order By status and use pagination to return the result 
+    public async getOrdersByStatusPaginated(ctx:VehicleContext, orderStatus:string, pagesize:string,bookmark:string)
     {
+         // check if role === 'Manufacturer' / 'Regulator'
+         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+        // Build Query String 
         const queryString = {
             selector: {
                 orderStatus,
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-
+  
         let pagesizeInt=parseInt(pagesize)
         return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt,bookmark);
     }
