@@ -317,7 +317,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
           .set('enrollment-id', 'user1')
           .send({
             orderID: vehicle.orderID,
-            status: '0'
+            status: 'ISSUED'
           }).expect(400);
         res.body.message.should.contain('Status invalid: ISSUED. Should be PENDING, INPROGRESS, or DELIVERED')
       }));

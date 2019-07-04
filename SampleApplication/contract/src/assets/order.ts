@@ -49,5 +49,4 @@ export class Order extends State {
     public setIssued() {
         this.orderStatus = OrderStatus.ISSUED;
     }
-   
 }

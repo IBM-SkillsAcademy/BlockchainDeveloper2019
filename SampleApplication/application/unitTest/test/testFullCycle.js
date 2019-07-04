@@ -183,7 +183,7 @@ describe('Vehicle cycle: ', () => {
           id: vehicle.orderID
         })
         .expect(200)
-      res.body.result.orderStatus.should.equal("0");
+      res.body.result.orderStatus.should.equal('ISSUED');
     }));
 
     it('Regulator can query vehicle by id', mochaAsync(async () => {
@@ -195,7 +195,7 @@ describe('Vehicle cycle: ', () => {
           id: vehicle.orderID
         })
         .expect(200)
-      res.body.result.orderStatus.should.equal("0");
+      res.body.result.orderStatus.should.equal('ISSUED');
     }));
   });
 
@@ -206,10 +206,10 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          status: "0"
+          status: 'ISSUED'
         })
         .expect(200)
-      res.body.result[0].record.orderStatus.should.equal("0");
+      res.body.result[0].record.orderStatus.should.equal('ISSUED');
     }));
 
     it('Regulator can query vehicle by status', mochaAsync(async () => {
@@ -218,10 +218,10 @@ describe('Vehicle cycle: ', () => {
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'user1')
         .query({
-          status: "0"
+          status: 'ISSUED'
         })
         .expect(200)
-      res.body.result[0].record.orderStatus.should.equal("0");
+      res.body.result[0].record.orderStatus.should.equal('ISSUED');
     }));
   });
 

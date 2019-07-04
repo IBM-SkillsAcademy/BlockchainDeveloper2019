@@ -1,6 +1,5 @@
-import { Object as ContractObject, Property } from 'fabric-contract-api';
+import { Object as ContractObject } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
-import { Vehicle } from './vehicle';
 
 @ContractObject()
 // Price Asset
