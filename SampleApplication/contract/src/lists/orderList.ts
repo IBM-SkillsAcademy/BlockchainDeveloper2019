@@ -27,4 +27,8 @@ export class OrderList <T extends Order> extends StateList<T> {
     {
         return this.getHistory(orderID);
     }
+    public async queryStatusPaginated(queryString: string, pageSize: number , bookmark :string )
+    {
+       return this.queryWithPagination(queryString,pageSize,bookmark);
+    }
 }

@@ -156,6 +156,7 @@ ROOT=${PWD}
 cd ../SampleApplication/contract
 echo "Remove dist folder"
 rm -f -R dist
+npm install
 echo "Build ( npm run-script build )"
 npm run-script build
 cd $ROOT

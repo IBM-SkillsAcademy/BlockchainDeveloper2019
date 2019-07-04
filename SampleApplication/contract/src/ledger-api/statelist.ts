@@ -6,6 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 import { Context } from 'fabric-contract-api';
 import { newLogger } from 'fabric-shim';
 import {  IHistoricState ,IState, State } from './state';
+import { QueryPaginationResponse } from "../utils/queryPaginatedResponse";
 
 const logger = newLogger('STATELIST');
 
@@ -186,5 +187,23 @@ export class StateList<T extends State> {
         }
 
         return history;
+    }
+    public async queryWithPagination(queryString: string, pageSize: number , bookmark :string ): Promise<QueryPaginationResponse<T>> {
+        let result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize,bookmark)
+        const queryPaginatedRes: QueryPaginationResponse<T> =new QueryPaginationResponse(result.metadata.fetched_records_count,result.metadata.bookmark)
+        
+        let value = (await result.iterator.next()).value;
+        const states: T[] = [];
+    
+        while (value) {
+            const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses) as T;
+            logger.info(JSON.stringify(state));
+            states.push(state);
+            const next = await result.iterator.next();
+            value = next.value;
+        }
+        queryPaginatedRes.value=states;
+        return queryPaginatedRes;
+       
     }
 }

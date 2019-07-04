@@ -35,10 +35,10 @@ export class VehicleContract extends Contract {
 
     public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
 
-      return await ctx.getVehicleList().get(vehicleNumber);
+        return await ctx.getVehicleList().get(vehicleNumber);
     }
 
-    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string ) {
+    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
         console.info('============= START : Create vehicle ===========');
 
         await this.hasRole(ctx, ['Manufacturer']);
@@ -103,7 +103,7 @@ export class VehicleContract extends Contract {
 
     // end user palce order function
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
-                            make: string, model: string, color: string,
+        make: string, model: string, color: string,
     ) {
         console.info('============= START : place order ===========');
 
@@ -163,8 +163,8 @@ export class VehicleContract extends Contract {
 
     // Request Policy , user request the insurance policy
     public async requestPolicy(ctx: VehicleContext, id: string,
-                               vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
-                               startDate: number, endDate: number) {
+        vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
+        startDate: number, endDate: number) {
         console.info('============= START : request insurance policy ===========');
 
         // check if role === 'Manufacturer'
@@ -292,62 +292,72 @@ export class VehicleContract extends Contract {
      */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
-    console.info('query String');
-    console.info(JSON.stringify(queryString));
+        console.info('query String');
+        console.info(JSON.stringify(queryString));
 
-    let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
-    if (collection === '') {
-        resultsIterator = await ctx.stub.getQueryResult(queryString);
-    } else {
-        // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
-        const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
-        resultsIterator = result.iterator;
-    }
+        let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
+        if (collection === '') {
+            resultsIterator = await ctx.stub.getQueryResult(queryString);
+        } else {
+            // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
+            const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
+            resultsIterator = result.iterator;
+        }
 
-    console.log(typeof resultsIterator);
+        console.log(typeof resultsIterator);
 
-    const allResults = [];
+        const allResults = [];
 
-    while (true) {
-        const res = await resultsIterator.next();
+        while (true) {
+            const res = await resultsIterator.next();
 
-        if (res.value && res.value.value.toString()) {
-            const jsonRes = new QueryResponse();
+            if (res.value && res.value.value.toString()) {
+                const jsonRes = new QueryResponse();
 
-            console.info(res.value.value.toString('utf8'));
+                console.info(res.value.value.toString('utf8'));
 
-            jsonRes.key = res.value.key;
+                jsonRes.key = res.value.key;
 
-            try {
-                jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
-            } catch (err) {
-                console.info(err);
-                jsonRes.record = res.value.value.toString('utf8');
+                try {
+                    jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    console.info(err);
+                    jsonRes.record = res.value.value.toString('utf8');
+                }
+
+                allResults.push(jsonRes);
             }
+            if (res.done) {
+                console.info('end of data');
+                await resultsIterator.close();
+                console.info(allResults);
+                console.info(JSON.stringify(allResults));
+                return JSON.stringify(allResults);
+            }
+        }
 
-            allResults.push(jsonRes);
-        }
-        if (res.done) {
-            console.info('end of data');
-            await resultsIterator.close();
-            console.info(allResults);
-            console.info(JSON.stringify(allResults));
-            return JSON.stringify(allResults);
-        }
+    }
+    // get all History for Vehicle ID return , all transaction over aspecific vehicle 
+    public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
+        return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
     }
 
-}
-// get all History for Vehicle ID return , all transaction over aspecific vehicle 
-public async getHistoryForVehicle(ctx:VehicleContext , vehicleNumber :string )
+    // get all History for Order ID return , all transaction over aspecific Order 
+    public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
+        return await ctx.getOrderList().getOrderHistory(orderID);
+    }
 
-{
-    return  await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
-}
+    public async getOrdersByStatusPaginated(ctx:VehicleContext, orderStatus:string, pagesize:string,bookmark)
+    {
+        const queryString = {
+            selector: {
+                orderStatus,
+            },
+            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+        };
 
-// get all History for Order ID return , all transaction over aspecific Order 
-public async getHistoryForOrder(ctx:VehicleContext , orderID :string )
+        let pagesizeInt=parseInt(pagesize)
+        return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt,bookmark);
+    }
 
-{
-    return  await ctx.getOrderList().getOrderHistory(orderID);
-}
 }
