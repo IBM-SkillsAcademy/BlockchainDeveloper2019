@@ -14,6 +14,7 @@ router.get('/', controller.getVehicle);
 router.post('/owner/change', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
 router.get('/price', controller.getPrice);
+router.get('/price/range', controller.getPriceByRange);
 router.post('/vin/issue', controller.issueVIN);
 router.get('/policy', controller.getPolicy);
 
