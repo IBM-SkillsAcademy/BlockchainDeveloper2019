@@ -316,6 +316,31 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
+    describe('GET /api/v1/vehicle/price/range', () => {
+      it('Cannot query vehicle price by range using Manufacture application if using non-existing identity', mochaAsync(async () => {
+        const res = await apiManufacturer
+          .get('/api/v1/vehicle/price/range')
+          .set('Content-Type', 'application/json')
+          .set('enrollment-id', 'user2')
+          .query({
+            min: "10000",
+            max: "50000"
+          }).expect(401);
+        res.body.message.should.include('An identity for the user user2 does not exist in the wallet');
+      }));
+  
+      it('Cannot query vehicle price by range using Regulator application if using non-existing identity', mochaAsync(async () => {
+        const res = await apiRegulator
+          .get('/api/v1/vehicle/price/range')
+          .set('Content-Type', 'application/json')
+          .set('enrollment-id', 'user2')
+          .query({
+            min: "10000",
+            max: "50000"
+          }).expect(401);
+          res.body.message.should.include('An identity for the user user2 does not exist in the wallet');
+      }));
+    });
     describe('PUT /api/v1/vehicle/order', () => {
       it('Cannot update vehicle order status using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
