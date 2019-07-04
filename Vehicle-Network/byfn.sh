@@ -148,10 +148,23 @@ function checkPrereqs() {
     fi
   done
 }
+# Clean dist folder under contract and recreate it by building the project 
+function buildContract()
+{
+echo "Build Smart contract "
+ROOT=${PWD}
+cd ../SampleApplication/contract
+echo "Remove dist folder"
+rm -f -R dist
+echo "Build ( npm run-script build )"
+npm run-script build
+cd $ROOT
 
+}
 # Generate the needed certificates, the genesis block and start the network.
 function networkUp() {
   checkPrereqs
+  buildContract
   # generate artifacts if they don't exist
   if [ ! -d "crypto-config" ]; then
     generateCerts

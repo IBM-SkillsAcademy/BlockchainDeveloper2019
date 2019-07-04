@@ -337,51 +337,17 @@ export class VehicleContract extends Contract {
     }
 
 }
-
+// get all History for Vehicle ID return , all transaction over aspecific vehicle 
 public async getHistoryForVehicle(ctx:VehicleContext , vehicleNumber :string )
 
 {
-    let resultsIterator = await ctx.stub.getHistoryForKey(vehicleNumber);
-    return this.getAllResults(resultsIterator , true)
-
+    return  await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
 }
-async getAllResults(iterator, isHistory) {
-    let allResults = [];
-    while (true) {
-      let res = await iterator.next();
 
-      if (res.value && res.value.value.toString()) {
-        let jsonRes = new QueryResponse();
-        console.log(res.value.value.toString('utf8'));
+// get all History for Order ID return , all transaction over aspecific Order 
+public async getHistoryForOrder(ctx:VehicleContext , orderID :string )
 
-        if (isHistory && isHistory === true) {
-          jsonRes.txId = res.value.tx_id;
-          jsonRes.timestamp = res.value.timestamp;
-          jsonRes.isDelete = res.value.is_delete.toString();
-          try {
-            jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
-          } catch (err) {
-            console.log(err);
-            jsonRes.record = res.value.value.toString('utf8');
-          }
-        } else {
-          jsonRes.key = res.value.key;
-          try {
-            jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
-          } catch (err) {
-            console.log(err);
-            jsonRes.record = res.value.value.toString('utf8');
-          }
-        }
-        allResults.push(jsonRes);
-      }
-      if (res.done) {
-        console.log('end of data');
-        await iterator.close();
-        console.info(allResults);
-        return allResults;
-      }
-    }
-  }
-
+{
+    return  await ctx.getOrderList().getOrderHistory(orderID);
+}
 }

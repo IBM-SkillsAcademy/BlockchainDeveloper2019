@@ -5,7 +5,7 @@ SPDX-License-Identifier: Apache-2.0
 'use strict';
 import { Context } from 'fabric-contract-api';
 import { newLogger } from 'fabric-shim';
-import {  IState, State } from './state';
+import {  IHistoricState ,IState, State } from './state';
 
 const logger = newLogger('STATELIST');
 
@@ -164,4 +164,27 @@ export class StateList<T extends State> {
         return state;
     }
 
+    public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
+        const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
+        const keyHistory = await this.ctx.stub.getHistoryForKey(ledgerKey);
+
+        const history: Array<IHistoricState<T>> = [];
+
+        let value = (await keyHistory.next()).value;
+
+        while (value) {
+            const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses);
+
+            const historicState: IHistoricState<T> = new IHistoricState(
+                (value.getTimestamp().getSeconds() as any).toInt(), value.getTxId(), state as T,
+            );
+
+            history.push(historicState);
+
+            const next = await keyHistory.next();
+            value = next.value;
+        }
+
+        return history;
+    }
 }

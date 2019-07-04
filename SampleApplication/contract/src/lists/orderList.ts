@@ -22,4 +22,9 @@ export class OrderList <T extends Order> extends StateList<T> {
   public async updateOrder(order) {
       return this.update(order);
     }
+
+    public async getOrderHistory(orderID)
+    {
+        return this.getHistory(orderID);
+    }
 }
