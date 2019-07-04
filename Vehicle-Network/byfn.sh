@@ -160,6 +160,8 @@ npm install
 echo "Build ( npm run-script build )"
 npm run-script build
 cd $ROOT
+rm -R -f channel-artifacts
+mkdir channel-artifacts
 
 }
 # Generate the needed certificates, the genesis block and start the network.
@@ -171,9 +173,6 @@ function networkUp() {
     generateCerts
     replacePrivateKey
     generateChannelArtifacts
-  fi
- if [ ! -d "channel-articats" ]; then
-    mkdir channel-articats
   fi
   COMPOSE_FILES="-f ${COMPOSE_FILE}"
   if [ "${CERTIFICATE_AUTHORITIES}" == "true" ]; then
