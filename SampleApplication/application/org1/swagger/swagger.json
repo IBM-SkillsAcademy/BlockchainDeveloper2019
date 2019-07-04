@@ -387,9 +387,48 @@
         }, {
           "in": "query",
           "name": "id",
+          "required": "true",
           "schema": {
             "type": "string",
             "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicle/price/range": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get vehicle price by range",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "min",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "10000"
+          }
+        }, {
+          "in": "query",
+          "name": "max",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "50000"
           }
         }],
         "responses": {

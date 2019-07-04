@@ -338,6 +338,34 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
+  describe('GET /api/v1/vehicle/price/range', () => {
+    it('Manufacture can query vehicle price by range', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicle/price/range')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          min: "10000",
+          max: "50000"
+        })
+        .expect(200)
+      res.body.result.length.should.above(0);
+    }));
+
+    it('Regulator can query vehicle price by range', mochaAsync(async () => {
+      const res = await apiRegulator
+        .get('/api/v1/vehicle/price/range')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .query({
+          min: "10000",
+          max: "50000"
+        })
+        .expect(200)
+      res.body.result.length.should.above(0);
+    }));
+  });
+
   describe('PUT /api/v1/vehicle/order', () => {
     it('Manufacturer can can update vehicle order status', mochaAsync(async () => {
       const res = await apiManufacturer

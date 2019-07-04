@@ -15,6 +15,7 @@ router.get('/order/status', controller.getOrder);
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/price', controller.getPrice);
+router.get('/price/range', controller.getPriceByRange);
 router.post('/price', controller.updatePrice);
 router.post('/vin/request', controller.requestVIN);
 router.post('/policy', controller.requestPolicy);
