@@ -12,5 +12,6 @@ router.get('/', controller.getVehicle);
 router.post('/owner/change', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);
 router.get('/policy', controller.getPolicy);
+router.put('/policy', controller.issuePolicy);
 
 module.exports = router;

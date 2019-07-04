@@ -426,7 +426,7 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/policy', () => {
+  describe('GET /api/v1/vehicle/policy', () => {
     it('Manufacturer can view policy for a vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/policy')
@@ -458,6 +458,17 @@ describe('Vehicle cycle: ', () => {
         .expect(200)
     }));
   });
+
+  describe('PUT /api/v1/vehicle/policy', () => {
+    it('Insurer can issue insurance policy for a vehicle', mochaAsync(async () => {
+      const res = await apiInsurer
+        .put('/api/v1/vehicle/policy')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'user1')
+        .send({id: policyRequest.id})
+        .expect(200)
+    }));
+  })
 
   describe('POST /api/v1/vehicle/vin/request', () => {
     const vinRequest = {

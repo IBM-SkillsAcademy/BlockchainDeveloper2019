@@ -186,8 +186,8 @@ export class VehicleContract extends Contract {
         return await ctx.getPolicyList().get(policyId);
     }
 
-    // Update order status to be in progress
-    public async updatePolicy(ctx: VehicleContext, id: string, startDate: number, endDate: number) {
+    // Update requested policy to be issued
+    public async issuePolicy(ctx: VehicleContext, id: string) {
         await this.hasRole(ctx, ['Insurer']);
 
         const policy = await ctx.getPolicyList().get(id);

@@ -393,7 +393,7 @@ exports.requestPolicy = async (req, res, next) => {
     const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
-    // requestPolicy transaction - requires 8 argument, ex: ('requestPolicy', 'vehicle13:Accord', 'insurer12', 'holder12', 'THIRD_PARTY', 12122019 , 31122020)
+    // requestPolicy transaction - requires 8 argument, ex: ('requestPolicy', 'policy1', 'insurer12', 'holder12', 'THIRD_PARTY', 12122019 , 31122020)
     await contract.submitTransaction(
       'requestPolicy',
       req.body.id,
@@ -407,7 +407,7 @@ exports.requestPolicy = async (req, res, next) => {
     // Disconnect from the gateway.
     await gateway.disconnect();
     return res.send({
-      message: `Vehicle with ID ${req.body.vehicleID} has been created`,
+      message: `Policy with ID ${req.body.id} has been requested`,
       details: req.body
     });
   } catch (err) {

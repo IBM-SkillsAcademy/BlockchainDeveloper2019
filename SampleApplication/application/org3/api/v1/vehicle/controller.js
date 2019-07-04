@@ -228,3 +228,45 @@ exports.getPolicy = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.issuePolicy = async (req, res, next) => {
+  try {
+    const enrollmentID = req.headers['enrollment-id'];
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+
+    // Create a new gateway for connecting to our peer node.
+    const gateway = new Gateway();
+    await gateway.connect(ccp, { wallet, identity: enrollmentID });
+
+    // Get the network (channel) our contract is deployed to.
+    const network = await gateway.getNetwork('mychannel');
+
+    // Get the contract from the network.
+    const contract = network.getContract('vehicle-manufacture');
+
+    // Submit the specified transaction.
+    // issuePolicy transaction - requires 2 argument, ex: ('issuePolicy', 'policy1')
+    await contract.submitTransaction(
+      'issuePolicy',
+      req.body.id);
+
+    // Disconnect from the gateway.
+    await gateway.disconnect();
+    return res.send({
+      message: `Policy with ID ${req.body.id} has been issued`,
+      details: req.body
+    });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
