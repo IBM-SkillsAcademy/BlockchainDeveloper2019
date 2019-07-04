@@ -170,13 +170,10 @@ export class VehicleContract extends Contract {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
-        console.log("Before Getting Vehicle Info "+vehicleNumber);
         // check if vehicle exist
         await ctx.getVehicleList().getVehicle(vehicleNumber);
 
-        console.log("After Getting Vehicle Info "+vehicleNumber);
-
-        // 
+        //
         const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
         await ctx.getPolicyList().add(policy);
 
@@ -275,8 +272,8 @@ export class VehicleContract extends Contract {
      */
     public async queryWithQueryString(ctx, queryString) {
 
-    console.log('query String');
-    console.log(JSON.stringify(queryString));
+    console.info('query String');
+    console.info(JSON.stringify(queryString));
 
     const resultsIterator = await ctx.stub.getQueryResult(queryString);
 
@@ -288,24 +285,24 @@ export class VehicleContract extends Contract {
         if (res.value && res.value.value.toString()) {
             const jsonRes = new QueryResponse();
 
-            console.log(res.value.value.toString('utf8'));
+            console.info(res.value.value.toString('utf8'));
 
             jsonRes.key = res.value.key;
 
             try {
                 jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
             } catch (err) {
-                console.log(err);
+                console.info(err);
                 jsonRes.record = res.value.value.toString('utf8');
             }
 
             allResults.push(jsonRes);
         }
         if (res.done) {
-            console.log('end of data');
+            console.info('end of data');
             await resultsIterator.close();
             console.info(allResults);
-            console.log(JSON.stringify(allResults));
+            console.info(JSON.stringify(allResults));
             return JSON.stringify(allResults);
         }
     }
