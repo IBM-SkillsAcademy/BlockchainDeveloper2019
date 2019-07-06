@@ -237,8 +237,10 @@ exports.getVehicle = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    res.send('Error handling transaction.' + err);
+    //console.log(err);
+    //next(err);
   }
 };
 

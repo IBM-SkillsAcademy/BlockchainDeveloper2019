@@ -2,16 +2,16 @@
 ROOT=${PWD} # save current directory
 
 # check if node_modules exist for every org
-if [ ! -d "${ROOT}/org1/node_modules" ]; then
-  cd ${ROOT}/org1/
+if [ ! -d "${ROOT}/manufacturer/node_modules" ]; then
+  cd ${ROOT}/manufacturer/
   npm install
 fi
-if [ ! -d "${ROOT}/org2/node_modules" ]; then
-  cd ${ROOT}/org2/
+if [ ! -d "${ROOT}/regulator/node_modules" ]; then
+  cd ${ROOT}/regulator/
   npm install
 fi
-if [ ! -d "${ROOT}/org3/node_modules" ]; then
-  cd ${ROOT}/org3/
+if [ ! -d "${ROOT}/insurer/node_modules" ]; then
+  cd ${ROOT}/insurer/
   npm install
 fi
 if [ ! -d "${ROOT}/unitTest/node_modules" ]; then
@@ -20,13 +20,13 @@ if [ ! -d "${ROOT}/unitTest/node_modules" ]; then
 fi
 
 # start all applications with pm2
-cd ${ROOT}/org1/
-node_modules/pm2/bin/pm2 start ${ROOT}/org1/index.js
-cd ${ROOT}/org2/
-node_modules/pm2/bin/pm2 start ${ROOT}/org2/index.js
-cd ${ROOT}/org3/
-node_modules/pm2/bin/pm2 start ${ROOT}/org3/index.js
+cd ${ROOT}/manufacturer/
+node_modules/pm2/bin/pm2 start ${ROOT}/manufacturer/index.js
+cd ${ROOT}/regulator/
+node_modules/pm2/bin/pm2 start ${ROOT}/regulator/index.js
+cd ${ROOT}/insurer/
+node_modules/pm2/bin/pm2 start ${ROOT}/insurer/index.js
 
 # run unit tests
-cd ${ROOT}/unitTest/
-npm run test
+#cd ${ROOT}/unitTest/
+#npm run test

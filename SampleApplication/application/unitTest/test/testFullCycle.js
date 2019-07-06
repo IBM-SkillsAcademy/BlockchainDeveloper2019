@@ -81,7 +81,7 @@ describe('Enrollment and Registration: ', () => {
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
         .send({
-          enrollmentID: 'user1'
+          enrollmentID: 'unitTestUser'
         })
       if (res.error) {
         res.error.status.should.equal(409);
@@ -96,7 +96,7 @@ describe('Enrollment and Registration: ', () => {
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
         .send({
-          enrollmentID: 'user1'
+          enrollmentID: 'unitTestUser'
         })
       if (res.error) {
         res.error.status.should.equal(409);
@@ -111,7 +111,7 @@ describe('Enrollment and Registration: ', () => {
         .post('/api/v1/auth/register-user')
         .set('Content-Type', 'application/json')
         .send({
-          enrollmentID: 'user1'
+          enrollmentID: 'unitTestUser'
         })
       if (res.error) {
         res.error.status.should.equal(409);
@@ -147,7 +147,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .post('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send(vehicle)
         .expect(200)
     }));
@@ -158,7 +158,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
       res.body.result.length.should.above(0);
     }));
@@ -167,7 +167,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
       res.body.result.length.should.above(0);
     }));
@@ -178,7 +178,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: vehicle.orderID
         })
@@ -190,7 +190,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: vehicle.orderID
         })
@@ -204,7 +204,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/order/status')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           status: 'ISSUED'
         })
@@ -216,7 +216,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/order/status')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           status: 'ISSUED'
         })
@@ -225,12 +225,25 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
+  describe('PUT /api/v1/vehicle/order', () => {
+    it('Manufacturer can can update  status To be delivered ', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .put('/api/v1/vehicle/order')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .send({
+          orderID: vehicle.orderID,
+          status: 'DELIVERED'
+        })
+        .expect(200)
+    }));
+  });
   describe('POST /api/v1/vehicle', () => {
     it('Manufacturer can create vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
         .post('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send(vehicle)
         .expect(200)
     }));
@@ -241,7 +254,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
 
@@ -249,7 +262,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
 
@@ -257,7 +270,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiInsurer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
   });
@@ -267,7 +280,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -278,7 +291,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -289,7 +302,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -306,7 +319,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .post('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send(priceUpdate)
         .expect(200)
     }));
@@ -317,7 +330,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -329,7 +342,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/price')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -343,7 +356,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/price/range')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           min: "10000",
           max: "50000"
@@ -356,7 +369,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/price/range')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           min: "10000",
           max: "50000"
@@ -371,7 +384,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .put('/api/v1/vehicle/order')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send({
           orderID: vehicle.orderID,
           status: 'PENDING'
@@ -385,7 +398,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .post('/api/v1/vehicle/owner/change')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send({
           vehicleID: key,
           owner: 'Wayne'
@@ -397,7 +410,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiInsurer
         .post('/api/v1/vehicle/owner/change')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send({
           vehicleID: key,
           owner: 'John'
@@ -411,7 +424,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: key
         })
@@ -424,7 +437,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .post('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send(policyRequest)
         .expect(200)
     }));
@@ -435,21 +448,21 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
     it('Regulator can view all policies for vehicles', mochaAsync(async () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
     it('Insurer can view all policies for vehicles', mochaAsync(async () => {
       const res = await apiInsurer
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
   });
@@ -459,7 +472,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiManufacturer
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: policyRequest.id
         })
@@ -469,7 +482,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiRegulator
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: policyRequest.id
         })
@@ -479,7 +492,7 @@ describe('Vehicle cycle: ', () => {
       const res = await apiInsurer
         .get('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .query({
           id: policyRequest.id
         })
@@ -492,47 +505,47 @@ describe('Vehicle cycle: ', () => {
       const res = await apiInsurer
         .put('/api/v1/vehicle/policy')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send({id: policyRequest.id})
         .expect(200)
     }));
   })
 
-  describe('POST /api/v1/vehicle/vin/request', () => {
-    const vinRequest = {
-      vehicleID: key,
-    };
-    it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
-      const res = await apiManufacturer
-        .post('/api/v1/vehicle/vin/request')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
-        .send(vinRequest)
-        .expect(200)
-    }));
-  });
+  // describe('POST /api/v1/vehicle/vin/request', () => {
+  //   const vinRequest = {
+  //     vehicleID: key,
+  //   };
+  //   it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
+  //     const res = await apiManufacturer
+  //       .post('/api/v1/vehicle/vin/request')
+  //       .set('Content-Type', 'application/json')
+  //       .set('enrollment-id', 'unitTestUser')
+  //       .send(vinRequest)
+  //       .expect(200)
+  //   }));
+  // });
 
-  describe('POST /api/v1/vehicle/vin/issue', () => {
-    const vinRequest = {
-      vehicleID: key,
-      vin: vin
-    };
-    it('Regulator can issue vehicle VIN', mochaAsync(async () => {
-      const res = await apiRegulator
-        .post('/api/v1/vehicle/vin/issue')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
-        .send(vinRequest)
-        .expect(200)
-    }));
-  });
+  // describe('POST /api/v1/vehicle/vin/issue', () => {
+  //   const vinRequest = {
+  //     vehicleID: key,
+  //     vin: vin
+  //   };
+  //   it('Regulator can issue vehicle VIN', mochaAsync(async () => {
+  //     const res = await apiRegulator
+  //       .post('/api/v1/vehicle/vin/issue')
+  //       .set('Content-Type', 'application/json')
+  //       .set('enrollment-id', 'unitTestUser')
+  //       .send(vinRequest)
+  //       .expect(200)
+  //   }));
+  // });
 
   describe('DELETE /api/v1/vehicle', () => {
     it('Regulator can delete vehicle from the ledger', mochaAsync(async () => {
       const res = await apiRegulator
         .delete('/api/v1/vehicle/delete')
         .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'user1')
+        .set('enrollment-id', 'unitTestUser')
         .send({
           vehicleID: key
         })

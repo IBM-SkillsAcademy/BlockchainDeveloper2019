@@ -2,16 +2,16 @@
 ROOT=${PWD} # save current directory
 
 # check if wallet exist for every org
-if [ -d "${ROOT}/org1/" ]; then
-  cd ${ROOT}/org1/
+if [ -d "${ROOT}/manufacturer/wallet" ]; then
+  cd ${ROOT}/manufacturer/
   rm -f -R  wallet
 fi
-if [ -d "${ROOT}/org2/wallet" ]; then
-  cd ${ROOT}/org2/
+if [ -d "${ROOT}/regulator/wallet" ]; then
+  cd ${ROOT}/regulator/
   rm -f -R  wallet
 fi
-if [ -d "${ROOT}/org3/wallet" ]; then
-  cd ${ROOT}/org3/
+if [ -d "${ROOT}/insurer/wallet" ]; then
+  cd ${ROOT}/insurer/
   rm -f -R  wallet
 fi
 

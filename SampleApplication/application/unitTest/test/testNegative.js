@@ -52,7 +52,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
           .post('/api/v1/auth/register-user')
           .set('Content-Type', 'application/json')
           .send({
-            enrollmentID: 'user1'
+            enrollmentID: 'unitTestUser'
           })
           .expect(409);
           
@@ -67,7 +67,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
           .post('/api/v1/auth/register-user')
           .set('Content-Type', 'application/json')
           .send({
-            enrollmentID: 'user1'
+            enrollmentID: 'unitTestUser'
           })
           .expect(409);
           
@@ -82,7 +82,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
           .post('/api/v1/auth/register-user')
           .set('Content-Type', 'application/json')
           .send({
-            enrollmentID: 'user1'
+            enrollmentID: 'unitTestUser'
           })
           .expect(409);
           
@@ -180,33 +180,33 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .get('/api/v1/vehicle')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .query({
             id: key
           }).expect(500);
-        res.text.should.include('Cannot get state. No state exists');
+          res.text.should.include(`Vehicle with ID `+key+` does not exists`);
       }));
   
       it('Cannot query vehicle by id using Regulator application if it doesent exist', mochaAsync(async () => {
         const res = await apiRegulator
           .get('/api/v1/vehicle')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .query({
             id: key
           }).expect(500);
-        res.text.should.include('Cannot get state. No state exists');
+          res.text.should.include(`Vehicle with ID `+key+` does not exists`);
       }));
   
       it('Cannot query vehicle by id using Insurer application if it doesent exist', mochaAsync(async () => {
         const res = await apiInsurer
           .get('/api/v1/vehicle')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .query({
             id: key
           }).expect(500);
-        res.text.should.include('Cannot get state. No state exists');
+        res.text.should.include(`Vehicle with ID `+key+` does not exists`);
       }));
     });
 
@@ -228,7 +228,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .post('/api/v1/vehicle/vin/request')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send(vinRequest)
           .expect(500);
         res.text.should.contain('Endorsement has failed');
@@ -250,7 +250,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiInsurer
           .put('/api/v1/vehicle/policy')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({id: 'newPolicy'})
           .expect(500);
         res.text.should.contain('Endorsement has failed');
@@ -260,7 +260,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiInsurer
           .put('/api/v1/vehicle/policy')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .expect(500);
         res.text.should.contain('undefined');        
       }));
@@ -285,7 +285,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .post('/api/v1/vehicle/price')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send(priceUpdate)
           .expect(500);
         res.text.should.contain('Endorsement has failed');
@@ -295,7 +295,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .post('/api/v1/vehicle/price')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             price: '40000'
           })
@@ -307,7 +307,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .post('/api/v1/vehicle/price')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             vehicleID: key,
           })
@@ -358,7 +358,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .put('/api/v1/vehicle/order')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             orderID: vehicle.orderID,
             status: 'PENDING'
@@ -370,7 +370,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiManufacturer
           .put('/api/v1/vehicle/order')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             orderID: vehicle.orderID,
             status: 'ISSUED'
@@ -396,7 +396,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiRegulator
           .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             vehicleID: key,
             owner: 'Wayne'
@@ -408,7 +408,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiRegulator
           .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             vehicleID: key,
           }).expect(500);
@@ -431,7 +431,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiInsurer
           .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             vehicleID: key,
             owner: 'Wayne'
@@ -443,7 +443,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiInsurer
           .post('/api/v1/vehicle/owner/change')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .send({
             vehicleID: key,
           }).expect(500);
@@ -468,7 +468,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
       //   const res = await apiRegulator
       //     .delete('/api/v1/vehicle/delete')
       //     .set('Content-Type', 'application/json')
-      //     .set('enrollment-id', 'user1')
+      //     .set('enrollment-id', 'unitTestUser')
       //     .send({
       //       vehicleID: key
       //     })
@@ -480,7 +480,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
         const res = await apiRegulator
           .delete('/api/v1/vehicle/delete')
           .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'user1')
+          .set('enrollment-id', 'unitTestUser')
           .expect(500);
         res.text.should.contain('undefined');
       }));
