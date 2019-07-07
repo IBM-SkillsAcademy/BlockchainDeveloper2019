@@ -28,5 +28,5 @@ cd ${ROOT}/insurer/
 node_modules/pm2/bin/pm2 start ${ROOT}/insurer/index.js
 
 # run unit tests
-#cd ${ROOT}/unitTest/
-#npm run test
+cd ${ROOT}/unitTest/
+npm run test

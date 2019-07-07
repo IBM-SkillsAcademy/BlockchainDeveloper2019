@@ -232,7 +232,7 @@
         }
       }
     },
-    "/api/v1/vehicle/change-owner": {
+    "/api/v1/vehicle/owner/change": {
       "post": {
         "tags": [
           "Vehicle"
