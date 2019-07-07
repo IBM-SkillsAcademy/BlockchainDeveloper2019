@@ -30,3 +30,10 @@ node_modules/pm2/bin/pm2 start ${ROOT}/insurer/index.js
 # run unit tests
 cd ${ROOT}/unitTest/
 npm run test
+
+echo ''
+echo '    The applications are ready. Please follow the links below to open swagger api'
+echo '    Manufacturer: http://localhost:6001/api-docs'
+echo '    Regulator: http://localhost:6002/api-docs'
+echo '    Insurer: http://localhost:6003/api-docs'
+echo ''
