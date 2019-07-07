@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 const AuthController = require('./auth/index');
 router.use('/auth', AuthController);
 
-const VehicleController = require('./vehicle/index');
-router.use('/vehicle', VehicleController);
+const VehicleController = require('./vehicles/index');
+router.use('/vehicles', VehicleController);
 
 module.exports = router;

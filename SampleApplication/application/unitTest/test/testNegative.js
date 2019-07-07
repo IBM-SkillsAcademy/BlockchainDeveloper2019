@@ -104,10 +104,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
     };
     const key = `${vehicle.orderID}:${vehicle.model}`;
     const vin = 'G33KS';
-    describe('POST /api/v1/vehicle/orders', () => {
+    describe('POST /api/v1/vehicles/orders', () => {
       it('Cannot create order if using a non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/orders')
+          .post('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send(vehicle)
@@ -116,10 +116,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('GET /api/v1/vehicle/orders', () => {
+    describe('GET /api/v1/vehicles/orders', () => {
       it('Cannot query all vehicle order using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/vehicle/orders')
+          .get('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .expect(401)
@@ -128,7 +128,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot query all vehicle order using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/vehicle/orders')
+          .get('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .expect(401)
@@ -136,10 +136,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
     
-    describe('POST /api/v1/vehicle', () => {
+    describe('POST /api/v1/vehicles', () => {
       it('Cannot create vehicle using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle')
+          .post('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send(vehicle)
@@ -148,10 +148,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('GET /api/v1/vehicle', () => {
+    describe('GET /api/v1/vehicles', () => {
       it('Cannot query all vehicle using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .expect(401);
@@ -160,7 +160,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query all vehicle using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .expect(401);
@@ -169,7 +169,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query all vehicle using Insurer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiInsurer
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .expect(401);
@@ -178,7 +178,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot query vehicle by id using Manufacturer application if it doesent exist', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .query({
@@ -189,7 +189,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query vehicle by id using Regulator application if it doesent exist', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .query({
@@ -200,7 +200,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query vehicle by id using Insurer application if it doesent exist', mochaAsync(async () => {
         const res = await apiInsurer
-          .get('/api/v1/vehicle')
+          .get('/api/v1/vehicles')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .query({
@@ -210,13 +210,13 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('POST /api/v1/vehicle/vin/request', () => {
+    describe('POST /api/v1/vehicles/vin/request', () => {
       const vinRequest = {
         vehicleID: key,
       };
       it('Cannot request vehicle VIN using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/vin/request')
+          .post('/api/v1/vehicles/vin/request')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send(vinRequest)
@@ -226,7 +226,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot request vehicle VIN using Manufacturer application if it doesent exist', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/vin/request')
+          .post('/api/v1/vehicles/vin/request')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send(vinRequest)
@@ -235,10 +235,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('PUT /api/v1/vehicle/policies/issue', () => {
+    describe('PUT /api/v1/vehicles/policies/issue', () => {
       it('Cannot issue insurance for policy using Insurer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policies/issue')
+          .put('/api/v1/vehicles/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({id: 'newPolicy'})
@@ -248,7 +248,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot issue insurance for policy using Insurer application for a policy that does not exist', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policies/issue')
+          .put('/api/v1/vehicles/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({id: 'newPolicy'})
@@ -258,7 +258,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot issue insurance for policy using Insurer application if missing id params', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policies/issue')
+          .put('/api/v1/vehicles/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .expect(500);
@@ -266,14 +266,14 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('POST /api/v1/vehicle/prices', () => {
+    describe('POST /api/v1/vehicles/prices', () => {
       const priceUpdate = {
         vehicleID: key,
         price: '40000'
       };
       it('Cannot update vehicle price using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/prices')
+          .post('/api/v1/vehicles/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send(priceUpdate)
@@ -283,7 +283,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle price using Manufacturer application if it doesent exist', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/prices')
+          .post('/api/v1/vehicles/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send(priceUpdate)
@@ -293,7 +293,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle price using Manufacturer application if missing vehicleID param', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/prices')
+          .post('/api/v1/vehicles/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -305,7 +305,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
       
       it('Cannot update vehicle price using Manufacturer application if missing price param', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/prices')
+          .post('/api/v1/vehicles/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -316,10 +316,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('GET /api/v1/vehicle/prices/range', () => {
+    describe('GET /api/v1/vehicles/prices/range', () => {
       it('Cannot query vehicle price by range using Manufacture application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/vehicle/prices/range')
+          .get('/api/v1/vehicles/prices/range')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .query({
@@ -331,7 +331,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query vehicle price by range using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/vehicle/prices/range')
+          .get('/api/v1/vehicles/prices/range')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .query({
@@ -341,10 +341,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
           res.body.message.should.include('An identity for the user user2 does not exist in the wallet');
       }));
     });
-    describe('PUT /api/v1/vehicle/orders', () => {
+    describe('PUT /api/v1/vehicles/orders', () => {
       it('Cannot update vehicle order status using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .put('/api/v1/vehicle/orders')
+          .put('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -356,7 +356,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle order status using Manufacturer application if it doesent exist', mochaAsync(async () => {
         const res = await apiManufacturer
-          .put('/api/v1/vehicle/orders')
+          .put('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -368,7 +368,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle order status using Manufacturer application if passing invalid status param', mochaAsync(async () => {
         const res = await apiManufacturer
-          .put('/api/v1/vehicle/orders')
+          .put('/api/v1/vehicles/orders')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -379,10 +379,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('POST /api/v1/vehicle/owner/change', () => {
+    describe('POST /api/v1/vehicles/owners/change', () => {
       it('Cannot change vehicle ownership using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -394,7 +394,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Regulator application if it doesent exist', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -406,7 +406,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Regulator application if missing owner param', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -417,7 +417,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot change vehicle ownership using Insurer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -429,7 +429,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Insurer application if it doesent exist', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -441,7 +441,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot change vehicle ownership using Insurer application if missing owner params', mochaAsync(async () => {
         const res = await apiInsurer
-          .post('/api/v1/vehicle/owner/change')
+          .post('/api/v1/vehicles/owners/change')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -451,10 +451,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('DELETE /api/v1/vehicle', () => {
+    describe('DELETE /api/v1/vehicles', () => {
       it('Cannot delete vehicle from ledger using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .delete('/api/v1/vehicle/delete')
+          .delete('/api/v1/vehicles/delete')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({
@@ -466,7 +466,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       // it('Cannot delete vehicle from ledger using Regulator application if it doesent exist', mochaAsync(async () => {
       //   const res = await apiRegulator
-      //     .delete('/api/v1/vehicle/delete')
+      //     .delete('/api/v1/vehicles/delete')
       //     .set('Content-Type', 'application/json')
       //     .set('enrollment-id', 'unitTestUser')
       //     .send({
@@ -478,7 +478,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot delete vehicle from ledger using Regulator application if missing vehicleID params', mochaAsync(async () => {
         const res = await apiRegulator
-          .delete('/api/v1/vehicle/delete')
+          .delete('/api/v1/vehicles/delete')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .expect(500);

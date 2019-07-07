@@ -50,7 +50,7 @@
         }
       }
     },
-    "/api/v1/vehicle": {
+    "/api/v1/vehicles": {
       "post": {
         "tags": [
           "Vehicle"
@@ -145,7 +145,7 @@
         }
       }
     },
-      "/api/v1/vehicle/history": {
+      "/api/v1/vehicles/history": {
       "get": {
         "tags": [
           "Vehicle"
@@ -183,7 +183,7 @@
       }
     
   },
-    "/api/v1/vehicle/orders": {
+    "/api/v1/vehicles/orders": {
       "post": {
         "tags": [
           "Order"
@@ -325,7 +325,7 @@
       }
     },
    
-    "/api/v1/vehicle/orders/status": {
+    "/api/v1/vehicles/orders/status": {
       "get": {
         "tags": [
           "Order"
@@ -366,7 +366,7 @@
         }
       }
     },
-     "/api/v1/vehicle/orders/status/paginated": {
+     "/api/v1/vehicles/orders/status/paginated": {
       "get": {
         "tags": [
           "Order"
@@ -423,7 +423,7 @@
         }
       }
     },
-       "/api/v1/vehicle/orders/history": {
+       "/api/v1/vehicles/orders/history": {
       "get": {
         "tags": [
           "Order"
@@ -461,7 +461,7 @@
       }
     
   },
-    "/api/v1/vehicle/prices": {
+    "/api/v1/vehicles/prices": {
       "post": {
         "tags": [
           "Price"
@@ -534,7 +534,7 @@
         }
       }
     },
-    "/api/v1/vehicle/prices/range": {
+    "/api/v1/vehicles/prices/range": {
       "get": {
         "tags": [
           "Price"
@@ -572,7 +572,7 @@
         }
       }
     },
-    "/api/v1/vehicle/policies/request": {
+    "/api/v1/vehicles/policies/request": {
       "post": {
         "tags": [
           "Policy"
@@ -650,7 +650,7 @@
         }
       }
     },
-    "/api/v1/vehicle/policies": {
+    "/api/v1/vehicles/policies": {
       "get": {
         "tags": [
           "Policy"
@@ -688,7 +688,7 @@
       }
 
     },
-    "/api/v1/vehicle/vin/request": {
+    "/api/v1/vehicles/vin/request": {
       "post": {
         "tags": [
           "Vehicle"
