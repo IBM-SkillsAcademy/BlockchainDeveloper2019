@@ -5,7 +5,7 @@ import { State } from '../ledger-api/state';
 export enum VinStatus {
     NOVALUE= 'NOVALUE',
     REQUESTED= 'REQUESTED',
-    ISSUED= 'REQUESTED',
+    ISSUED= 'ISSUED',
 }
 
 @ContractObject()

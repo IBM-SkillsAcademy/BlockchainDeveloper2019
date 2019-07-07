@@ -51,8 +51,11 @@ exports.getOrder = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -98,8 +101,11 @@ exports.getVehicle = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -141,8 +147,12 @@ exports.changeOwner = async (req, res, next) => {
       message: `Vehicle with ID ${req.body.vehicleID} ownership has been changed to ${req.body.owner}`
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -182,8 +192,12 @@ exports.deleteVehicle = async (req, res, next) => {
       message: `Vehicle with ID ${req.body.vehicleID} has been deleted}`
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -221,8 +235,11 @@ exports.getPrice = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -260,8 +277,11 @@ exports.getPriceByRange = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -293,7 +313,7 @@ exports.getPolicy = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result;
     if (req.query.id) {
-      result = await contract.submitTransaction('getPolicy', req.query.id);
+      result = await contract.evaluateTransaction('getPolicy', req.query.id);
     } else {
       result = await contract.evaluateTransaction('getPolicies');
     }
@@ -303,8 +323,11 @@ exports.getPolicy = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -347,7 +370,11 @@ exports.issueVIN = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };

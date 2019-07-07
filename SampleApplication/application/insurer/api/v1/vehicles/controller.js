@@ -51,8 +51,11 @@ exports.getVehicle = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -95,8 +98,12 @@ exports.changeOwner = async (req, res, next) => {
       response: response
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -137,8 +144,12 @@ exports.deleteVehicle = async (req, res, next) => {
       response: response
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -181,8 +192,12 @@ exports.updatePrice = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -214,7 +229,7 @@ exports.getPolicy = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result;
     if (req.query.id) {
-      result = await contract.submitTransaction('getPolicy', req.query.id);
+      result = await contract.evaluateTransaction('getPolicy', req.query.id);
     } else {
       result = await contract.evaluateTransaction('getPolicies');
     }
@@ -224,8 +239,11 @@ exports.getPolicy = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -266,7 +284,11 @@ exports.issuePolicy = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };

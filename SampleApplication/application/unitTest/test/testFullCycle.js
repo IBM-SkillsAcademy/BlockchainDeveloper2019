@@ -123,7 +123,7 @@ describe('Enrollment and Registration: ', () => {
 /////////////////////  Registration End  /////////////////////
 
 ///////////////////// Vehicle Cycle Start /////////////////////
-describe('Vehicle cycle: ', () => {
+describe.only('Vehicle cycle: ', () => {
   const vehicle = {
     orderID: `vehicle${generate('1234567890abcdef', 4)}`,
     manufacturer: 'Tesla',
@@ -141,7 +141,7 @@ describe('Vehicle cycle: ', () => {
     startDate: '12122019',
     endDate: '31122019'
   }
-  const vin = 'G33KS';
+  const vin = `vin${generate('1234567890abcdef', 4)}`;
   describe('POST /api/v1/vehicles/orders', () => {
     it('Manufacturer can place order', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -511,34 +511,34 @@ describe('Vehicle cycle: ', () => {
     }));
   })
 
-  // describe('POST /api/v1/vehicles/vin/request', () => {
-  //   const vinRequest = {
-  //     vehicleID: key,
-  //   };
-  //   it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
-  //     const res = await apiManufacturer
-  //       .post('/api/v1/vehicles/vin/request')
-  //       .set('Content-Type', 'application/json')
-  //       .set('enrollment-id', 'unitTestUser')
-  //       .send(vinRequest)
-  //       .expect(200)
-  //   }));
-  // });
+  describe('POST /api/v1/vehicles/vin/request', () => {
+    const vinRequest = {
+      vehicleID: key,
+    };
+    it('Manufacturer can request vehicle VIN', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .post('/api/v1/vehicles/vin/request')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .send(vinRequest)
+        .expect(200)
+    }));
+  });
 
-  // describe('POST /api/v1/vehicles/vin/issue', () => {
-  //   const vinRequest = {
-  //     vehicleID: key,
-  //     vin: vin
-  //   };
-  //   it('Regulator can issue vehicle VIN', mochaAsync(async () => {
-  //     const res = await apiRegulator
-  //       .post('/api/v1/vehicles/vin/issue')
-  //       .set('Content-Type', 'application/json')
-  //       .set('enrollment-id', 'unitTestUser')
-  //       .send(vinRequest)
-  //       .expect(200)
-  //   }));
-  // });
+  describe('POST /api/v1/vehicles/vin/issue', () => {
+    const vinRequest = {
+      vehicleID: key,
+      vin: vin
+    };
+    it('Regulator can issue vehicle VIN', mochaAsync(async () => {
+      const res = await apiRegulator
+        .post('/api/v1/vehicles/vin/issue')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .send(vinRequest)
+        .expect(200)
+    }));
+  });
 
   describe('DELETE /api/v1/vehicles', () => {
     it('Regulator can delete vehicle from the ledger', mochaAsync(async () => {

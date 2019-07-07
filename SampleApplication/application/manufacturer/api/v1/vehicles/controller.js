@@ -50,8 +50,12 @@ exports.placeOrder = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -97,8 +101,11 @@ exports.getOrder = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -146,8 +153,12 @@ exports.updateOrder = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -192,8 +203,12 @@ exports.createVehicle = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -237,10 +252,11 @@ exports.getVehicle = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
     res.status(500);
-    res.send('Error handling transaction.' + err);
-    //console.log(err);
-    //next(err);
+    res.send(json);
   }
 };
 
@@ -283,8 +299,12 @@ exports.updatePrice = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -322,8 +342,11 @@ exports.getPrice = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -361,8 +384,11 @@ exports.getPriceByRange = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -394,7 +420,7 @@ exports.getPolicy = async (req, res, next) => {
     // Evaluate the specified transaction.
     let result;
     if (req.query.id) {
-      result = await contract.submitTransaction('getPolicy', req.query.id);
+      result = await contract.evaluateTransaction('getPolicy', req.query.id);
     } else {
       result = await contract.evaluateTransaction('getPolicies');
     }
@@ -404,8 +430,11 @@ exports.getPolicy = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -452,8 +481,12 @@ exports.requestPolicy = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -495,8 +528,12 @@ exports.requestVIN = async (req, res, next) => {
       details: req.body
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
   }
 };
 
@@ -534,8 +571,11 @@ exports.getHistoryForVehicle = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -573,8 +613,11 @@ exports.getHistoryForOrder = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
 
@@ -603,11 +646,11 @@ exports.getOrdersByStatusPaginated = async (req, res, next) => {
     // Get the contract from the network.
     const contract = network.getContract('vehicle-manufacture');
 
-    // Evaluate the specified transaction. 
-    if(!req.query.bookmark) {
-      req.query.bookmark = "";
+    // Evaluate the specified transaction.
+    if (!req.query.bookmark) {
+      req.query.bookmark = '';
     }
-    const result = await contract.evaluateTransaction('getOrdersByStatusPaginated', req.query.orderStatus , req.query.pageSize , req.query.bookmark);
+    const result = await contract.evaluateTransaction('getOrdersByStatusPaginated', req.query.orderStatus, req.query.pageSize, req.query.bookmark);
 
     const rawResult = result.toString();
 
@@ -616,8 +659,10 @@ exports.getOrdersByStatusPaginated = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
-    console.log(err);
-    next(err);
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
   }
 };
-
