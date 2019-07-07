@@ -266,14 +266,14 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('POST /api/v1/vehicle/price', () => {
+    describe('POST /api/v1/vehicle/prices', () => {
       const priceUpdate = {
         vehicleID: key,
         price: '40000'
       };
       it('Cannot update vehicle price using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/price')
+          .post('/api/v1/vehicle/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send(priceUpdate)
@@ -283,7 +283,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle price using Manufacturer application if it doesent exist', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/price')
+          .post('/api/v1/vehicle/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send(priceUpdate)
@@ -293,7 +293,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot update vehicle price using Manufacturer application if missing vehicleID param', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/price')
+          .post('/api/v1/vehicle/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -305,7 +305,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
       
       it('Cannot update vehicle price using Manufacturer application if missing price param', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/vehicle/price')
+          .post('/api/v1/vehicle/prices')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({
@@ -316,10 +316,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('GET /api/v1/vehicle/price/range', () => {
+    describe('GET /api/v1/vehicle/prices/range', () => {
       it('Cannot query vehicle price by range using Manufacture application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/vehicle/price/range')
+          .get('/api/v1/vehicle/prices/range')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .query({
@@ -331,7 +331,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
   
       it('Cannot query vehicle price by range using Regulator application if using non-existing identity', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/vehicle/price/range')
+          .get('/api/v1/vehicle/prices/range')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .query({

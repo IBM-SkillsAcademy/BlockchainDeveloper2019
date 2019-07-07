@@ -310,14 +310,14 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('POST /api/v1/vehicle/price', () => {
+  describe('POST /api/v1/vehicle/prices', () => {
     const priceUpdate = {
       vehicleID: key,
       price: '40000'
     };
     it('Manufacturer can update vehicle price', mochaAsync(async () => {
       const res = await apiManufacturer
-        .post('/api/v1/vehicle/price')
+        .post('/api/v1/vehicle/prices')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send(priceUpdate)
@@ -325,10 +325,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/vehicle/price', () => {
+  describe('GET /api/v1/vehicle/prices', () => {
     it('Manufacture can see vehicle price', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/price')
+        .get('/api/v1/vehicle/prices')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -340,7 +340,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Regulator can see vehicle price', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/price')
+        .get('/api/v1/vehicle/prices')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -351,10 +351,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/vehicle/price/range', () => {
+  describe('GET /api/v1/vehicle/prices/range', () => {
     it('Manufacture can query vehicle price by range', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/price/range')
+        .get('/api/v1/vehicle/prices/range')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -367,7 +367,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Regulator can query vehicle price by range', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/price/range')
+        .get('/api/v1/vehicle/prices/range')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({

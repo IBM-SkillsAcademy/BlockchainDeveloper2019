@@ -165,7 +165,7 @@
         }
       }
     },
-    "/api/v1/vehicle/price": {
+    "/api/v1/vehicle/prices": {
       "get": {
         "tags": [
           "Price"
@@ -194,7 +194,7 @@
         }
       }
     },
-    "/api/v1/vehicle/price/range": {
+    "/api/v1/vehicle/prices/range": {
       "get": {
         "tags": [
           "Price"
