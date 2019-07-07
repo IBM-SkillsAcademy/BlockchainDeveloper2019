@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get('/enroll-admin', controller.enrollAdmin);
-router.post('/register-user', controller.registerUser);
+router.get('/registrar/enroll', controller.enrollAdmin);
+router.post('/user/register-enroll', controller.registerUser);
 
 module.exports = router;

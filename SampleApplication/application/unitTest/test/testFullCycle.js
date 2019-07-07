@@ -21,10 +21,10 @@ beforeEach((done) => {
 
 ///////////////////// Registration Start /////////////////////
 describe('Enrollment and Registration: ', () => {
-  describe('GET /api/v1/auth/enroll-admin', () => {
+  describe('GET /api/v1/auth/registrar/enroll', () => {
     it('Admin should be enrolled succesfully (Manufacture)', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/auth/enroll-admin')
+        .get('/api/v1/auth/registrar/enroll')
         .set('Content-Type', 'application/json')
 
       if (res.error) {
@@ -34,10 +34,10 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('GET /api/v1/auth/enroll-admin', () => {
+  describe('GET /api/v1/auth/registrar/enroll', () => {
     it('Admin should be enrolled succesfully (Regulator)', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/auth/enroll-admin')
+        .get('/api/v1/auth/registrar/enroll')
         .set('Content-Type', 'application/json')
 
       if (res.error) {
@@ -47,10 +47,10 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('GET /api/v1/auth/enroll-admin', () => {
+  describe('GET /api/v1/auth/registrar/enroll', () => {
     it('Admin should be enrolled succesfully (Insurer)', mochaAsync(async () => {
       const res = await apiInsurer
-        .get('/api/v1/auth/enroll-admin')
+        .get('/api/v1/auth/registrar/enroll')
         .set('Content-Type', 'application/json')
 
       if (res.error) {
@@ -75,10 +75,10 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('POST /api/v1/auth/register-user', () => {
+  describe('POST /api/v1/auth/user/register-enroll', () => {
     it('User should be registered succesfully (Manufacture)', mochaAsync(async () => {
       const res = await apiManufacturer
-        .post('/api/v1/auth/register-user')
+        .post('/api/v1/auth/user/register-enroll')
         .set('Content-Type', 'application/json')
         .send({
           enrollmentID: 'unitTestUser'
@@ -90,10 +90,10 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('POST /api/v1/auth/register-user', () => {
+  describe('POST /api/v1/auth/user/register-enroll', () => {
     it('User should be registered succesfully (Regulator)', mochaAsync(async () => {
       const res = await apiRegulator
-        .post('/api/v1/auth/register-user')
+        .post('/api/v1/auth/user/register-enroll')
         .set('Content-Type', 'application/json')
         .send({
           enrollmentID: 'unitTestUser'
@@ -105,10 +105,10 @@ describe('Enrollment and Registration: ', () => {
     }));
   });
 
-  describe('POST /api/v1/auth/register-user', () => {
+  describe('POST /api/v1/auth/user/register-enroll', () => {
     it('User should be registered succesfully (Insurer)', mochaAsync(async () => {
       const res = await apiInsurer
-        .post('/api/v1/auth/register-user')
+        .post('/api/v1/auth/user/register-enroll')
         .set('Content-Type', 'application/json')
         .send({
           enrollmentID: 'unitTestUser'

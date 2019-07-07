@@ -8,8 +8,8 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get('/enroll-admin', controller.enrollAdmin);
+router.get('/registrar/enroll', controller.enrollAdmin);
 router.get('/create-affiliation', controller.createAffiliation);
-router.post('/register-user', controller.registerUser);
+router.post('/user/register-enroll', controller.registerUser);
 
 module.exports = router;

@@ -6,7 +6,7 @@
     "title": "Regulator"
   },
   "paths": {
-    "/api/v1/auth/enroll-admin": {
+    "/api/v1/auth/registrar/enroll": {
       "get": {
         "tags": [
           "Auth"
@@ -19,7 +19,7 @@
         }
       }
     },
-    "/api/v1/auth/register-user": {
+    "/api/v1/auth/user/register-enroll": {
       "post": {
         "tags": [
           "Auth"

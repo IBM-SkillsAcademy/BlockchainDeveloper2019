@@ -20,10 +20,10 @@ beforeEach((done) => {
 });
 
 describe('Negative Test for Enrollment and Registration: ', () => {
-    describe('GET /api/v1/auth/enroll-admin', () => {
+    describe('GET /api/v1/auth/registrar/enroll', () => {
       it('Cannot enroll an admin if an admin identity already exists in Manufacturer org', mochaAsync(async () => {
         const res = await apiManufacturer
-          .get('/api/v1/auth/enroll-admin')
+          .get('/api/v1/auth/registrar/enroll')
           .set('Content-Type', 'application/json')
           .expect(409);
         res.body.message.should.include('An identity for the admin user "admin" already exists in the wallet');
@@ -31,7 +31,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
 
       it('Cannot enroll an admin if an admin identity already exists in Regulator org', mochaAsync(async () => {
         const res = await apiRegulator
-          .get('/api/v1/auth/enroll-admin')
+          .get('/api/v1/auth/registrar/enroll')
           .set('Content-Type', 'application/json')
           .expect(409);
         res.body.message.should.include('An identity for the admin user "admin" already exists in the wallet');
@@ -39,17 +39,17 @@ describe('Negative Test for Enrollment and Registration: ', () => {
 
       it('Cannot enroll an admin if an admin identity already exists in Insurer org', mochaAsync(async () => {
         const res = await apiInsurer
-          .get('/api/v1/auth/enroll-admin')
+          .get('/api/v1/auth/registrar/enroll')
           .set('Content-Type', 'application/json')
           .expect(409);
         res.body.message.should.include('An identity for the admin user "admin" already exists in the wallet');
       }));
     });
   
-    describe('POST /api/v1/auth/register-user', () => {
+    describe('POST /api/v1/auth/user/register-enroll', () => {
       it('Cannot register user if user exists in Manufacturer network', mochaAsync(async () => {
         const res = await apiManufacturer
-          .post('/api/v1/auth/register-user')
+          .post('/api/v1/auth/user/register-enroll')
           .set('Content-Type', 'application/json')
           .send({
             enrollmentID: 'unitTestUser'
@@ -64,7 +64,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
 
       it('Cannot register user if user exists in Regulator network', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/auth/register-user')
+          .post('/api/v1/auth/user/register-enroll')
           .set('Content-Type', 'application/json')
           .send({
             enrollmentID: 'unitTestUser'
@@ -79,7 +79,7 @@ describe('Negative Test for Enrollment and Registration: ', () => {
 
       it('Cannot register user if user exists in Insurer network', mochaAsync(async () => {
         const res = await apiRegulator
-          .post('/api/v1/auth/register-user')
+          .post('/api/v1/auth/user/register-enroll')
           .set('Content-Type', 'application/json')
           .send({
             enrollmentID: 'unitTestUser'
