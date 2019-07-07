@@ -36,7 +36,7 @@ exports.enrollAdmin = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    next(err);
+    res.send(err);
   }
 };
 
@@ -89,7 +89,7 @@ exports.registerUser = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    next(err);
+    res.send(err);
   }
 };
 
@@ -121,6 +121,6 @@ exports.createAffiliation = async (req, res, next) => {
     });
   } catch (err) {
     console.log(err);
-    next(err);
+    res.send(err);
   }
 };

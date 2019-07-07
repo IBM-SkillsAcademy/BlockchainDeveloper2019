@@ -1,9 +1,9 @@
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
-import { Policy } from '../assets/policies';
+import { Policy } from '../assets/policy';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
-import { PolicyList } from '../lists/policiesList';
+import { PolicyList } from '../lists/policyList';
 import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
 import { Price } from './../assets/price';

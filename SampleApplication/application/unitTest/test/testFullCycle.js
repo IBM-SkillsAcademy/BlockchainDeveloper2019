@@ -123,7 +123,7 @@ describe('Enrollment and Registration: ', () => {
 /////////////////////  Registration End  /////////////////////
 
 ///////////////////// Vehicle Cycle Start /////////////////////
-describe.only('Vehicle cycle: ', () => {
+describe('Vehicle cycle: ', () => {
   const vehicle = {
     orderID: `vehicle${generate('1234567890abcdef', 4)}`,
     manufacturer: 'Tesla',

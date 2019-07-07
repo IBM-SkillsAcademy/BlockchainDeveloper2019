@@ -3,7 +3,7 @@
 import { Context, Contract } from 'fabric-contract-api';
 // Vehicle Manufacure classes
 import { Order, OrderStatus } from '../assets/order';
-import { Policy, PolicyStatus, PolicyType } from '../assets/policies';
+import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { QueryResponse } from '../utils/queryResponse';
