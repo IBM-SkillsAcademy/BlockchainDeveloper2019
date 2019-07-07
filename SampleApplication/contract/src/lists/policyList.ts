@@ -1,5 +1,5 @@
 import { Order } from '../assets/order';
-import { Policy } from '../assets/policy';
+import { Policy } from '../assets/policies';
 import { IState } from '../ledger-api/state';
 import { StateList } from '../ledger-api/statelist';
 import {  VehicleContext } from '../utils/vehicleContext';

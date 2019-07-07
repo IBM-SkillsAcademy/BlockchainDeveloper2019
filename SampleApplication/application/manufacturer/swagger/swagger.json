@@ -572,7 +572,7 @@
         }
       }
     },
-    "/api/v1/vehicle/policy": {
+    "/api/v1/vehicle/policies/request": {
       "post": {
         "tags": [
           "Policy"
@@ -648,7 +648,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/vehicle/policies": {
       "get": {
         "tags": [
           "Policy"
@@ -684,8 +686,8 @@
           }
         }
       }
+
     },
-    
     "/api/v1/vehicle/vin/request": {
       "post": {
         "tags": [

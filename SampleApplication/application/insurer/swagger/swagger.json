@@ -145,7 +145,7 @@
         }
       }
     },
-    "/api/v1/vehicle/policy": {
+    "/api/v1/vehicle/policies/issue": {
       "put": {
         "tags": [
           "Policy"
@@ -191,7 +191,9 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/vehicle/policies": {
       "get": {
         "tags": [
           "Policy"
@@ -227,6 +229,7 @@
           }
         }
       }
+
     },
     "/api/v1/vehicle/delete": {
       "delete": {

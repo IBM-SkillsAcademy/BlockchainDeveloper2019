@@ -235,10 +235,10 @@ describe('Negative Test for Vehicle cycle: ', () => {
       }));
     });
 
-    describe('PUT /api/v1/vehicle/policy', () => {
+    describe('PUT /api/v1/vehicle/policies/issue', () => {
       it('Cannot issue insurance for policy using Insurer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policy')
+          .put('/api/v1/vehicle/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'user2')
           .send({id: 'newPolicy'})
@@ -248,7 +248,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot issue insurance for policy using Insurer application for a policy that does not exist', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policy')
+          .put('/api/v1/vehicle/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .send({id: 'newPolicy'})
@@ -258,7 +258,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
 
       it('Cannot issue insurance for policy using Insurer application if missing id params', mochaAsync(async () => {
         const res = await apiInsurer
-          .put('/api/v1/vehicle/policy')
+          .put('/api/v1/vehicle/policies/issue')
           .set('Content-Type', 'application/json')
           .set('enrollment-id', 'unitTestUser')
           .expect(500);

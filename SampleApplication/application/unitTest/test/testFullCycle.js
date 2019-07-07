@@ -432,10 +432,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('POST /api/v1/policy', () => {
+  describe('POST /api/v1/policies/request', () => {
     it('Manufacturer can request insurance policy for a vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
-        .post('/api/v1/vehicle/policy')
+        .post('/api/v1/vehicle/policies/request')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send(policyRequest)
@@ -443,34 +443,34 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/policy', () => {
+  describe('GET /api/v1/policies', () => {
     it('Manufacturer can view all policies for vehicles', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
     it('Regulator can view all policies for vehicles', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
     it('Insurer can view all policies for vehicles', mochaAsync(async () => {
       const res = await apiInsurer
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .expect(200)
     }));
   });
 
-  describe('GET /api/v1/vehicle/policy', () => {
+  describe('GET /api/v1/vehicle/policies', () => {
     it('Manufacturer can view policy for a vehicle', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -480,7 +480,7 @@ describe('Vehicle cycle: ', () => {
     }));
     it('Regulator can view policy for a vehicle', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -490,7 +490,7 @@ describe('Vehicle cycle: ', () => {
     }));
     it('Insurer can view policy for a vehicle', mochaAsync(async () => {
       const res = await apiInsurer
-        .get('/api/v1/vehicle/policy')
+        .get('/api/v1/vehicle/policies')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -500,10 +500,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('PUT /api/v1/vehicle/policy', () => {
+  describe('PUT /api/v1/vehicle/policies/issue', () => {
     it('Insurer can issue insurance policy for a vehicle', mochaAsync(async () => {
       const res = await apiInsurer
-        .put('/api/v1/vehicle/policy')
+        .put('/api/v1/vehicle/policies/issue')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send({id: policyRequest.id})

@@ -16,6 +16,6 @@ router.delete('/delete', controller.deleteVehicle);
 router.get('/price', controller.getPrice);
 router.get('/price/range', controller.getPriceByRange);
 router.post('/vin/issue', controller.issueVIN);
-router.get('/policy', controller.getPolicy);
+router.get('/policies', controller.getPolicy);
 
 module.exports = router;
