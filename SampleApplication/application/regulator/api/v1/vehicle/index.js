@@ -8,8 +8,8 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.get('/order', controller.getOrder);
-router.get('/order/status', controller.getOrder);
+router.get('/orders', controller.getOrder);
+router.get('/orders/status', controller.getOrder);
 router.get('/', controller.getVehicle);
 router.post('/owner/change', controller.changeOwner);
 router.delete('/delete', controller.deleteVehicle);

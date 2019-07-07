@@ -8,12 +8,12 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-router.post('/order', controller.placeOrder);
-router.put('/order', controller.updateOrder);
-router.get('/order', controller.getOrder);
-router.get('/order/status', controller.getOrder);
-router.get('/order/status/paginated', controller.getOrdersByStatusPaginated);
-router.get('/order/history', controller.getHistoryForOrder);
+router.post('/orders', controller.placeOrder);
+router.put('/orders', controller.updateOrder);
+router.get('/orders', controller.getOrder);
+router.get('/orders/status', controller.getOrder);
+router.get('/orders/status/paginated', controller.getOrdersByStatusPaginated);
+router.get('/orders/history', controller.getHistoryForOrder);
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/price', controller.getPrice);

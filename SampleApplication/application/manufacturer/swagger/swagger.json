@@ -183,7 +183,7 @@
       }
     
   },
-    "/api/v1/vehicle/order": {
+    "/api/v1/vehicle/orders": {
       "post": {
         "tags": [
           "Order"
@@ -325,7 +325,7 @@
       }
     },
    
-    "/api/v1/vehicle/order/status": {
+    "/api/v1/vehicle/orders/status": {
       "get": {
         "tags": [
           "Order"
@@ -366,7 +366,7 @@
         }
       }
     },
-     "/api/v1/vehicle/order/status/paginated": {
+     "/api/v1/vehicle/orders/status/paginated": {
       "get": {
         "tags": [
           "Order"
@@ -423,7 +423,7 @@
         }
       }
     },
-       "/api/v1/vehicle/order/history": {
+       "/api/v1/vehicle/orders/history": {
       "get": {
         "tags": [
           "Order"

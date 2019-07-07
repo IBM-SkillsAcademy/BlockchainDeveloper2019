@@ -142,10 +142,10 @@ describe('Vehicle cycle: ', () => {
     endDate: '31122019'
   }
   const vin = 'G33KS';
-  describe('POST /api/v1/vehicle/order', () => {
+  describe('POST /api/v1/vehicle/orders', () => {
     it('Manufacturer can place order', mochaAsync(async () => {
       const res = await apiManufacturer
-        .post('/api/v1/vehicle/order')
+        .post('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send(vehicle)
@@ -153,10 +153,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/vehicle/order', () => {
+  describe('GET /api/v1/vehicle/orders', () => {
     it('Manufacturer can query all vehicle order', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/order')
+        .get('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .expect(200)
@@ -165,7 +165,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Regulator can query all vehicle order', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/order')
+        .get('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .expect(200)
@@ -173,10 +173,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/vehicle/order', () => {
+  describe('GET /api/v1/vehicle/orders', () => {
     it('Manufacturer can query vehicle by id', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/order')
+        .get('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -188,7 +188,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Regulator can query vehicle by id', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/order')
+        .get('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -199,10 +199,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('GET /api/v1/vehicle/order/status', () => {
+  describe('GET /api/v1/vehicle/orders/status', () => {
     it('Manufacturer can query Order by status', mochaAsync(async () => {
       const res = await apiManufacturer
-        .get('/api/v1/vehicle/order/status')
+        .get('/api/v1/vehicle/orders/status')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -214,7 +214,7 @@ describe('Vehicle cycle: ', () => {
 
     it('Regulator can query vehicle by status', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicle/order/status')
+        .get('/api/v1/vehicle/orders/status')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .query({
@@ -225,10 +225,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('PUT /api/v1/vehicle/order', () => {
+  describe('PUT /api/v1/vehicle/orders', () => {
     it('Manufacturer can can update  status To be delivered ', mochaAsync(async () => {
       const res = await apiManufacturer
-        .put('/api/v1/vehicle/order')
+        .put('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send({
@@ -379,10 +379,10 @@ describe('Vehicle cycle: ', () => {
     }));
   });
 
-  describe('PUT /api/v1/vehicle/order', () => {
+  describe('PUT /api/v1/vehicle/orders', () => {
     it('Manufacturer can can update vehicle order status', mochaAsync(async () => {
       const res = await apiManufacturer
-        .put('/api/v1/vehicle/order')
+        .put('/api/v1/vehicle/orders')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
         .send({
