@@ -11,28 +11,9 @@ console.log(`Wallet path: ${walletPath}`);
 
 exports.getOrder = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Evaluate the specified transaction.
     let result, rawResult;
@@ -51,6 +32,7 @@ exports.getOrder = async (req, res, next) => {
       result: obj
     });
   } catch (err) {
+    console.log(err);
     const msg = err.message;
     const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
     const json = JSON.parse(msgString);
@@ -61,34 +43,15 @@ exports.getOrder = async (req, res, next) => {
 
 exports.getVehicle = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Evaluate the specified transaction.
     let result, rawResult;
 
     if (req.query.id) {
-    // if vehicle id specified queryVehicle transaction - requires 1 argument, ex: ('queryVehicle', 'vehicle4')
+      // if vehicle id specified queryVehicle transaction - requires 1 argument, ex: ('queryVehicle', 'vehicle4')
       result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
     } else {
@@ -111,28 +74,9 @@ exports.getVehicle = async (req, res, next) => {
 
 exports.changeOwner = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Submit the specified transaction.
     // changeVehicleOwner transaction - requires 2 args , ex: ('changeVehicleOwner', 'vehicle4', 'Dave')
@@ -158,27 +102,9 @@ exports.changeOwner = async (req, res, next) => {
 
 exports.deleteVehicle = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Submit the specified transaction.
     // deleteVehicle transaction - requires 1 args , ex: ('changeVehicleOwner', 'vehicle4')
@@ -203,28 +129,9 @@ exports.deleteVehicle = async (req, res, next) => {
 
 exports.getPrice = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Evaluate the specified transaction.
     const result = await contract.evaluateTransaction('getPriceDetails', req.query.id);
@@ -245,28 +152,9 @@ exports.getPrice = async (req, res, next) => {
 
 exports.getPriceByRange = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Evaluate the specified transaction.
     const result = await contract.evaluateTransaction('getPriceByRange', req.query.min, req.query.max);
@@ -287,28 +175,9 @@ exports.getPriceByRange = async (req, res, next) => {
 
 exports.getPolicy = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-
-    // get connection profile
-    const ccp = await utils.getCCP();
-
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
     // Evaluate the specified transaction.
     let result;
@@ -333,27 +202,10 @@ exports.getPolicy = async (req, res, next) => {
 
 exports.issueVIN = async (req, res, next) => {
   try {
-    const enrollmentID = req.headers['enrollment-id'];
-    // get connection profile
-    const ccp = await utils.getCCP();
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
 
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
-
-    // Create a new gateway for connecting to our peer node.
-    const gateway = new Gateway();
-    await gateway.connect(ccp, { wallet, identity: enrollmentID });
-
-    // Get the network (channel) our contract is deployed to.
-    const network = await gateway.getNetwork('mychannel');
-
-    // Get the contract from the network.
-    const contract = network.getContract('vehicle-manufacture');
 
     // Submit the specified transaction.
     // issueVIN transaction - requires 8 argument, ex: ('issueVIN', 'vehicle13:Accord', 'G33KS')
@@ -380,29 +232,21 @@ exports.issueVIN = async (req, res, next) => {
 };
 
 exports.countVehicle = async (req, res, next) => {
-  try {
-    const enrollmentID = req.headers['enrollment-id']; 
-    // Check to see if we've already enrolled the user.
-    const userExists = await wallet.exists(enrollmentID);
-    if (!userExists) {
-      return res.status(401).send({
-        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
-      });
-    }
 
-    const gateway=await setupGateway(enrollmentID);
-    const contract=await getContract(gateway);
+  try {
+    await checkAuthorization(req, res)
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
     const result = await contract.evaluateTransaction('getVehicleCount');
-  
+
     await gateway.disconnect();
     return res.send({
       message: `Vehicles Count : ${result}`
-      
+
     });
-  
+
   }
-  catch(err)
-  {
+  catch (err) {
     res.status(500);
     if (err.endorsements) {
       res.send(err.endorsements);
@@ -418,13 +262,15 @@ async function checkAuthorization(req, res) {
     const enrollmentID = req.headers['enrollment-id'];
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
+    console.log("User Exists " + userExists)
     if (!userExists) {
       return res.status(401).send({
         message: `An identity for the user ${enrollmentID} does not exist in the wallet`
       });
     }
   } catch (error) {
-    res.send(err.message);
+    console.log(error)
+    throw error;
   }
 }
 async function setupGateway(user) {
@@ -437,7 +283,7 @@ async function setupGateway(user) {
       wallet: wallet,
     };
     // Create a new gateway for connecting to our peer node
-    await gateway.connect(ccp, connecStionOptions);
+    await gateway.connect(ccp, connectionOptions);
     return gateway;
   } catch (error) {
     throw error;

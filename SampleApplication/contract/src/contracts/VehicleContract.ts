@@ -28,7 +28,7 @@ export class VehicleContract extends Contract {
     }
     // init Ledger fucntion to be executed at the chaincode inistantiation
     public async initLedger(ctx: VehicleContext) {
-        console.info('============= START : Initialize Ledger ===========');
+        logger.info('============= START : Initialize Ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
         vehicles[0] = Vehicle.createInstance('CD58911', '4567788', 'Tomoko', 'Prius', 'Toyota', 'blue');
         vehicles[1] = Vehicle.createInstance('CD57271', '1230819', 'Jin soon', 'Tucson', 'Hyundai', 'green');
@@ -37,9 +37,9 @@ export class VehicleContract extends Contract {
         for (let i = 0; i < vehicles.length; i++) {
             vehicles[i].docType = 'vehicle';
             await ctx.getVehicleList().add(vehicles[i]);
-            console.info('Added <--> ', vehicles[i]);
+            logger.info('Added <--> ', vehicles[i]);
         }
-        console.info('============= END : Initialize Ledger ===========');
+        logger.info('============= END : Initialize Ledger ===========');
     }
 
     // ############################################################### Vehicle Functions #################################################
@@ -54,7 +54,7 @@ export class VehicleContract extends Contract {
     }
 
     public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
-        console.info('============= START : Create vehicle ===========');
+        logger.info('============= START : Create vehicle ===========');
 
         await this.hasRole(ctx, ['Manufacturer']);
 
@@ -71,11 +71,11 @@ export class VehicleContract extends Contract {
             throw new Error(`Order  with ID : ${orderId} doesn't exists`);
         }
 
-        console.info('============= END : Create vehicle ===========');
+        logger.info('============= END : Create vehicle ===========');
     }
     // Issue VIN for Vehcile the this action performed by Regulator
     public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
-        console.info('============= START : issueVehicleVIN ===========');
+        logger.info('============= START : issueVehicleVIN ===========');
         await this.hasRole(ctx, ['Regulator']);
         if (! await ctx.getVehicleList().exists(vehicleNumber)) {
             throw new Error(`Error  Vehicle  ${vehicleNumber} doesn't exists `);
@@ -92,12 +92,12 @@ export class VehicleContract extends Contract {
 
         // Fire Event
         ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
-        console.info('============= END : issueVehicleVIN ===========');
+        logger.info('============= END : issueVehicleVIN ===========');
 
     }
     // Issue VIN for Vehcile the this action performed by Manufacturer
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
-        console.info('============= START : requestVehicleVIN ===========');
+        logger.info('============= START : requestVehicleVIN ===========');
 
         await this.hasRole(ctx, ['Manufacturer']);
         if (!ctx.getVehicleList().exists(vehicleNumber)) {
@@ -113,7 +113,7 @@ export class VehicleContract extends Contract {
 
         // Fire Event
         ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
-        console.info('============= END : requestVehicleVIN ===========');
+        logger.info('============= END : requestVehicleVIN ===========');
     }
 
     // Regulator retrieve all vehciles in system with details
@@ -124,7 +124,7 @@ export class VehicleContract extends Contract {
 
     // regulator can update vehicle owner
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
-        console.info('============= START : Change Vehicle Owner ===========');
+        logger.info('============= START : Change Vehicle Owner ===========');
 
         // check if role === 'Regulator' / 'Insurer'
         await this.hasRole(ctx, ['Regulator', 'Insurer']);
@@ -133,12 +133,12 @@ export class VehicleContract extends Contract {
         vehicle.owner = newOwner;
         await ctx.getVehicleList().updateVehicle(vehicle);
 
-        console.info('============= END : changevehicleOwner ===========');
+        logger.info('============= END : changevehicleOwner ===========');
     }
 
     // regulator can delete vehicle after lifecycle ended
     public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
-        console.info('============= START : delete vehicle ===========');
+        logger.info('============= START : delete vehicle ===========');
 
         // check if role === 'Regulator' / 'Insurer'
         await this.hasRole(ctx, ['Regulator', 'Insurer']);
@@ -150,7 +150,7 @@ export class VehicleContract extends Contract {
 
         await ctx.getVehicleList().delete(vehicleNumber);
 
-        console.info('============= END : delete vehicle ===========');
+        logger.info('============= END : delete vehicle ===========');
     }
     // manufacture can add or change vehicle price details
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
@@ -175,7 +175,7 @@ export class VehicleContract extends Contract {
     }
     // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
     public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
-        console.info('============= START : Get Orders by Status ===========');
+        logger.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
@@ -204,7 +204,7 @@ export class VehicleContract extends Contract {
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
         make: string, model: string, color: string,
     ) {
-        console.info('============= START : place order ===========');
+        logger.info('============= START : place order ===========');
 
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
@@ -222,7 +222,7 @@ export class VehicleContract extends Contract {
         // Fire Event
         ctx.stub.setEvent('ORDER_EVENT', order.toBuffer());
 
-        console.info('============= END : place order ===========');
+        logger.info('============= END : place order ===========');
     }
 
     // Update order status to be in progress
@@ -284,18 +284,18 @@ export class VehicleContract extends Contract {
     }
     // Return All order
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
-        console.info('============= START : Get Orders ===========');
+        logger.info('============= START : Get Orders ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        console.info('============= END : Get Orders ===========');
+        logger.info('============= END : Get Orders ===========');
         return await ctx.getOrderList().getAll();
     }
 
     // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
-        console.info('============= START : Get Orders by Status ===========');
+        logger.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
@@ -335,7 +335,7 @@ export class VehicleContract extends Contract {
     public async requestPolicy(ctx: VehicleContext, id: string,
         vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
         startDate: number, endDate: number) {
-        console.info('============= START : request insurance policy ===========');
+        logger.info('============= START : request insurance policy ===========');
 
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
@@ -348,7 +348,7 @@ export class VehicleContract extends Contract {
         await ctx.getPolicyList().add(policy);
 
         ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
-        console.info('============= END : request insurance policy ===========');
+        logger.info('============= END : request insurance policy ===========');
     }
 
     // get Policy with an ID
@@ -393,8 +393,8 @@ export class VehicleContract extends Contract {
      */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
-        console.info('query String');
-        console.info(JSON.stringify(queryString));
+        logger.info('query String');
+        logger.info(JSON.stringify(queryString));
 
         let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
         if (collection === '') {
@@ -415,24 +415,24 @@ export class VehicleContract extends Contract {
             if (res.value && res.value.value.toString()) {
                 const jsonRes = new QueryResponse();
 
-                console.info(res.value.value.toString('utf8'));
+                logger.info(res.value.value.toString('utf8'));
 
                 jsonRes.key = res.value.key;
 
                 try {
                     jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
-                    console.info(err);
+                    logger.info(err);
                     jsonRes.record = res.value.value.toString('utf8');
                 }
 
                 allResults.push(jsonRes);
             }
             if (res.done) {
-                console.info('end of data');
+                logger.info('end of data');
                 await resultsIterator.close();
-                console.info(allResults);
-                console.info(JSON.stringify(allResults));
+                logger.info(allResults);
+                logger.info(JSON.stringify(allResults));
                 return JSON.stringify(allResults);
             }
         }
@@ -440,6 +440,8 @@ export class VehicleContract extends Contract {
     }
     // Regulator Can get nmber of vehicles 
     public async getVehicleCount(ctx: VehicleContext) {
+        await this.hasRole(ctx, ['Regulator']);
+
         return await ctx.getVehicleList().count();
     }
     //'unknownTransaction' will be called if the required transaction function requested does not exist
