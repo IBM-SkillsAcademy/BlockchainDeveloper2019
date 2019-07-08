@@ -552,5 +552,18 @@ describe('Vehicle cycle: ', () => {
         .expect(200)
     }));
   });
+
+it('Regulator can query vehicles count', mochaAsync(async () => {
+  const res = await apiRegulator
+    .get('/api/v1/vehicles/count')
+    .set('Content-Type', 'application/json')
+    .set('enrollment-id', 'unitTestUser')
+    .expect(200)
+}));
+
 });
+
+
+
+
 /////////////////////  Vehicle Cycle End  /////////////////////

@@ -17,5 +17,5 @@ router.get('/prices', controller.getPrice);
 router.get('/prices/range', controller.getPriceByRange);
 router.post('/vin/issue', controller.issueVIN);
 router.get('/policies', controller.getPolicy);
-
+router.get('/count', controller.countVehicle);
 module.exports = router;

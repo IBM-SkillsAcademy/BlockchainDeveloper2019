@@ -378,3 +378,63 @@ exports.issueVIN = async (req, res, next) => {
     }
   }
 };
+
+exports.countVehicle = async (req, res, next) => {
+  try {
+    const enrollmentID = req.headers['enrollment-id']; 
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+
+    const gateway=await setupGateway(enrollmentID);
+    const contract=await getContract(gateway);
+    const result = await contract.evaluateTransaction('getVehicleCount');
+  
+    await gateway.disconnect();
+    return res.send({
+      message: `Vehicles Count : ${result}`
+      
+    });
+  
+  }
+  catch(err)
+  {
+    res.status(500);
+    if (err.endorsements) {
+      res.send(err.endorsements);
+    } else {
+      res.send(err.message);
+    }
+  }
+};
+
+   async function setupGateway(user)  {
+        try {
+          const ccp = await utils.getCCP();
+            const gateway = new Gateway();
+            const connectionOptions = {
+                discovery: {enabled: false},
+                identity: user,
+                wallet: wallet,
+            };
+            await gateway.connect(ccp, connectionOptions);
+            return gateway;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async function  getContract(gateway) {
+      try {
+          const network = await gateway.getNetwork("mychannel");
+          return await network.getContract("vehicle-manufacture");
+      } catch (err) {
+          throw new Error('Error connecting to channel . ERROR:' + err.message);
+      }
+  }
+  
+ 

@@ -165,6 +165,36 @@
         }
       }
     },
+    "/api/v1/vehicles/count": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles Count ",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles Count",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/vehicles/prices": {
       "get": {
         "tags": [
