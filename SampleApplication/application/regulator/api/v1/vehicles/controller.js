@@ -412,29 +412,46 @@ exports.countVehicle = async (req, res, next) => {
   }
 };
 
-   async function setupGateway(user)  {
-        try {
-          const ccp = await utils.getCCP();
-            const gateway = new Gateway();
-            const connectionOptions = {
-                discovery: {enabled: false},
-                identity: user,
-                wallet: wallet,
-            };
-            await gateway.connect(ccp, connectionOptions);
-            return gateway;
-        } catch (error) {
-            throw error;
-        }
-    }
 
-    async function  getContract(gateway) {
-      try {
-          const network = await gateway.getNetwork("mychannel");
-          return await network.getContract("vehicle-manufacture");
-      } catch (err) {
-          throw new Error('Error connecting to channel . ERROR:' + err.message);
-      }
+async function checkAuthorization(req, res) {
+  try {
+    const enrollmentID = req.headers['enrollment-id'];
+    // Check to see if we've already enrolled the user.
+    const userExists = await wallet.exists(enrollmentID);
+    if (!userExists) {
+      return res.status(401).send({
+        message: `An identity for the user ${enrollmentID} does not exist in the wallet`
+      });
+    }
+  } catch (error) {
+    res.send(err.message);
   }
-  
- 
+}
+async function setupGateway(user) {
+  try {
+    const ccp = await utils.getCCP();
+    const gateway = new Gateway();
+    const connectionOptions = {
+      discovery: { enabled: false },
+      identity: user,
+      wallet: wallet,
+    };
+    // Create a new gateway for connecting to our peer node
+    await gateway.connect(ccp, connecStionOptions);
+    return gateway;
+  } catch (error) {
+    throw error;
+  }
+}
+
+async function getContract(gateway) {
+  try {
+    const network = await gateway.getNetwork("mychannel");
+    // Get the contract from the network.
+    return await network.getContract("vehicle-manufacture");
+  } catch (err) {
+    throw new Error('Error connecting to channel . ERROR:' + err.message);
+  }
+}
+
+
