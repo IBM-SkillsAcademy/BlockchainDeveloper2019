@@ -11,7 +11,7 @@ console.log(`Wallet path: ${walletPath}`);
 
 exports.getOrder = async (req, res, next) => {
   try {
-    await checkAuthorization(req, res)
+    await checkAuthorization(req, res);
     const gateway = await setupGateway(req.headers['enrollment-id']);
     const contract = await getContract(gateway);
 
@@ -299,5 +299,3 @@ async function getContract(gateway) {
     throw new Error('Error connecting to channel . ERROR:' + err.message);
   }
 }
-
-
