@@ -278,7 +278,6 @@ async function setupGateway(user) {
     const ccp = await utils.getCCP();
     const gateway = new Gateway();
     const connectionOptions = {
-      discovery: { enabled: false },
       identity: user,
       wallet: wallet,
     };
