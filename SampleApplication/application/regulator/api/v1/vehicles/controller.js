@@ -11,7 +11,7 @@ console.log(`Wallet path: ${walletPath}`);
 
 exports.getOrder = async (req, res, next) => {
   try {
-    await checkAuthorization(req, res)
+    await checkAuthorization(req, res);
     const gateway = await setupGateway(req.headers['enrollment-id']);
     const contract = await getContract(gateway);
 
@@ -278,7 +278,6 @@ async function setupGateway(user) {
     const ccp = await utils.getCCP();
     const gateway = new Gateway();
     const connectionOptions = {
-      discovery: { enabled: false },
       identity: user,
       wallet: wallet,
     };
@@ -299,5 +298,3 @@ async function getContract(gateway) {
     throw new Error('Error connecting to channel . ERROR:' + err.message);
   }
 }
-
-
