@@ -19,6 +19,43 @@
         }
       }
     },
+
+    "/api/v1/auth/user/enroll": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Enroll user With Secret ",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enrollmentID",
+                  "Secret"   
+                ],
+                "properties": {
+                  "enrollmentID": {
+                    "type": "string",
+                    "example": "user1"
+                  },
+                  "secret": {
+                    "type": "string",
+                    "example": "qwwqerWER22"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Enroll registered user  With Secret"
+          }
+        }
+      }
+    },
     "/api/v1/auth/user/register-enroll": {
       "post": {
         "tags": [
