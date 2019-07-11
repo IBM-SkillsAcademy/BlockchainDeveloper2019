@@ -92,3 +92,36 @@ exports.registerUser = async (req, res, next) => {
     res.send(err);
   }
 };
+exports.register = async (req, res, next) => {
+  try {
+    const enrollmentID = req.body.enrollmentID;
+    const secret = req.body.secret;
+    // get connection profile
+    const ccp = await utils.getCCP();
+
+    // Create a new CA client for interacting with the CA.
+    const caURL = ccp.certificateAuthorities['ca.org1.example.com'].url;
+    const ca = new FabricCAServices(caURL);
+
+    // Check to see if we've already enrolled the admin user.
+    const adminExists = await wallet.exists(enrollmentID);
+    if (adminExists) {
+      return res.status(409).send({
+        message: `An identity for the user ${enrollmentID} already exists in the wallet`
+      });
+    }
+
+    console.log(" user + "+enrollmentID +":" +secret)
+    // Enroll the admin user, and import the new identity into the wallet.
+    const enrollment = await ca.enroll({ enrollmentID: enrollmentID, enrollmentSecret: secret });
+    const identity = X509WalletMixin.createIdentity('Org1MSP', enrollment.certificate, enrollment.key.toBytes());
+    wallet.import(enrollmentID, identity);
+    return res.send({
+      message: `Successfully enrolled user ${enrollmentID} and imported it into the wallet`
+    });
+
+      } catch (err) {
+    console.log(err);
+    res.send(err);
+  }
+};

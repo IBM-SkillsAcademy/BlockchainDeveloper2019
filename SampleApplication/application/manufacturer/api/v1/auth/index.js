@@ -10,5 +10,5 @@ router.use(bodyParser.json());
 
 router.get('/registrar/enroll', controller.enrollAdmin);
 router.post('/user/register-enroll', controller.registerUser);
-
+router.post('/user/enroll', controller.register);
 module.exports = router;
