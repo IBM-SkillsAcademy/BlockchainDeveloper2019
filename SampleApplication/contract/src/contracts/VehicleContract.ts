@@ -4,6 +4,7 @@ import { Context, Contract } from 'fabric-contract-api';
 // Vehicle Manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
+import { Price } from '../assets/price';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
@@ -40,6 +41,122 @@ export class VehicleContract extends Contract {
     }
 
     // ############################################################### Vehicle Functions #################################################
+    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
+        logger.info('============= START : Create vehicle ===========');
+
+        if (await ctx.getOrderList().exists(orderId)) {
+            const order = await ctx.getOrderList().getOrder(orderId);
+            if (order.orderStatus !== OrderStatus.DELIVERED) {
+                throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
+
+            }
+            const vehicle: Vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
+
+            await ctx.getVehicleList().add(vehicle);
+        } else {
+            throw new Error(`Order  with ID : ${orderId} doesn't exists`);
+        }
+
+        logger.info('============= END : Create vehicle ===========');
+    } 
+
+    // return vehicle details with ID
+    public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
+
+        if (!await ctx.getVehicleList().exists(vehicleNumber)) {
+            throw new Error(`Vehicle with ID ${vehicleNumber} doesn't exists`);
+        }
+
+        return await ctx.getVehicleList().get(vehicleNumber);
+    }
+
+    // Regulator retrieve all vehicles in system with details
+    public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
+        return await ctx.getVehicleList().getAll();
+
+    }
+
+    // regulator can delete vehicle after lifecycle ended
+    public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
+        logger.info('============= START : delete vehicle ===========');
+
+        // Check if the Vehicle exists
+        if (!await ctx.getVehicleList().exists(vehicleNumber)) {
+            throw new Error(`vehicle with ID : ${vehicleNumber} doesn't exists`);
+        }
+
+        await ctx.getVehicleList().delete(vehicleNumber);
+
+        logger.info('============= END : delete vehicle ===========');
+    }
+
+    // Issue VIN for the Vehicle this action performed by Manufacturer
+    public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
+        logger.info('============= START : requestVehicleVIN ===========');
+
+        if (!ctx.getVehicleList().exists(vehicleNumber)) {
+            throw new Error(`Error  Vehicle ${vehicleNumber} doesn't exists `);
+        }
+
+        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
+        if (vehicle.vinStatus === VinStatus.REQUESTED) {
+            throw new Error(`VIN for vehicle  ${vehicleNumber} is already REQUESTED`);
+        }
+        vehicle.vinStatus = VinStatus.REQUESTED;
+        await ctx.getVehicleList().updateVehicle(vehicle);
+
+        // Fire Event
+        ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
+        logger.info('============= END : requestVehicleVIN ===========');
+    }
+
+    // Issue VIN for Vehcile the this action performed by Regulator
+    public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
+        logger.info('============= START : issueVehicleVIN ===========');
+
+        if (! await ctx.getVehicleList().exists(vehicleNumber)) {
+            throw new Error(`Error  Vehicle  ${vehicleNumber} doesn't exists `);
+        }
+
+        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
+        vehicle.vin = vin;
+        if (vehicle.vinStatus === VinStatus.ISSUED) {
+            throw new Error(`VIN for vehicle  ${vehicleNumber} is already ISSUED`);
+        }
+
+        vehicle.vinStatus = VinStatus.ISSUED;
+        await ctx.getVehicleList().updateVehicle(vehicle);
+
+        // Fire Event
+        ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
+        logger.info('============= END : issueVehicleVIN ===========');
+    }
+
+    // regulator can update vehicle owner
+    public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
+        logger.info('============= START : Change Vehicle Owner ===========');
+
+        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
+        vehicle.owner = newOwner;
+        await ctx.getVehicleList().updateVehicle(vehicle);
+
+        logger.info('============= END : changevehicleOwner ===========');
+    }
+
+    // manufacture can get vehicle price details
+    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
+        return await ctx.getPriceList().getPrice(vehicleNumber);
+    }
+
+    // manufacture can add or change vehicle price details
+    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+
+        // check if vehicle exist
+        await ctx.getVehicleList().get(vehicleNumber);
+
+        const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
+        await ctx.getPriceList().updatePrice(priceObject);
+    }
 
     // // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
     // public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
