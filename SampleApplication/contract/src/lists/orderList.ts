@@ -23,12 +23,10 @@ export class OrderList <T extends Order> extends StateList<T> {
       return this.update(order);
     }
 
-    public async getOrderHistory(orderID)
-    {
-        return this.getHistory(orderID);
-    }
-    public async queryStatusPaginated(queryString: string, pageSize: number , bookmark :string )
-    {
-       return this.queryWithPagination(queryString,pageSize,bookmark);
-    }
+    // public async getOrderHistory(orderID){
+    //     return this.getHistory(orderID);
+    // }
+    // public async queryStatusPaginated(queryString: string, pageSize: number , bookmark :string ){
+    //    return this.queryWithPagination(queryString,pageSize,bookmark);
+    // }
 }
