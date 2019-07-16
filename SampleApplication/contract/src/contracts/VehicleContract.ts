@@ -3,10 +3,7 @@
 import { Context, Contract } from 'fabric-contract-api';
 // Vehicle Manufacure classes
 import { Order, OrderStatus } from '../assets/order';
-import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
-import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
-import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
@@ -43,161 +40,32 @@ export class VehicleContract extends Contract {
     }
 
     // ############################################################### Vehicle Functions #################################################
-    // return vehicle details with ID
-    public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
 
-        if (!await ctx.getVehicleList().exists(vehicleNumber)) {
-            throw new Error(`Vehicle with ID ${vehicleNumber} doesn't exists`);
-        }
+    // // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+    // public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
+    //     logger.info('============= START : Get Orders by Status ===========');
 
-        return await ctx.getVehicleList().get(vehicleNumber);
-    }
+    //     // check if role === 'Manufacturer' / 'Regulator'
+    //     await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
-        logger.info('============= START : Create vehicle ===========');
+    //     const minNumber = parseInt(min, 10);
+    //     const maxNumber = parseInt(max, 10);
+    //     const queryString = {
+    //         selector: {
+    //             price: {
+    //                 $gte: minNumber,
+    //                 $lte: maxNumber,
+    //             },
+    //         },
+    //         use_index: ['_design/priceDoc', 'priceIndex'],
+    //     };
+    //     return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
+    // }
 
-        await this.hasRole(ctx, ['Manufacturer']);
-
-        if (await ctx.getOrderList().exists(orderId)) {
-            const order = await ctx.getOrderList().getOrder(orderId);
-            if (order.orderStatus !== OrderStatus.DELIVERED) {
-                throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
-
-            }
-            const vehicle: Vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
-
-            await ctx.getVehicleList().add(vehicle);
-        } else {
-            throw new Error(`Order  with ID : ${orderId} doesn't exists`);
-        }
-
-        logger.info('============= END : Create vehicle ===========');
-    }
-    // Issue VIN for Vehcile the this action performed by Regulator
-    public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
-        logger.info('============= START : issueVehicleVIN ===========');
-        await this.hasRole(ctx, ['Regulator']);
-        if (! await ctx.getVehicleList().exists(vehicleNumber)) {
-            throw new Error(`Error  Vehicle  ${vehicleNumber} doesn't exists `);
-        }
-
-        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
-        vehicle.vin = vin;
-        if (vehicle.vinStatus === VinStatus.ISSUED) {
-            throw new Error(`VIN for vehicle  ${vehicleNumber} is already ISSUED`);
-        }
-
-        vehicle.vinStatus = VinStatus.ISSUED;
-        await ctx.getVehicleList().updateVehicle(vehicle);
-
-        // Fire Event
-        ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
-        logger.info('============= END : issueVehicleVIN ===========');
-
-    }
-    // Issue VIN for Vehcile the this action performed by Manufacturer
-    public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
-        logger.info('============= START : requestVehicleVIN ===========');
-
-        await this.hasRole(ctx, ['Manufacturer']);
-        if (!ctx.getVehicleList().exists(vehicleNumber)) {
-            throw new Error(`Error  Vehicle ${vehicleNumber} doesn't exists `);
-        }
-
-        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
-        if (vehicle.vinStatus === VinStatus.REQUESTED) {
-            throw new Error(`VIN for vehicle  ${vehicleNumber} is already REQUESTED`);
-        }
-        vehicle.vinStatus = VinStatus.REQUESTED;
-        await ctx.getVehicleList().updateVehicle(vehicle);
-
-        // Fire Event
-        ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
-        logger.info('============= END : requestVehicleVIN ===========');
-    }
-
-    // Regulator retrieve all vehciles in system with details
-    public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
-        return await ctx.getVehicleList().getAll();
-
-    }
-
-    // regulator can update vehicle owner
-    public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
-        logger.info('============= START : Change Vehicle Owner ===========');
-
-        // check if role === 'Regulator' / 'Insurer'
-        await this.hasRole(ctx, ['Regulator', 'Insurer']);
-
-        const vehicle = await ctx.getVehicleList().get(vehicleNumber);
-        vehicle.owner = newOwner;
-        await ctx.getVehicleList().updateVehicle(vehicle);
-
-        logger.info('============= END : changevehicleOwner ===========');
-    }
-
-    // regulator can delete vehicle after lifecycle ended
-    public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
-        logger.info('============= START : delete vehicle ===========');
-
-        // check if role === 'Regulator' / 'Insurer'
-        await this.hasRole(ctx, ['Regulator', 'Insurer']);
-
-        // Check if the Vehicle exists
-        if (!await ctx.getVehicleList().exists(vehicleNumber)) {
-            throw new Error(`vehicle with ID : ${vehicleNumber} doesn't exists`);
-        }
-
-        await ctx.getVehicleList().delete(vehicleNumber);
-
-        logger.info('============= END : delete vehicle ===========');
-    }
-    // manufacture can add or change vehicle price details
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-
-        // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
-
-        // check if vehicle exist
-        await ctx.getVehicleList().get(vehicleNumber);
-
-        const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
-        await ctx.getPriceList().updatePrice(priceObject);
-    }
-
-    // manufacture can get vehicle price details
-    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
-        return await ctx.getPriceList().getPrice(vehicleNumber);
-    }
-    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
-    public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
-        logger.info('============= START : Get Orders by Status ===========');
-
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
-        const minNumber = parseInt(min, 10);
-        const maxNumber = parseInt(max, 10);
-        const queryString = {
-            selector: {
-                price: {
-                    $gte: minNumber,
-                    $lte: maxNumber,
-                },
-            },
-            use_index: ['_design/priceDoc', 'priceIndex'],
-        };
-        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
-    }
-
-    // get all History for Vehicle ID return , all transaction over aspecific vehicle
-    public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
-        return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
-    }
+    // // get all History for Vehicle ID return , all transaction over aspecific vehicle
+    // public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
+    //     return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
+    // }
 
     // ############################################################### Order Functions #################################################
     // end user palce order function
@@ -207,7 +75,7 @@ export class VehicleContract extends Contract {
         logger.info('============= START : place order ===========');
 
         // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
+        // await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
             color,
@@ -228,7 +96,7 @@ export class VehicleContract extends Contract {
     // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
+        // await this.hasRole(ctx, ['Manufacturer']);
 
         const order = await ctx.getOrderList().getOrder(orderId);
         // If The order status is already IN progress then throw error
@@ -250,7 +118,7 @@ export class VehicleContract extends Contract {
     // Update order status to be pending if vehicle creation process has an issue
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
+        // await this.hasRole(ctx, ['Manufacturer']);
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -267,7 +135,7 @@ export class VehicleContract extends Contract {
     // When Order completed and will be ready to be delivered , update order status and Manufacture now can create new Vehicle as an asset
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
         // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
+        // await this.hasRole(ctx, ['Manufacturer']);
 
         if (!await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -287,160 +155,120 @@ export class VehicleContract extends Contract {
         logger.info('============= START : Get Orders ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+        // await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
         logger.info('============= END : Get Orders ===========');
         return await ctx.getOrderList().getAll();
     }
 
     // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
-    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
-        logger.info('============= START : Get Orders by Status ===========');
+    // public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
+    //     logger.info('============= START : Get Orders by Status ===========');
 
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+    //     // check if role === 'Manufacturer' / 'Regulator'
+    //     await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
-        const queryString = {
-            selector: {
-                orderStatus,
-            },
-            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
-        };
+    //     const queryString = {
+    //         selector: {
+    //             orderStatus,
+    //         },
+    //         use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+    //     };
 
-        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
-    }
-    // get all History for Order ID return , all transaction over aspecific Order
-    public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
-        return await ctx.getOrderList().getOrderHistory(orderID);
-    }
+    //     return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
+    // }
+    // // get all History for Order ID return , all transaction over aspecific Order
+    // public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
+    //     return await ctx.getOrderList().getOrderHistory(orderID);
+    // }
 
-    // Get Order By status and use pagination to return the result
-    public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-        // Build Query String
-        const queryString = {
-            selector: {
-                orderStatus,
-            },
-            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
-        };
+    // // Get Order By status and use pagination to return the result
+    // public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
+    //     // check if role === 'Manufacturer' / 'Regulator'
+    //     await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+    //     // Build Query String
+    //     const queryString = {
+    //         selector: {
+    //             orderStatus,
+    //         },
+    //         use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+    //     };
 
-        const pagesizeInt = parseInt(pagesize, 10);
-        return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
-    }
+    //     const pagesizeInt = parseInt(pagesize, 10);
+    //     return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
+    // }
 
     // ############################################################### Policy Functions #################################################
-    // Request Policy , user request the insurance policy
-    public async requestPolicy(ctx: VehicleContext, id: string,
-        vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
-        startDate: number, endDate: number) {
-        logger.info('============= START : request insurance policy ===========');
 
-        // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
-
-        // check if vehicle exist
-        await ctx.getVehicleList().getVehicle(vehicleNumber);
-
-        //
-        const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
-        await ctx.getPolicyList().add(policy);
-
-        ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
-        logger.info('============= END : request insurance policy ===========');
-    }
-
-    // get Policy with an ID
-    public async getPolicy(ctx: VehicleContext, policyId: string) {
-
-        return await ctx.getPolicyList().get(policyId);
-    }
-
-    // Update requested policy to be issued
-    public async issuePolicy(ctx: VehicleContext, id: string) {
-        await this.hasRole(ctx, ['Insurer']);
-
-        const policy = await ctx.getPolicyList().get(id);
-
-        policy.status = PolicyStatus.ISSUED;
-        await ctx.getPolicyList().update(policy);
-
-        ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
-    }
-
-    // Return All Policies
-    public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
-        return await ctx.getPolicyList().getAll();
-    }
 
     // ############################################################### Utility Functions #################################################
-    // Function to check if the user has right toperform the role bases on his role
-    public async hasRole(ctx: VehicleContext, roleName: string[]) {
-        const clientId = ctx.clientIdentity;
-        for (let i = 0; i < roleName.length; i++) {
-            if (clientId.assertAttributeValue('role', roleName[i])) {
-                return true;
-            }
-        }
-        throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
-    }
+    // // Function to check if the user has right toperform the role bases on his role
+    // public async hasRole(ctx: VehicleContext, roleName: string[]) {
+    //     const clientId = ctx.clientIdentity;
+    //     for (let i = 0; i < roleName.length; i++) {
+    //         if (clientId.assertAttributeValue('role', roleName[i])) {
+    //             return true;
+    //         }
+    //     }
+    //     throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+    // }
+
     /**
      * Evaluate a queryString
      *
      * @param {VehicleContext } ctx the transaction context
      * @param {String} queryString the query string to be evaluated
      */
-    public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
+    // public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
-        logger.info('query String');
-        logger.info(JSON.stringify(queryString));
+    //     logger.info('query String');
+    //     logger.info(JSON.stringify(queryString));
 
-        let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
-        if (collection === '') {
-            resultsIterator = await ctx.stub.getQueryResult(queryString);
-        } else {
-            // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
-            const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
-            resultsIterator = result.iterator;
-        }
+    //     let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
+    //     if (collection === '') {
+    //         resultsIterator = await ctx.stub.getQueryResult(queryString);
+    //     } else {
+    //         // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
+    //         const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
+    //         resultsIterator = result.iterator;
+    //     }
 
-        console.log(typeof resultsIterator);
+    //     console.log(typeof resultsIterator);
 
-        const allResults = [];
+    //     const allResults = [];
 
-        while (true) {
-            const res = await resultsIterator.next();
+    //     while (true) {
+    //         const res = await resultsIterator.next();
 
-            if (res.value && res.value.value.toString()) {
-                const jsonRes = new QueryResponse();
+    //         if (res.value && res.value.value.toString()) {
+    //             const jsonRes = new QueryResponse();
 
-                logger.info(res.value.value.toString('utf8'));
+    //             logger.info(res.value.value.toString('utf8'));
 
-                jsonRes.key = res.value.key;
+    //             jsonRes.key = res.value.key;
 
-                try {
-                    jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
-                } catch (err) {
-                    logger.info(err);
-                    jsonRes.record = res.value.value.toString('utf8');
-                }
+    //             try {
+    //                 jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
+    //             } catch (err) {
+    //                 logger.info(err);
+    //                 jsonRes.record = res.value.value.toString('utf8');
+    //             }
 
-                allResults.push(jsonRes);
-            }
-            if (res.done) {
-                logger.info('end of data');
-                await resultsIterator.close();
-                logger.info(allResults);
-                logger.info(JSON.stringify(allResults));
-                return JSON.stringify(allResults);
-            }
-        }
+    //             allResults.push(jsonRes);
+    //         }
+    //         if (res.done) {
+    //             logger.info('end of data');
+    //             await resultsIterator.close();
+    //             logger.info(allResults);
+    //             logger.info(JSON.stringify(allResults));
+    //             return JSON.stringify(allResults);
+    //         }
+    //     }
 
-    }
+    // }
     // Regulator Can get nmber of vehicles 
     public async getVehicleCount(ctx: VehicleContext) {
-        await this.hasRole(ctx, ['Regulator']);
+        // await this.hasRole(ctx, ['Regulator']);
 
         return await ctx.getVehicleList().count();
     }

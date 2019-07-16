@@ -192,46 +192,46 @@ export class StateList<T extends State> {
     }
 
     // Return the History of specific asset , which will return all transaction over this asset
-    public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
-        const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        const keyHistory = await this.ctx.stub.getHistoryForKey(ledgerKey);
+    // public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
+    //     const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
+    //     const keyHistory = await this.ctx.stub.getHistoryForKey(ledgerKey);
 
-        const history: Array<IHistoricState<T>> = [];
+    //     const history: Array<IHistoricState<T>> = [];
 
-        let value = (await keyHistory.next()).value;
+    //     let value = (await keyHistory.next()).value;
 
-        while (value) {
-            const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses);
+    //     while (value) {
+    //         const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses);
 
-            const historicState: IHistoricState<T> = new IHistoricState(
-                (value.getTimestamp().getSeconds() as any).toInt(), value.getTxId(), state as T,
-            );
+    //         const historicState: IHistoricState<T> = new IHistoricState(
+    //             (value.getTimestamp().getSeconds() as any).toInt(), value.getTxId(), state as T,
+    //         );
 
-            history.push(historicState);
+    //         history.push(historicState);
 
-            const next = await keyHistory.next();
-            value = next.value;
-        }
+    //         const next = await keyHistory.next();
+    //         value = next.value;
+    //     }
 
-        return history;
-    }
-    // Query ledger with pagination option 
-    public async queryWithPagination(queryString: string, pageSize: number , bookmark :string ): Promise<QueryPaginationResponse<T>> {
-        let result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize,bookmark)
-        const queryPaginatedRes: QueryPaginationResponse<T> =new QueryPaginationResponse(result.metadata.fetched_records_count,result.metadata.bookmark)
+    //     return history;
+    // }
+    // // Query ledger with pagination option 
+    // public async queryWithPagination(queryString: string, pageSize: number , bookmark :string ): Promise<QueryPaginationResponse<T>> {
+    //     let result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize,bookmark)
+    //     const queryPaginatedRes: QueryPaginationResponse<T> =new QueryPaginationResponse(result.metadata.fetched_records_count,result.metadata.bookmark)
         
-        let value = (await result.iterator.next()).value;
-        const states: T[] = [];
+    //     let value = (await result.iterator.next()).value;
+    //     const states: T[] = [];
     
-        while (value) {
-            const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses) as T;
-            logger.info(JSON.stringify(state));
-            states.push(state);
-            const next = await result.iterator.next();
-            value = next.value;
-        }
-        queryPaginatedRes.value=states;
-        return queryPaginatedRes;
+    //     while (value) {
+    //         const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses) as T;
+    //         logger.info(JSON.stringify(state));
+    //         states.push(state);
+    //         const next = await result.iterator.next();
+    //         value = next.value;
+    //     }
+    //     queryPaginatedRes.value=states;
+    //     return queryPaginatedRes;
        
-    }
+    // }
 }

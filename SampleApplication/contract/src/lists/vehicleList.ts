@@ -15,15 +15,15 @@ export class VehicleList <T extends Vehicle> extends StateList<T> {
         return this.add(vehicle);
     }
 
-  public async getVehicle(vehicle) {
-   return this.get(vehicle);
-   }
+    public async getVehicle(vehicle) {
+        return this.get(vehicle);
+    }
 
-  public async updateVehicle(vehicle) {
-      return this.update(vehicle);
+    public async updateVehicle(vehicle) {
+        return this.update(vehicle);
     }
-    public async getVehicleHistory(vehicleNumber)
-    {
-        return this.getHistory(vehicleNumber)
-    }
+
+    // public async getVehicleHistory(vehicleNumber){
+    //     return this.getHistory(vehicleNumber)
+    // }
 }
