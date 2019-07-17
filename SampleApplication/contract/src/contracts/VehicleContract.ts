@@ -8,6 +8,8 @@ import { Price } from '../assets/price';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
+// Import definitions from the policy asset
+import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
 
 const logger = newLogger('VehicleContract');
 
@@ -41,8 +43,11 @@ export class VehicleContract extends Contract {
     }
 
     // ############################################################### Vehicle Functions #################################################
+    // Create a vehicle from existing vehicle order, this action performed by manufacturer
     public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
         logger.info('============= START : Create vehicle ===========');
+        // check if role === 'Manufacturer'
+        // await this.hasRole(ctx, ['Manufacturer']);
 
         if (await ctx.getOrderList().exists(orderId)) {
             const order = await ctx.getOrderList().getOrder(orderId);
@@ -72,13 +77,18 @@ export class VehicleContract extends Contract {
 
     // Regulator retrieve all vehicles in system with details
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
+        // Check if role === 'Regulator' 
+        // Await this.hasRole(ctx, ['Regulator']);
+
         return await ctx.getVehicleList().getAll();
 
     }
 
-    // regulator can delete vehicle after lifecycle ended
+    // Regulator can delete vehicle after lifecycle ends
     public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
         logger.info('============= START : delete vehicle ===========');
+        // Check if role === 'Regulator' 
+        // Await this.hasRole(ctx, ['Regulator']);
 
         // Check if the Vehicle exists
         if (!await ctx.getVehicleList().exists(vehicleNumber)) {
@@ -90,9 +100,11 @@ export class VehicleContract extends Contract {
         logger.info('============= END : delete vehicle ===========');
     }
 
-    // Issue VIN for the Vehicle this action performed by Manufacturer
+    // Issue VIN for the vehicle, this action performed by Manufacturer
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
         logger.info('============= START : requestVehicleVIN ===========');
+        // Check if role === 'Manufacturer' 
+        // Await this.hasRole(ctx, ['Manufacturer']);
 
         if (!ctx.getVehicleList().exists(vehicleNumber)) {
             throw new Error(`Error  Vehicle ${vehicleNumber} doesn't exists `);
@@ -110,9 +122,11 @@ export class VehicleContract extends Contract {
         logger.info('============= END : requestVehicleVIN ===========');
     }
 
-    // Issue VIN for Vehcile the this action performed by Regulator
+    // Issue VIN for vehicle, this action performed by Regulator
     public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
         logger.info('============= START : issueVehicleVIN ===========');
+        // Check if role === 'Regulator' 
+        // Await this.hasRole(ctx, ['Regulator']);
 
         if (! await ctx.getVehicleList().exists(vehicleNumber)) {
             throw new Error(`Error  Vehicle  ${vehicleNumber} doesn't exists `);
@@ -132,9 +146,11 @@ export class VehicleContract extends Contract {
         logger.info('============= END : issueVehicleVIN ===========');
     }
 
-    // regulator can update vehicle owner
+    // Regulator can update vehicle owner
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
         logger.info('============= START : Change Vehicle Owner ===========');
+        // Check if role === 'Regulator' 
+        // Await this.hasRole(ctx, ['Regulator']);
 
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         vehicle.owner = newOwner;
@@ -143,13 +159,18 @@ export class VehicleContract extends Contract {
         logger.info('============= END : changevehicleOwner ===========');
     }
 
-    // manufacture can get vehicle price details
+    // Manufacture can get vehicle price details
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
+        // check if role === 'Manufacturer'
+        // await this.hasRole(ctx, ['Manufacturer']);
+
         return await ctx.getPriceList().getPrice(vehicleNumber);
     }
 
-    // manufacture can add or change vehicle price details
+    // Manufacture can add or change vehicle price details
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
+        // check if role === 'Manufacturer'
+        // await this.hasRole(ctx, ['Manufacturer']);
 
         // check if vehicle exist
         await ctx.getVehicleList().get(vehicleNumber);
@@ -185,7 +206,7 @@ export class VehicleContract extends Contract {
     // }
 
     // ############################################################### Order Functions #################################################
-    // end user palce order function
+    // End user place order function
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
         make: string, model: string, color: string,
     ) {
@@ -316,7 +337,48 @@ export class VehicleContract extends Contract {
     // }
 
     // ############################################################### Policy Functions #################################################
+    // Request policy, user / manufacturer request the insurance policy
+    public async requestPolicy(ctx: VehicleContext, id: string,
+        vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
+        startDate: number, endDate: number) {
+        logger.info('============= START : request insurance policy ===========');
 
+        // check if role === 'Manufacturer'
+        // await this.hasRole(ctx, ['Manufacturer']);
+
+        // check if vehicle exist
+        await ctx.getVehicleList().getVehicle(vehicleNumber);
+
+        //
+        const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
+        await ctx.getPolicyList().add(policy);
+
+        ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
+        logger.info('============= END : request insurance policy ===========');
+    }
+
+    // get policy with an ID
+    public async getPolicy(ctx: VehicleContext, policyId: string) {
+
+        return await ctx.getPolicyList().get(policyId);
+    }
+
+    // Update requested policy to be issued
+    public async issuePolicy(ctx: VehicleContext, id: string) {
+        // await this.hasRole(ctx, ['Insurer']);
+
+        const policy = await ctx.getPolicyList().get(id);
+
+        policy.status = PolicyStatus.ISSUED;
+        await ctx.getPolicyList().update(policy);
+
+        ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
+    }
+
+    // Return All Policies
+    public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
+        return await ctx.getPolicyList().getAll();
+    }
 
     // ############################################################### Utility Functions #################################################
     // // Function to check if the user has right toperform the role bases on his role
@@ -383,7 +445,7 @@ export class VehicleContract extends Contract {
     //     }
 
     // }
-    // Regulator Can get nmber of vehicles 
+    // Regulator Can get number of vehicles 
     public async getVehicleCount(ctx: VehicleContext) {
         // await this.hasRole(ctx, ['Regulator']);
 
