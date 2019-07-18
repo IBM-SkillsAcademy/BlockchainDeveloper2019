@@ -203,7 +203,7 @@ export class VehicleContract extends Contract {
        * get history for vehicle as provenance of changes over vehicle 
        */
     public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
-        // get vehicle history using vehiclelist 
+        // get vehicle history using vehiclelist and function getVehicleHistory
         return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
     }
 
@@ -307,7 +307,7 @@ export class VehicleContract extends Contract {
      * @param  {VehicleContext} ctx
      * @param  {string} orderStatus
      * @returns {array} array of orders  
-     * return all order with specific status, example to explain how to use index on JSON ... Index defined in META-INF folder
+     * return all orders with specific status,  explain how to use index defined as JSON format, all  indexes defined in META-INF folder
      */
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         logger.info('============= START : Get Orders by Status ===========');
@@ -321,7 +321,7 @@ export class VehicleContract extends Contract {
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-          // call queryWithQueryString custom function to execute query and return result 
+          // call queryWithQueryString which custom function to execute query and return result 
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
     
@@ -329,13 +329,13 @@ export class VehicleContract extends Contract {
      * *** Exercise 03 > Part 4 ***
      * @param  {VehicleContext} ctx 
      * @param  {string} orderID orderId to get history for 
-     * return history for order 
+     * return all transaction history for order  using orderID
      */
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
-    // Get Order By status and use pagination to return the result
+    
     /**
      * *** Exercise 03 > Part 5 ***
      * @param  {VehicleContext} ctx 
@@ -343,7 +343,8 @@ export class VehicleContract extends Contract {
      * @param  {string} pagesize number of result per page 
      * @param  {string} bookmark When the bookmark is a non-emptry string, 
        the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
-     */
+    get all orders with status paginated by number of result per page and using bookmark 
+       */
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
@@ -367,7 +368,7 @@ export class VehicleContract extends Contract {
      * @param  {string} endKey    end key as end point for queey 
      */
     public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
-        // call get 
+        // use objec retuned from getOrderList and call getOrdersByRange  
         return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }
 
@@ -447,33 +448,33 @@ export class VehicleContract extends Contract {
         }
 
         console.log(typeof resultsIterator);
-
+        // array to hold query result 
         const allResults = [];
-
         while (true) {
+               // use iterator to get next element 
             const res = await resultsIterator.next();
-
+             // if next element has value 
             if (res.value && res.value.value.toString()) {
+                // create object of custom type QueryResponse to hold current element result 
                 const jsonRes = new QueryResponse();
-
-                logger.info(res.value.value.toString('utf8'));
-
+               // assign current key value to key of QueryResponse object 
                 jsonRes.key = res.value.key;
 
                 try {
+                    // assign current record value to value of QueryResponse object 
                     jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
                     logger.info(err);
                     jsonRes.record = res.value.value.toString('utf8');
                 }
-
+                 // push current object to array of result 
                 allResults.push(jsonRes);
             }
             if (res.done) {
                 logger.info('end of data');
+                // close iterator 
                 await resultsIterator.close();
-                logger.info(allResults);
-                logger.info(JSON.stringify(allResults));
+                
                 return JSON.stringify(allResults);
             }
         }
