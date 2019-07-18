@@ -194,8 +194,16 @@ export class VehicleContract extends Contract {
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
 
-    // get all History for Vehicle ID return , all transaction over aspecific vehicle
+    
+    
+      /**
+       * *** Exercise 03 > Part 4 ***
+       * @param  {VehicleContext} ctx vehicle context 
+       * @param  {string} vehicleNumber vehicle number to return history for
+       * get history for vehicle as provenance of changes over vehicle 
+       */
     public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
+        // get vehicle history using vehiclelist 
         return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
     }
 
@@ -293,41 +301,74 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getAll();
     }
 
-    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+    
+    /**
+     * *** Exercise 03 > Part 2 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderStatus
+     * @returns {array} array of orders  
+     * return all order with specific status, example to explain how to use index on JSON ... Index defined in META-INF folder
+     */
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         logger.info('============= START : Get Orders by Status ===========');
 
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
+      // create query string and use orderStatusIndex and order status design document
         const queryString = {
             selector: {
                 orderStatus,
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-
+          // call queryWithQueryString custom function to execute query and return result 
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
-    // get all History for Order ID return , all transaction over aspecific Order
+    
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx 
+     * @param  {string} orderID orderId to get history for 
+     * return history for order 
+     */
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
     // Get Order By status and use pagination to return the result
+    /**
+     * *** Exercise 03 > Part 5 ***
+     * @param  {VehicleContext} ctx 
+     * @param  {string} orderStatus 
+     * @param  {string} pagesize number of result per page 
+     * @param  {string} bookmark When the bookmark is a non-emptry string, 
+       the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
+     */
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-        // Build Query String
+        // build query string
         const queryString = {
             selector: {
                 orderStatus,
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-
+       // convert string to integer using javascript function parseInt        
         const pagesizeInt = parseInt(pagesize, 10);
+     
         return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
+    }
+
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} startKey  start key as starting point for query 
+     * @param  {string} endKey    end key as end point for queey 
+     */
+    public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
+        // call get 
+        return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }
 
     // ############################################################### Policy Functions #################################################
@@ -385,12 +426,12 @@ export class VehicleContract extends Contract {
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
-    /**
-     * Evaluate a queryString
-     *
-     * @param {VehicleContext } ctx the transaction context
-     * @param {String} queryString the query string to be evaluated
-     */
+       /**
+        * *** Exercise 03 > Part 2 *** 
+        * @param {VehicleContext } ctx the transaction context
+        * @param {string} queryString the query string to be evaluated
+        * @param {string } collection flag to identify this function will be used for getQueryResult or  getPrivateDataQueryResult
+        */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
         logger.info('query String');
@@ -438,10 +479,16 @@ export class VehicleContract extends Contract {
         }
 
     }
-    // Regulator Can get nmber of vehicles 
+    
+    
+    /**
+     * *** Exercise 03 > Part 3 ***
+     * @param  {VehicleContext} ctx
+     */
     public async getVehicleCount(ctx: VehicleContext) {
+        // only regulator can access this function 
         await this.hasRole(ctx, ['Regulator']);
-
+        
         return await ctx.getVehicleList().count();
     }
     //'unknownTransaction' will be called if the required transaction function requested does not exist
