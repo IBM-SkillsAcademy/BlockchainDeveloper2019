@@ -27,7 +27,7 @@ export class State  {
         this.class = stateClass;
         this.key = State.makeKey(keyParts);
     }
-      /**
+    /**
      * Convert object to buffer containing JSON data serialization
      * Typically used before putState()ledger API
      * @param {Object} JSON object to serialize
@@ -57,7 +57,7 @@ export class State  {
 
     }
 
-      /**
+    /**
      * Deserialize object into specific object class
      * Typically used after getState() ledger API
      * @param {data} data to deserialize into JSON object
@@ -68,7 +68,7 @@ export class State  {
         const object = new (objClass)(json);
         return object;
     }
-/**
+    /**
      * Join the keyParts to make a unififed string
      * @param (String[]) keyParts
      */

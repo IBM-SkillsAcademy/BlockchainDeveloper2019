@@ -1,4 +1,3 @@
-import { Object as ContractObject, Property } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 // Query Response as container for Query result with Pagination option
 /*

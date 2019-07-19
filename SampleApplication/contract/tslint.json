@@ -20,7 +20,7 @@
         "prefer-for-of": false,
         "ordered-imports": false,
         "align": false,
-        "jsdoc-format": false,
+        "jsdoc-format": true,
         "member-ordering": false,
         "variable-name": false
     },

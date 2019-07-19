@@ -52,7 +52,7 @@ export class StateList<T extends State> {
         await this.ctx.stub.putState(key, data);
 
     }
-    /**
+        /**
          * Get a state from the list using supplied keys. Form composite
          * keys to retrieve state from world state. State data is deserialized
          * into JSON object before being returned.
@@ -75,13 +75,12 @@ export class StateList<T extends State> {
         return this.query({});
     }
 
-      /**
+    /**
      * *** Exercise 3 > Part 3 ***
      *
      * @returns { Number }   count total number of assets of specific type
-     *
-     *Get Count of specific state (Vehicle , Order , ...)
-      */
+     * Get Count of specific state (Vehicle , Order , ...)
+     */
     public async count(): Promise<number> {
        /*Queries the state in the ledger based on a given partial composite key.
        This function returns an iterator which can be used to iterate over all composite keys
@@ -104,8 +103,8 @@ export class StateList<T extends State> {
         return counter;
     }
 
-    /**
-     * generic function used across exercises to update assets
+   /**
+    * generic function used across exercises to update assets
     * Update a state in the list. Puts the new state in world state with
     * appropriate composite key.  Note that state defines its own key.
     * A state is serialized before writing. Logic is very similar to
@@ -183,13 +182,13 @@ export class StateList<T extends State> {
         }
     }
 
-      /**
+    /**
      * *** Exercise   > Part  ***
-    * @param { collection }
-    * @param { state }
-    * @returns {}
-    *
-    */
+     * @param { collection }
+     * @param { state }
+     * @returns {}
+     *
+     */
     public async updatePrivate(collection: string, state: T) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
 
@@ -198,13 +197,13 @@ export class StateList<T extends State> {
         await this.ctx.stub.putPrivateData(collection, key, data);
 
     }
-     /**
+    /**
      * *** Exercise   > Part  ***
-    * @param { collection }
-    * @param { key }
-    * @returns {}
-    *
-    */
+     * @param { collection }
+     * @param { key }
+     * @returns {}
+     *
+     */
     public async getPrivate(collection: string, key: string): Promise<T> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
       // getPrivateData returns the value of the specified `key` from the specified `collection`
@@ -220,10 +219,10 @@ export class StateList<T extends State> {
 
     /**
      * *** Exercise 3  > Part 4 ***
-    * @param { string } key to return all history for
-    * @returns {Array<IHistoricState<T>} array of history state
-    * the function resturn history of all transactions over a key
-    */
+     * @param { string } key to return all history for
+     * @returns {Array<IHistoricState<T>} array of history state
+     * the function resturn history of all transactions over a key
+     */
     public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         /* Returns a history of key values across time. For each historic key update,
@@ -252,16 +251,16 @@ export class StateList<T extends State> {
 
         return history;
     }
-    /**
+ /**
   * *** Exercise 3  > Part 5 ***
   *
   * @param { string } queryString  query statment as string
   * @param { number } pageSize  number of query result per page
   * @param { string } bookmark  When an empty string is passed as a value to the bookmark argument,
-       the returned iterator can be used to fetch the first `pageSize` of query results. When the bookmark is a non-emptry string,
-       the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result.
+  * the returned iterator can be used to fetch the first `pageSize` of query results. When the bookmark is a non-emptry string,
+  *     the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result.
   * @returns { QueryPaginationResponse<T> } object of type QueryPaginationResponse T which contain array of states , number of returned result and bookmark
-   */
+  */
     public async queryWithPagination(queryString: string, pageSize: number, bookmark: string): Promise<QueryPaginationResponse<T>> {
         /*
         getQueryResultWithPagination which performs a "rich" query against a state database. It is only supported for state databases that support rich query, e.g.,
@@ -291,14 +290,14 @@ export class StateList<T extends State> {
 
     }
 
-    /**
+  /**
    * *** Exercise 3  > Part 4 ***
    *
    * @param { string } startKey start key used as starting point to search ledger with
    * @param { string } endkey used as starting point to search ledger with
    * @returns T [] as array of states that exists in range between start and end key
    *  Query assets by range using startkey and endkey this function use API getStateByRange which
-  */
+   */
     public async getAssetsByRange(startKey: string, endKey: string): Promise<T[]> {
 
         const ledgerStartKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(startKey));

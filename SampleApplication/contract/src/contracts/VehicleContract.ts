@@ -337,9 +337,9 @@ export class VehicleContract extends Contract {
      * @param  {string} orderStatus
      * @param  {string} pagesize number of result per page
      * @param  {string} bookmark When the bookmark is a non-emptry string,
-       the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
-    get all orders with status paginated by number of result per page and using bookmark
-       */
+     * the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
+     * get all orders with status paginated by number of result per page and using bookmark
+     */
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
