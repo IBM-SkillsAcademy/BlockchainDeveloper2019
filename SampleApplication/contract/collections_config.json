@@ -1,8 +1,8 @@
 [{
     "name": "collectionVehiclePriceDetails",
     "policy": "OR('Org1MSP.member', 'Org2MSP.member')",
-    "requiredPeerCount": 0,
+    "requiredPeerCount": 1,
     "maxPeerCount": 3,
-    "blockToLive": 1000000,
+    "blockToLive": 3,
     "memberOnlyRead": true
 }]
