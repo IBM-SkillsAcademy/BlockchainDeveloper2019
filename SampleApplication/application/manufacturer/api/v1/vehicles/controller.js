@@ -408,6 +408,29 @@ exports.getOrdersByStatusPaginated = async (req, res, next) => {
   }
 };
 
+exports.getOrdersByRange = async (req, res, next) => {
+  try {
+    await checkAuthorization(req, res);
+    const gateway = await setupGateway(req.headers['enrollment-id']);
+    const contract = await getContract(gateway);
+
+    const result = await contract.evaluateTransaction('getOrdersByRange', req.query.startKey, req.query.endKey);
+
+    const rawResult = result.toString();
+
+    const obj = JSON.parse(rawResult);
+    return res.send({
+      result: obj
+    });
+  } catch (err) {
+    const msg = err.message;
+    const msgString = msg.slice(msg.indexOf('Errors:') + 8, msg.length);
+    const json = JSON.parse(msgString);
+    res.status(500);
+    res.send(json);
+  }
+};
+
 async function checkAuthorization(req, res) {
   try {
     const enrollmentID = req.headers['enrollment-id'];

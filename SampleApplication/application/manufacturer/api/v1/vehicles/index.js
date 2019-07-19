@@ -14,6 +14,8 @@ router.get('/orders', controller.getOrder);
 router.get('/orders/status', controller.getOrder);
 router.get('/orders/status/paginated', controller.getOrdersByStatusPaginated);
 router.get('/orders/history', controller.getHistoryForOrder);
+router.get('/orders/range', controller.getOrdersByRange);
+
 router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
 router.get('/prices', controller.getPrice);
