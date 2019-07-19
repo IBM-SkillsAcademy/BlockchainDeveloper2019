@@ -17,7 +17,6 @@ const logger = newLogger('VehicleContract');
 
 export class VehicleContract extends Contract {
 
-
     constructor() {
         // Unique name when multiple contracts per chaincode file
         super('org.vehiclelifecycle.vehicle');
@@ -194,13 +193,11 @@ export class VehicleContract extends Contract {
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
 
-    
-    
       /**
        * *** Exercise 03 > Part 4 ***
-       * @param  {VehicleContext} ctx vehicle context 
+       * @param  {VehicleContext} ctx vehicle context
        * @param  {string} vehicleNumber vehicle number to return history for
-       * get history for vehicle as provenance of changes over vehicle 
+       * get history for vehicle as provenance of changes over vehicle
        */
     public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
         // get vehicle history using vehiclelist and function getVehicleHistory
@@ -301,12 +298,11 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getAll();
     }
 
-    
     /**
      * *** Exercise 03 > Part 2 ***
      * @param  {VehicleContext} ctx
      * @param  {string} orderStatus
-     * @returns {array} array of orders  
+     * @returns {array} array of orders
      * return all orders with specific status,  explain how to use index defined as JSON format, all  indexes defined in META-INF folder
      */
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
@@ -321,29 +317,28 @@ export class VehicleContract extends Contract {
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-          // call queryWithQueryString which custom function to execute query and return result 
+          // call queryWithQueryString which custom function to execute query and return result
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
-    
+
     /**
      * *** Exercise 03 > Part 4 ***
-     * @param  {VehicleContext} ctx 
-     * @param  {string} orderID orderId to get history for 
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderID orderId to get history for
      * return all transaction history for order  using orderID
      */
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
-    
     /**
      * *** Exercise 03 > Part 5 ***
-     * @param  {VehicleContext} ctx 
-     * @param  {string} orderStatus 
-     * @param  {string} pagesize number of result per page 
-     * @param  {string} bookmark When the bookmark is a non-emptry string, 
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderStatus
+     * @param  {string} pagesize number of result per page
+     * @param  {string} bookmark When the bookmark is a non-emptry string,
        the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
-    get all orders with status paginated by number of result per page and using bookmark 
+    get all orders with status paginated by number of result per page and using bookmark
        */
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
@@ -355,20 +350,20 @@ export class VehicleContract extends Contract {
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-       // convert string to integer using javascript function parseInt        
+       // convert string to integer using javascript function parseInt
         const pagesizeInt = parseInt(pagesize, 10);
-     
+
         return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
     }
 
     /**
      * *** Exercise 03 > Part 4 ***
      * @param  {VehicleContext} ctx
-     * @param  {string} startKey  start key as starting point for query 
-     * @param  {string} endKey    end key as end point for queey 
+     * @param  {string} startKey  start key as starting point for query
+     * @param  {string} endKey    end key as end point for queey
      */
     public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
-        // use objec retuned from getOrderList and call getOrdersByRange  
+        // use objec retuned from getOrderList and call getOrdersByRange
         return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }
 
@@ -428,7 +423,7 @@ export class VehicleContract extends Contract {
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
        /**
-        * *** Exercise 03 > Part 2 *** 
+        * *** Exercise 03 > Part 2 ***
         * @param {VehicleContext } ctx the transaction context
         * @param {string} queryString the query string to be evaluated
         * @param {string } collection flag to identify this function will be used for getQueryResult or  getPrivateDataQueryResult
@@ -448,64 +443,63 @@ export class VehicleContract extends Contract {
         }
 
         console.log(typeof resultsIterator);
-        // array to hold query result 
+        // array to hold query result
         const allResults = [];
         while (true) {
-               // use iterator to get next element 
+               // use iterator to get next element
             const res = await resultsIterator.next();
-             // if next element has value 
+             // if next element has value
             if (res.value && res.value.value.toString()) {
-                // create object of custom type QueryResponse to hold current element result 
+                // create object of custom type QueryResponse to hold current element result
                 const jsonRes = new QueryResponse();
-               // assign current key value to key of QueryResponse object 
+               // assign current key value to key of QueryResponse object
                 jsonRes.key = res.value.key;
 
                 try {
-                    // assign current record value to value of QueryResponse object 
+                    // assign current record value to value of QueryResponse object
                     jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
                 } catch (err) {
                     logger.info(err);
                     jsonRes.record = res.value.value.toString('utf8');
                 }
-                 // push current object to array of result 
+                 // push current object to array of result
                 allResults.push(jsonRes);
             }
             if (res.done) {
                 logger.info('end of data');
-                // close iterator 
+                // close iterator
                 await resultsIterator.close();
-                
+
                 return JSON.stringify(allResults);
             }
         }
 
     }
-    
-    
+
     /**
      * *** Exercise 03 > Part 3 ***
      * @param  {VehicleContext} ctx
      */
     public async getVehicleCount(ctx: VehicleContext) {
-        // only regulator can access this function 
+        // only regulator can access this function
         await this.hasRole(ctx, ['Regulator']);
-        
+
         return await ctx.getVehicleList().count();
     }
-    //'unknownTransaction' will be called if the required transaction function requested does not exist
+    // 'unknownTransaction' will be called if the required transaction function requested does not exist
     public async unknownTransaction(ctx: VehicleContext) {
-        throw new Error(`The transaction function ${ctx.stub.getFunctionAndParameters().fcn} doesn't exists, provide a valid transaction function `)
+        throw new Error(`The transaction function ${ctx.stub.getFunctionAndParameters().fcn} doesn't exists, provide a valid transaction function `);
     }
     // 'beforeTransaction' will be called before any of the transaction functions within  contract
-    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks 
-    //If an error is thrown, the whole transaction will be rejected
+    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks
+    // If an error is thrown, the whole transaction will be rejected
 
     public async beforeTransaction(ctx: VehicleContext) {
         logger.info(`Before Calling Transaction function ${ctx.stub.getFunctionAndParameters().fcn}`);
     }
     // 'afterTransaction' will be called after any of the transaction functions within  contract
-    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks 
-    //If an error is thrown, the whole transaction will be rejected
+    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks
+    // If an error is thrown, the whole transaction will be rejected
     public async afterTransaction(ctx: VehicleContext, result: any) {
 
         logger.info(`After Calling Transaction function ${ctx.stub.getFunctionAndParameters().fcn}`);

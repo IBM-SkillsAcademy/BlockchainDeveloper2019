@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache-2.0
 import { Context } from 'fabric-contract-api';
 import { newLogger } from 'fabric-shim';
 import { IHistoricState, IState, State } from './state';
-import { QueryPaginationResponse } from "../utils/queryPaginatedResponse";
+import { QueryPaginationResponse } from '../utils/queryPaginatedResponse';
 
 const logger = newLogger('STATELIST');
 // Utility class for collections of ledger states --  a state list
@@ -70,21 +70,21 @@ export class StateList<T extends State> {
     }
 
     // Return All States
-    
+
     public async getAll(): Promise<T[]> {
         return this.query({});
     }
 
       /**
      * *** Exercise 3 > Part 3 ***
-     * 
-     * @returns { Number }   count total number of assets of specific type 
-     * 
+     *
+     * @returns { Number }   count total number of assets of specific type
+     *
      *Get Count of specific state (Vehicle , Order , ...)
       */
     public async count(): Promise<number> {
-       /*Queries the state in the ledger based on a given partial composite key. 
-       This function returns an iterator which can be used to iterate over all composite keys 
+       /*Queries the state in the ledger based on a given partial composite key.
+       This function returns an iterator which can be used to iterate over all composite keys
        whose prefix matches the given partial composite key */
         const data = await this.ctx.stub.getStateByPartialCompositeKey(this.name, []);
         let counter = 0;
@@ -105,7 +105,7 @@ export class StateList<T extends State> {
     }
 
     /**
-     * generic function used across exercises to update assets 
+     * generic function used across exercises to update assets
     * Update a state in the list. Puts the new state in world state with
     * appropriate composite key.  Note that state defines its own key.
     * A state is serialized before writing. Logic is very similar to
@@ -128,7 +128,7 @@ export class StateList<T extends State> {
 
         await this.ctx.stub.putState(key, data);
     }
-    // Check if the key exists 
+    // Check if the key exists
     public async exists(key: string) {
         try {
             // if the below function doesn't throw exeception then return true
@@ -139,7 +139,7 @@ export class StateList<T extends State> {
         }
     }
 
-    // Query used for advanced queries 
+    // Query used for advanced queries
     public async query(query: any) {
         const { stub } = this.ctx;
         if (!query.selector) {
@@ -166,7 +166,7 @@ export class StateList<T extends State> {
     // Delete state with Key
     public delete(key: string) {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        //Deletes the state variable key from the state store. 
+        // Deletes the state variable key from the state store.
         return this.ctx.stub.deleteState(ledgerKey);
     }
 
@@ -185,29 +185,29 @@ export class StateList<T extends State> {
 
       /**
      * *** Exercise   > Part  ***
-    * @param { collection } 
-    * @param { state }  
-    * @returns {}  
-    * 
+    * @param { collection }
+    * @param { state }
+    * @returns {}
+    *
     */
     public async updatePrivate(collection: string, state: T) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
 
         const data = state.serialize();
-       //putPrivateData puts the specified `key` and `value` into the transaction's private writeSet.
+       // putPrivateData puts the specified `key` and `value` into the transaction's private writeSet.
         await this.ctx.stub.putPrivateData(collection, key, data);
 
     }
      /**
      * *** Exercise   > Part  ***
-    * @param { collection } 
-    * @param { key }   
-    * @returns {} 
-    * 
+    * @param { collection }
+    * @param { key }
+    * @returns {}
+    *
     */
     public async getPrivate(collection: string, key: string): Promise<T> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-      //getPrivateData returns the value of the specified `key` from the specified `collection`
+      // getPrivateData returns the value of the specified `key` from the specified `collection`
         const data = await this.ctx.stub.getPrivateData(collection, ledgerKey);
 
         if (data.length === 0) {
@@ -220,18 +220,18 @@ export class StateList<T extends State> {
 
     /**
      * *** Exercise 3  > Part 4 ***
-    * @param { string } key to return all history for  
-    * @returns {Array<IHistoricState<T>} array of history state 
+    * @param { string } key to return all history for
+    * @returns {Array<IHistoricState<T>} array of history state
     * the function resturn history of all transactions over a key
     */
     public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        /* Returns a history of key values across time. For each historic key update, 
-        the historic value and associated transaction id and timestamp are returned. 
+        /* Returns a history of key values across time. For each historic key update,
+        the historic value and associated transaction id and timestamp are returned.
         The timestamp is the timestamp provided by the client in the proposal header.
          This method requires peer configuration core.ledger.history.enableHistoryDatabase to be true.*/
         const keyHistory = await this.ctx.stub.getHistoryForKey(ledgerKey);
-       // array of IHistoricState to hold query result  
+       // array of IHistoricState to hold query result
         const history: Array<IHistoricState<T>> = [];
 
         let value = (await keyHistory.next()).value;
@@ -249,41 +249,41 @@ export class StateList<T extends State> {
             const next = await keyHistory.next();
             value = next.value;
         }
-        
+
         return history;
     }
     /**
   * *** Exercise 3  > Part 5 ***
   *
-  * @param { string } queryString  query statment as string  
+  * @param { string } queryString  query statment as string
   * @param { number } pageSize  number of query result per page
-  * @param { string } bookmark  When an empty string is passed as a value to the bookmark argument, 
-       the returned iterator can be used to fetch the first `pageSize` of query results. When the bookmark is a non-emptry string, 
+  * @param { string } bookmark  When an empty string is passed as a value to the bookmark argument,
+       the returned iterator can be used to fetch the first `pageSize` of query results. When the bookmark is a non-emptry string,
        the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result.
-  * @returns { QueryPaginationResponse<T> } object of type QueryPaginationResponse T which contain array of states , number of returned result and bookmark      
+  * @returns { QueryPaginationResponse<T> } object of type QueryPaginationResponse T which contain array of states , number of returned result and bookmark
    */
     public async queryWithPagination(queryString: string, pageSize: number, bookmark: string): Promise<QueryPaginationResponse<T>> {
         /*
-        getQueryResultWithPagination which performs a "rich" query against a state database. It is only supported for state databases that support rich query, e.g., 
-        CouchDB. The query string is in the native syntax of the underlying state database. 
+        getQueryResultWithPagination which performs a "rich" query against a state database. It is only supported for state databases that support rich query, e.g.,
+        CouchDB. The query string is in the native syntax of the underlying state database.
        */
-        let result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize, bookmark)
-        // create object of custom type QueryPaginationResponse (which exists under folder util) 
-        const queryPaginatedRes: QueryPaginationResponse<T> = new QueryPaginationResponse(result.metadata.fetched_records_count, result.metadata.bookmark)
-        // fetch first item from iterator 
+        const result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize, bookmark);
+        // create object of custom type QueryPaginationResponse (which exists under folder util)
+        const queryPaginatedRes: QueryPaginationResponse<T> = new QueryPaginationResponse(result.metadata.fetched_records_count, result.metadata.bookmark);
+        // fetch first item from iterator
         let value = (await result.iterator.next()).value;
         // create array of states to hold query result
         const states: T[] = [];
-        // while the value have defined value (exits and not null) 
+        // while the value have defined value (exits and not null)
         while (value) {
             // deserialize the state which convert object into one of a set of supported JSON classes
             const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses) as T;
             logger.info(JSON.stringify(state));
-            // push the state to array as new entry 
+            // push the state to array as new entry
             states.push(state);
-            //get next item from iterator 
+            // get next item from iterator
             const next = await result.iterator.next();
-            //get next value from next item 
+            // get next value from next item
             value = next.value;
         }
         queryPaginatedRes.value = states;
@@ -294,10 +294,10 @@ export class StateList<T extends State> {
     /**
    * *** Exercise 3  > Part 4 ***
    *
-   * @param { string } startKey start key used as starting point to search ledger with 
+   * @param { string } startKey start key used as starting point to search ledger with
    * @param { string } endkey used as starting point to search ledger with
-   * @returns T [] as array of states that exists in range between start and end key 
-   *  Query assets by range using startkey and endkey this function use API getStateByRange which 
+   * @returns T [] as array of states that exists in range between start and end key
+   *  Query assets by range using startkey and endkey this function use API getStateByRange which
   */
     public async getAssetsByRange(startKey: string, endKey: string): Promise<T[]> {
 
@@ -306,15 +306,15 @@ export class StateList<T extends State> {
         const ledgerEndKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(endKey));
 
         // Returns a range iterator ( StateQueryIterator )over a set of keys in the ledger
-        //if the number of keys between startKey and endKey is greater than the totalQueryLimit (defined in core.yaml, which is the peer's configuration file), 
-        //this iterator cannot be used to fetch all keys (results will be limited by the totalQueryLimit)
-        let result = await this.ctx.stub.getStateByRange(ledgerStartKey, ledgerEndKey);
+        // if the number of keys between startKey and endKey is greater than the totalQueryLimit (defined in core.yaml, which is the peer's configuration file),
+        // this iterator cannot be used to fetch all keys (results will be limited by the totalQueryLimit)
+        const result = await this.ctx.stub.getStateByRange(ledgerStartKey, ledgerEndKey);
 
         // The iterator can be used to iterate over all keys between the startKey (inclusive) and endKey (exclusive).
         let value = (await result.next()).value;
-        // Array of states 
+        // Array of states
         const states: T[] = [];
-        // while the value have defined value (exits and not null) 
+        // while the value have defined value (exits and not null)
         while (value) {
             // deserialize the state which convert object into one of a set of supported JSON classes
             const state = State.deserialize((value.getValue() as any).toBuffer(), this.supportedClasses) as T;
@@ -322,7 +322,7 @@ export class StateList<T extends State> {
             const next = await result.next();
             value = next.value;
         }
-        // Call close() on the returned StateQueryIterator object when done 
+        // Call close() on the returned StateQueryIterator object when done
         result.close();
 
         return states;

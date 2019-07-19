@@ -8,8 +8,8 @@ export class QueryResponse
     public timestamp: number;
     @Property()
     public txId: string;
-    key : string;
-    record : string;
+    public key: string;
+    public record: string;
     
 
 }

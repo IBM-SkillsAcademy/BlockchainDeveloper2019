@@ -22,7 +22,7 @@ export class State  {
     private class: string;
     private subClass?: string;
     private key: string;
-    
+
     constructor(stateClass: string, keyParts: string[]) {
         this.class = stateClass;
         this.key = State.makeKey(keyParts);
@@ -72,7 +72,7 @@ export class State  {
      * Join the keyParts to make a unififed string
      * @param (String[]) keyParts
      */
-    
+
     public static makeKey(keyParts: string[]): string {
         return keyParts.join(':');
     }
@@ -80,7 +80,6 @@ export class State  {
     public static splitKey(key: string): string[] {
         return key.split(':');
     }
-
 
     public getClass(): string {
         return this.class;
@@ -104,7 +103,7 @@ export class State  {
 
 }
 // tslint:disable:max-classes-per-file
-// Container for returned result for getHistory for akey  
+// Container for returned result for getHistory for akey
 @ContractObject()
 export class IHistoricState<T extends State> {
     public value: T;
