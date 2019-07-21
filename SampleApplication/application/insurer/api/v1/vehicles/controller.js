@@ -51,6 +51,14 @@ async function getContract(gateway) {
     throw new Error('Error connecting to channel . ERROR:' + err.message);
   }
 }
+/**
+ *  Exerise 7 > part 3 
+ * this function is to get Vehicles with given ID or all vehicles
+ * if id is not provided
+ * @param {Object} req Express request object
+ * @param {Object} res Express response object
+ * @param {function} next Express next middleware function
+ */
 exports.getVehicle = async (req, res, next) => {
   try {
     await checkAuthorization(req, res);
@@ -61,7 +69,10 @@ exports.getVehicle = async (req, res, next) => {
     let result, rawResult;
 
     if (req.query.id) {
-    // if vehicle id specified queryVehicle transaction - requires 1 argument, ex: ('queryVehicle', 'vehicle4')
+      /**
+       * this function is to query vehicles with specific ID 
+       * @property {function} evaluateTransaction to get vehicle with ID
+       */
       result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
     } else {

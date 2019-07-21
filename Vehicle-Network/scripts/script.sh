@@ -23,7 +23,7 @@ NO_CHAINCODE="$6"
 : ${NO_CHAINCODE:="false"}
 LANGUAGE=`echo "$LANGUAGE" | tr [:upper:] [:lower:]`
 COUNTER=1
-MAX_RETRY=10
+MAX_RETRY=30
 
 CC_SRC_PATH="/opt/gopath/src/github.com/chaincode"
 if [ "$LANGUAGE" = "node" ]; then
