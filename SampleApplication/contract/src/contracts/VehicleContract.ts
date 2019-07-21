@@ -3,7 +3,6 @@ import { Context, Contract } from 'fabric-contract-api';
 // Vehicle Manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
-import { Price } from '../assets/price';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
@@ -258,52 +257,6 @@ export class VehicleContract extends Contract {
         // Update state in ledger
         //await ctx.getVehicleList().updateVehicle(vehicle);
         //logger.info('============= END : changevehicleOwner ===========');
-    //}
-
-    /**
-     * *** Exercise 2 > Part 1 > Step 11 ***
-     * 
-     * 
-     * @param { ctx } the smart contract transaction context
-     * @param { vehicleNumber } vehicle number
-     */
-    //public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-        /*
-        Query the price details for a vehicle according to the vehicleNumber parameter.
-        This action will be performed by the Manufacturer participant
-        */
-
-        // Check if role === 'Manufacturer'
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        // Get vehicle price details
-        //return await ctx.getPriceList().getPrice(vehicleNumber);
-    //}
-
-    /**
-     * * *** Exercise 2 > Part 1 > Step 12 ***
-     * 
-     * @param { ctx } the smart contract transaction context
-     * @param { vehicleNumber }  vehicle number
-     * @param { price } amount of price
-     */
-    //public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-        /*
-        Transaction will simulate the price change for a vehicle by creating or updating the price
-        record in the price list ledger.
-        This action will be performed by the Manufacturer participant
-        */
-
-        // Check if role === 'Manufacturer'
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        // Check if vehicle exist
-        //await ctx.getVehicleList().get(vehicleNumber);
-
-        // Create price instance
-        //const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
-        // Update price list in the ledger
-        //await ctx.getPriceList().updatePrice(priceObject);
     //}
 
 

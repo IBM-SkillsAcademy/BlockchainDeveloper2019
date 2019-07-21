@@ -1,12 +1,12 @@
-//vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
+import { Policy } from '../assets/policy';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
+import { PolicyList } from '../lists/policyList';
+import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
-// Import the policy and policy list class to the vehicle context
-// import { Policy } from '../assets/policy';
-// import { PolicyList } from '../lists/policyList';
+import { Price } from './../assets/price';
 
 /* Custom Context that extend chain code Context class
  Used to define
@@ -15,25 +15,28 @@ https://hyperledger-fabric.readthedocs.io/en/latest/developapps/transactionconte
 */
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
+    private policyList: PolicyList<Policy>;
+    private priceList: PriceList<Price>;
     private vehicleList: VehicleList<Vehicle>;
-    // Define policyList as list of policy objects
-    // private policyList: PolicyList<Policy>; //add
     constructor() {
         super();
+
         this.orderList = new OrderList(this, [Order]);
+        this.policyList = new PolicyList(this, [Policy]);
         this.vehicleList = new VehicleList(this, [Vehicle]);
-        // Create policy
-        // this.policyList = new PolicyList(this, [Policy]);
+        this.priceList = new PriceList(this, [Price]);
     }
 
     public getOrderList(): OrderList<Order> {
         return this.orderList;
     }
+    public getPolicyList(): PolicyList<Policy> {
+        return this.policyList;
+    }
     public getVehicleList(): VehicleList<Vehicle> {
         return this.vehicleList;
     }
-    // Define the getPolicyList helper function
-    // public getPolicyList(): PolicyList<Policy> {
-    //     return this.policyList;
-    // }
+    public getPriceList(): PriceList<Price> {
+        return this.priceList;
+    }
 }
