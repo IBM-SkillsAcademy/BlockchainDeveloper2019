@@ -7,7 +7,7 @@ cd ../../Vehicle-Network/
 ./byfn.sh up -l node -s couchdb
 
 # after the networks up, copy all the required file for ex06
-cd ../../
+cd ../
 mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
 mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails
 mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes
