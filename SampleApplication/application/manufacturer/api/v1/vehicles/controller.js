@@ -107,15 +107,39 @@ exports.updateOrder = async (req, res, next) => {
     }
   }
 };
-
+/**  
+*** Exercise 7 part 2 ***
+*this function is to create a new vehicle from application using fabric SDK
+* @param {Object} req Express request object
+* @param {Object} res Express response object
+* @param {function} next Express next middleware function
+*/
 exports.createVehicle = async (req, res, next) => {
   try {
+    /** 
+    this function is to check if the user is enrolled on the blockchain network and 
+    if he is authorized to do this transaction
+    * @param {Object} req Express request object
+    * @param {Object} res Express response object
+    */
     await checkAuthorization(req, res);
-    const gateway = await setupGateway(req.headers['enrollment-id']);
-    const contract = await getContract(gateway);
-
-    // Submit the specified transaction.
-    // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
+    /**
+    *this function is to open a gateway to peer node with the user 
+    *enrolled and the wallets
+    *@param {String} enrollment-id user enrollment id
+    **/
+      const gateway = await setupGateway(req.headers['enrollment-id']);
+    /**
+     * this function is to get the contract that the transaction will be 
+     * performed on 
+     * @param {Gateway} gateway the opened gateway to peer node
+     */
+     const contract = await getContract(gateway);
+    /**
+     * this function is to submit the specified transaction
+     * @property {function} submitTransaction to submit the specified transaction from the contract
+     */
+    
     await contract.submitTransaction(
       'createVehicle',
       req.body.orderID,
