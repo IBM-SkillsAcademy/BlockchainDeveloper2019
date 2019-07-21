@@ -7,10 +7,16 @@ cd ../../Vehicle-Network/
 ./byfn.sh up -l node -s couchdb
 
 # after the networks up, copy all the required file for ex06
-cd ../../
-mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
-mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails
-mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes
+cd ../
+if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections" ]; then
+  mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
+fi
+if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails" ]; then
+  mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails
+fi
+if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes" ]; then
+  mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes
+fi
 cp -f ex-commands/ex06/artifacts/priceIndex.json SampleApplication/contract/META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes/priceIndex.json
 cp -f ex-commands/ex06/artifacts/vehicleContext.ts SampleApplication/contract/src/utils/vehicleContext.ts
 cp -f ex-commands/ex06/artifacts/statelist.ts SampleApplication/contract/src/ledger-api/statelist.ts
