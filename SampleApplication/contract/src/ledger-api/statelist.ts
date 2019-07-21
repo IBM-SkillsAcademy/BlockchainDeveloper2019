@@ -183,37 +183,34 @@ export class StateList<T extends State> {
     }
 
     /**
-     * *** Exercise   > Part  ***
-     * @param { collection }
-     * @param { state }
-     * @returns {}
-     *
+     * *** Exercise 06 > Part > Step ***
+     * @param {string} collection the name of the private data collection being used
+     * @param {T} state data object that will be stored in private data collection
      */
     public async updatePrivate(collection: string, state: T) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
-
+        // serialize object data to a buffer array before putting it to ledger
         const data = state.serialize();
-       // putPrivateData puts the specified `key` and `value` into the transaction's private writeSet.
+        // putPrivateData puts the specified `key` and `value` into the transaction's private writeSet.
         await this.ctx.stub.putPrivateData(collection, key, data);
-
     }
+
     /**
-     * *** Exercise   > Part  ***
-     * @param { collection }
-     * @param { key }
-     * @returns {}
-     *
+     * *** Exercise 06 > Part > Step ***
+     * @param {string} collection the name of private data collection being used
+     * @param {string} key the vehicle key number used to store the price data object
+     * @returns {Promise<T>} price object as promise
      */
     public async getPrivate(collection: string, key: string): Promise<T> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-      // getPrivateData returns the value of the specified `key` from the specified `collection`
-        const data = await this.ctx.stub.getPrivateData(collection, ledgerKey);
-
-        if (data.length === 0) {
+        // getPrivateData returns the value of the specified `key` from the specified `collection`
+        const buffer = await this.ctx.stub.getPrivateData(collection, ledgerKey);
+        // check if data exist or not
+        if (buffer.length === 0) {
             throw new Error(`Cannot get state. No state exists for key ${key} ${this.name}`);
         }
-        const state = State.deserialize(data, this.supportedClasses) as T;
-
+        // deserialize buffer array into supported class object
+        const state = State.deserialize(buffer, this.supportedClasses) as T;
         return state;
     }
 

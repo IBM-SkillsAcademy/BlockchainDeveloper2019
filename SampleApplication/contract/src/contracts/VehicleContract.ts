@@ -151,36 +151,48 @@ export class VehicleContract extends Contract {
 
         logger.info('============= END : delete vehicle ===========');
     }
-    // manufacture can add or change vehicle price details
+
+    /**
+     * *** Exercise 06 > Part > Step ***
+     * add or update a vehicle price details
+     * @param {VehicleContext} ctx vehicle context
+     * @param {string} vehicleNumber the vehicle key number
+     * @param {string} price the price value of the vehicle
+     */
     public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-
-        // check if role === 'Manufacturer'
-        await this.hasRole(ctx, ['Manufacturer']);
-
         // check if vehicle exist
         await ctx.getVehicleList().get(vehicleNumber);
-
+        // create a new price object
         const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
+        // get the pricelist instance and call its updatePrice function
         await ctx.getPriceList().updatePrice(priceObject);
     }
 
-    // manufacture can get vehicle price details
+    /**
+     * *** Exercise 06 > Part > Step ***
+     * get vehicle price details by vahicle key number
+     * @param {VehicleContext} ctx vehicle context
+     * @param {string} vehicleNumber the vehicle key number
+     */
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
+        // get the priceList object and call its getPrice function
         return await ctx.getPriceList().getPrice(vehicleNumber);
     }
-    // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
+
+    /**
+     * *** Exercise 06 > Part > Step ***
+     * Return all orders with specified query condition
+     * Index defined in META-INF folder
+     * @param {VehicleContext} ctx Vehicle Context
+     * @param {string} min minimum price to be queeied
+     * @param {string} max maximum price to be queried
+     */
     public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
-        logger.info('============= START : Get Orders by Status ===========');
-
-        // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
         const minNumber = parseInt(min, 10);
         const maxNumber = parseInt(max, 10);
+        /* compose a couchdb query string for price with the value
+            more than / equal minimum number provided and
+            less than / equal maximum number provided */
         const queryString = {
             selector: {
                 price: {
@@ -188,8 +200,10 @@ export class VehicleContract extends Contract {
                     $lte: maxNumber,
                 },
             },
+            // use index defined in META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes
             use_index: ['_design/priceDoc', 'priceIndex'],
         };
+        // call queryWithQueryString function with collection name to trigger getPrivateDataQueryResult instead of getQueryResult
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
 
