@@ -22,4 +22,4 @@ cp -f ex-commands/ex06/artifacts/vehicleContext.ts SampleApplication/contract/sr
 cp -f ex-commands/ex06/artifacts/statelist.ts SampleApplication/contract/src/ledger-api/statelist.ts
 cp -f ex-commands/ex06/artifacts/price.ts SampleApplication/contract/src/assets/price.ts
 cp -f ex-commands/ex06/artifacts/priceList.ts SampleApplication/contract/src/lists/priceList.ts
-cp -f ex-commands/ex06/artifacts/vehicleContext.ts SampleApplication/contract/src/contracts/VehicleContract.ts
+cp -f ex-commands/ex06/artifacts/vehicleContract.ts SampleApplication/contract/src/contracts/VehicleContract.ts
