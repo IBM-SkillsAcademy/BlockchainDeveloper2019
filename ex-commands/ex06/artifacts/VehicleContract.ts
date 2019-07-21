@@ -165,7 +165,7 @@ export class VehicleContract extends Contract {
         // create a new price object
         const price = Price.createInstance(vehicleNumber, parseInt(priceString, 10));
         // get the pricelist instance and call its updatePrice function
-        await ctx.getPriceList().updatePrice(price);
+        await ctx.getPriceList().updatePrice();
     }
 
     /**
@@ -176,7 +176,7 @@ export class VehicleContract extends Contract {
      */
     public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
         // get the priceList object and call its getPrice function
-        return await ctx.getPriceList().getPrice(vehicleNumber);
+        return await ctx.getPriceList().getPrice();
     }
 
     /**
