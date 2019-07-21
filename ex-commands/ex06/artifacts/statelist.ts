@@ -184,10 +184,10 @@ export class StateList<T extends State> {
 
     /**
      * *** Exercise 06 > Part 3 > Step 5 ***
-     * @param {string} collection the name of the private data collection being used
      * @param {T} state data object that will be stored in private data collection
+     * @param {string} collection the name of the private data collection being used
      */
-    public async updatePrivate(collection: string, state: T) {
+    public async updatePrivate(state: T, collection: string) {
         const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
         // serialize object data to a buffer array before putting it to ledger
         const data = state.serialize();
@@ -197,11 +197,11 @@ export class StateList<T extends State> {
 
     /**
      * *** Exercise 06 > Part 3 > Step 5 ***
-     * @param {string} collection the name of private data collection being used
      * @param {string} key the vehicle key number used to store the price data object
+     * @param {string} collection the name of private data collection being used
      * @returns {Promise<T>} price object as promise
      */
-    public async getPrivate(collection: string, key: string): Promise<T> {
+    public async getPrivate(key: string, collection: string): Promise<T> {
         const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
         // getPrivateData returns the value of the specified `key` from the specified `collection`
         const buffer = await this.ctx.stub.getPrivateData(collection, ledgerKey);
