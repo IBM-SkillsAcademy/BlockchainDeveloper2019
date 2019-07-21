@@ -59,11 +59,11 @@ export class VehicleContract extends Contract {
         and committing it to the ledger.
 
         As with the other transactions that you will be adding, and the ones that already exist 
-        in the smart contract application, it requires a ctx parameter which is the VehicleContext definition
-        that extends the Context class of the fabric-contract-api node sdk.
+        in the smart contract application, it requires a ctx parameter which is the vehicle context definition
+        that extends the context class of the fabric-contract-api node sdk.
         */
         //logger.info('============= START : Create vehicle ===========');
-        // Check if role === 'Manufacturer'
+        // Check if role === manufacturer
         //await this.hasRole(ctx, ['Manufacturer']);
 
         // Check if order exists in ledger 
@@ -74,9 +74,9 @@ export class VehicleContract extends Contract {
             //if (order.orderStatus !== OrderStatus.DELIVERED) {
                 //throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
             //}
-            // Creates a new Vehicle asset
+            // Creates a new vehicle asset
             //const vehicle: Vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
-            // Append Vehicle asset to ledger
+            // Append vehicle asset to ledger
             //await ctx.getVehicleList().add(vehicle);
         //} else {
             //throw new Error(`Order  with ID : ${orderId} doesn't exists`);
@@ -114,10 +114,10 @@ export class VehicleContract extends Contract {
     //public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
-        This action will be performed by the Regulator participant.
+        This action will be performed by the regulator participant.
         */
 
-        // Check if role === 'Regulator' 
+        // Check if role === regulator 
          //await this.hasRole(ctx, ['Regulator']);
 
         // Return all vehicles asset from ledger
@@ -132,15 +132,15 @@ export class VehicleContract extends Contract {
      */
     //public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
         /*
-        The transaction will delete the vehicle asset according to the provided vehicleNumber parameter.
-        This action will be performed by the Regulator participant.
+        The transaction will delete the vehicle asset according to the provided vehicle number parameter.
+        This action will be performed by the regulator participant.
         */
         //logger.info('============= START : delete vehicle ===========');
-        // Check if role === 'Regulator' 
+        // Check if role === regulator
         //await this.hasRole(ctx, ['Regulator']);
 
         
-        // Check if the Vehicle exists
+        // Check if the vehicle exists
         //if (!await ctx.getVehicleList().exists(vehicleNumber)) {
             //throw new Error(`vehicle with ID : ${vehicleNumber} doesn't exists`);
         //}
@@ -158,12 +158,12 @@ export class VehicleContract extends Contract {
     //public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
         /*
         Transaction simulates the request for a vehicle identity number (VIN).
-        This action will be performed by the Manufacturer participant
-        The transaction will change the vinStatus state of the vehicle asset to “REQUESTED”
+        This action will be performed by the manufacturer participant
+        The transaction will change the vin status state of the vehicle asset to “REQUESTED”
         to mark that the vehicle is awaiting a VIN that will be issued later by the regulator participant.
         */
         //logger.info('============= START : requestVehicleVIN ===========');
-        // Check if role === 'Manufacturer' 
+        // Check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         // Check if the Vehicle exists
@@ -171,13 +171,13 @@ export class VehicleContract extends Contract {
             //throw new Error(`Error  Vehicle ${vehicleNumber} doesn't exists `);
         //}
 
-        // Get vehicle by vehicleNumber
+        // Get vehicle by vehicle number
         //const vehicle = await ctx.getVehicleList().get(vehicleNumber);
-        // If vinStatus is equal to "Requested", throw error
+        // If vin status is equal to "REQUESTED", throw error
         //if (vehicle.vinStatus === VinStatus.REQUESTED) {
             //throw new Error(`VIN for vehicle  ${vehicleNumber} is already REQUESTED`);
         //}
-        // Change vinStatus state to "REQUESTED"
+        // Change vin status state to "REQUESTED"
         //vehicle.vinStatus = VinStatus.REQUESTED;
         // Update state in ledger
         //await ctx.getVehicleList().updateVehicle(vehicle);
@@ -200,28 +200,28 @@ export class VehicleContract extends Contract {
     //public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
         /*
         Transaction simulates vehicle identity number (VIN) issuance.
-        This action will be performed by the Regulator participant
-        The transaction will change the vinStatus state of the vehicle asset to “ISSUED”
+        This action will be performed by the regulator participant
+        The transaction will change the vin status state of the vehicle asset to “ISSUED”
         to mark that the vehicle has been issued a VIN.
         */
         //logger.info('============= START : issueVehicleVIN ===========');
-        // Check if role === 'Regulator' 
+        // Check if role === regulator 
         // await this.hasRole(ctx, ['Regulator']);
 
-        // Check if the Vehicle exists
+        // Check if the vehicle exists
         //if (! await ctx.getVehicleList().exists(vehicleNumber)) {
             //throw new Error(`Error  Vehicle  ${vehicleNumber} doesn't exists `);
         //}
 
-        // Get vehicle by vehicleNumber
+        // Get vehicle by vehicle number
         //const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         // Set vehicle VIN
         //vehicle.vin = vin;
-        // If vinStatus is equal to "ISSUED", throw error
+        // If vin status is equal to "ISSUED", throw error
         //if (vehicle.vinStatus === VinStatus.ISSUED) {
             //throw new Error(`VIN for vehicle  ${vehicleNumber} is already ISSUED`);
         //}
-        // Set vinStatus to "ISSUED"
+        // Set vin status to "ISSUED"
         //vehicle.vinStatus = VinStatus.ISSUED;
         // Update state in ledger
         //await ctx.getVehicleList().updateVehicle(vehicle);
@@ -245,13 +245,13 @@ export class VehicleContract extends Contract {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
         vehicle’s owner to the new owner parameter. 
-        This action will be performed by the Regulator participant
+        This action will be performed by the regulator participant
         */
         //logger.info('============= START : Change Vehicle Owner ===========');
-        // Check if role === 'Regulator' 
+        // Check if role === regulator
         // await this.hasRole(ctx, ['Regulator']);
 
-        // Get vehicle by vehicleNumber
+        // Get vehicle by vehicle number
         //const vehicle = await ctx.getVehicleList().get(vehicleNumber);
         // Change vehicle owner
         //vehicle.owner = newOwner;
@@ -269,11 +269,11 @@ export class VehicleContract extends Contract {
      */
     //public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
         /*
-        Query the price details for a vehicle according to the vehicleNumber parameter.
-        This action will be performed by the Manufacturer participant
+        Query the price details for a vehicle according to the vehicle number parameter.
+        This action will be performed by the manufacturer participant
         */
 
-        // Check if role === 'Manufacturer'
+        // Check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         // Get vehicle price details
@@ -291,17 +291,17 @@ export class VehicleContract extends Contract {
         /*
         Transaction will simulate the price change for a vehicle by creating or updating the price
         record in the price list ledger.
-        This action will be performed by the Manufacturer participant
+        This action will be performed by the manufacturer participant
         */
 
-        // Check if role === 'Manufacturer'
+        // Check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         // Check if vehicle exist
         //await ctx.getVehicleList().get(vehicleNumber);
 
         // Create price instance
-        //const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
+        // const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
         // Update price list in the ledger
         //await ctx.getPriceList().updatePrice(priceObject);
     //}
@@ -314,7 +314,7 @@ export class VehicleContract extends Contract {
     ) {
         logger.info('============= START : place order ===========');
 
-        // check if role === 'Manufacturer'
+        // check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
@@ -335,7 +335,7 @@ export class VehicleContract extends Contract {
 
     // Update order status to be in progress
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
-        // check if role === 'Manufacturer'
+        // check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         const order = await ctx.getOrderList().getOrder(orderId);
@@ -357,7 +357,7 @@ export class VehicleContract extends Contract {
 
     // Update order status to be pending if vehicle creation process has an issue
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
-        // check if role === 'Manufacturer'
+        // check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -374,7 +374,7 @@ export class VehicleContract extends Contract {
 
     // When Order completed and will be ready to be delivered , update order status and Manufacture now can create new Vehicle as an asset
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
-        // check if role === 'Manufacturer'
+        // check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
 
         if (!await ctx.getOrderList().exists(orderId)) {
@@ -394,7 +394,7 @@ export class VehicleContract extends Contract {
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
 
-        // check if role === 'Manufacturer' / 'Regulator'
+        // check if role === manufacturer' / 'regulator'
         // await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
         logger.info('============= END : Get Orders ===========');
@@ -408,7 +408,7 @@ export class VehicleContract extends Contract {
     //     startDate: number, endDate: number) {
     //     logger.info('============= START : request insurance policy ===========');
 
-    //     // check if role === 'Manufacturer'
+    //     // check if role === manufacturer
     //     // await this.hasRole(ctx, ['Manufacturer']);
 
     //     // check if vehicle exist
