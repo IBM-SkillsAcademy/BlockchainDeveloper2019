@@ -159,52 +159,6 @@ export class VehicleContract extends Contract {
         logger.info('============= END : changevehicleOwner ===========');
     }
 
-    // Manufacture can get vehicle price details
-    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-        // check if role === 'Manufacturer'
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        return await ctx.getPriceList().getPrice(vehicleNumber);
-    }
-
-    // Manufacture can add or change vehicle price details
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-        // check if role === 'Manufacturer'
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        // check if vehicle exist
-        await ctx.getVehicleList().get(vehicleNumber);
-
-        const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
-        await ctx.getPriceList().updatePrice(priceObject);
-    }
-
-    // // Return All order with Specific Status  Example to explain how to use index on JSON ... Index defined in META-INF folder
-    // public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
-    //     logger.info('============= START : Get Orders by Status ===========');
-
-    //     // check if role === 'Manufacturer' / 'Regulator'
-    //     await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-
-    //     const minNumber = parseInt(min, 10);
-    //     const maxNumber = parseInt(max, 10);
-    //     const queryString = {
-    //         selector: {
-    //             price: {
-    //                 $gte: minNumber,
-    //                 $lte: maxNumber,
-    //             },
-    //         },
-    //         use_index: ['_design/priceDoc', 'priceIndex'],
-    //     };
-    //     return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
-    // }
-
-    // // get all History for Vehicle ID return , all transaction over aspecific vehicle
-    // public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
-    //     return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
-    // }
-
     // ############################################################### Order Functions #################################################
     // End user place order function
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
