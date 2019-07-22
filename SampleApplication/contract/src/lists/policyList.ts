@@ -36,5 +36,4 @@ export class PolicyList <T extends Policy> extends StateList<T> {
     public async getPolicy(orderKey) {
         return this.get(orderKey);
     }
-
 }
