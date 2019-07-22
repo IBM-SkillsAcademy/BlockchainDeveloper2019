@@ -259,53 +259,6 @@ export class VehicleContract extends Contract {
         //logger.info('============= END : changevehicleOwner ===========');
     //}
 
-    /**
-     * *** Exercise 2 > Part 1 > Step 11 ***
-     * 
-     * 
-     * @param { ctx } the smart contract transaction context
-     * @param { vehicleNumber } vehicle number
-     */
-    //public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-        /*
-        Query the price details for a vehicle according to the vehicle number parameter.
-        This action will be performed by the manufacturer participant
-        */
-
-        // Check if role === manufacturer
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        // Get vehicle price details
-        //return await ctx.getPriceList().getPrice(vehicleNumber);
-    //}
-
-    /**
-     * * *** Exercise 2 > Part 1 > Step 12 ***
-     * 
-     * @param { ctx } the smart contract transaction context
-     * @param { vehicleNumber }  vehicle number
-     * @param { price } amount of price
-     */
-    //public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, price: string) {
-        /*
-        Transaction will simulate the price change for a vehicle by creating or updating the price
-        record in the price list ledger.
-        This action will be performed by the manufacturer participant
-        */
-
-        // Check if role === manufacturer
-        // await this.hasRole(ctx, ['Manufacturer']);
-
-        // Check if vehicle exist
-        //await ctx.getVehicleList().get(vehicleNumber);
-
-        // Create price instance
-        // const priceObject = Price.createInstance(vehicleNumber, parseInt(price, 10));
-        // Update price list in the ledger
-        //await ctx.getPriceList().updatePrice(priceObject);
-    //}
-
-
     // ############################################################### Order Functions #################################################
     // End user place order function
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
