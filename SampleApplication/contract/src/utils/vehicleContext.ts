@@ -1,4 +1,4 @@
-//vehicleContext
+// vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
 import { Vehicle } from '../assets/vehicle';
@@ -8,8 +8,8 @@ import { VehicleList } from '../lists/vehicleList';
  * *** Exercise 2 > Part 4 > Step 6 ***
  */
 
- /*
-Import the policy and policy list class to the vehicle context to allow the 
+/*
+Import the policy and policy list class to the vehicle context to allow the
 smart contract application to recognize and interact with the policy asset.
 */
 import { Policy } from '../assets/policy';

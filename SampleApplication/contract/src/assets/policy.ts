@@ -42,7 +42,7 @@ object into buffers, etc.
 @ContractObject()
 export class Policy extends State {
     /**
-     * 
+     *
      * @param { id } policy ID
      * @param { vehicleNumber } vehicle number
      * @param { insurerId } insurer ID
