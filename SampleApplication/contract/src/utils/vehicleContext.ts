@@ -1,11 +1,19 @@
+//vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
-import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
+import { PriceList } from '../lists/priceList';
 import { Price } from './../assets/price';
-// Import the policy and policy list class to the vehicle context
+/**
+ * *** Exercise 2 > Part 4 > Step 6 ***
+ */
+
+ /*
+Import the policy and policy list class to the vehicle context to allow the 
+smart contract application to recognize and interact with the policy asset.
+*/
 import { Policy } from '../assets/policy';
 import { PolicyList } from '../lists/policyList';
 
@@ -16,30 +24,33 @@ https://hyperledger-fabric.readthedocs.io/en/latest/developapps/transactionconte
 */
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
-    private priceList: PriceList<Price>;
     private vehicleList: VehicleList<Vehicle>;
+    private priceList: PriceList<Price>;
     // Define policyList as list of policy objects
-    private policyList: PolicyList<Policy>; //add
+    private policyList: PolicyList<Policy>;
     constructor() {
         super();
         this.orderList = new OrderList(this, [Order]);
         this.vehicleList = new VehicleList(this, [Vehicle]);
         this.priceList = new PriceList(this, [Price]);
-        // Create policy
+        // Create policy list upon context class construction
         this.policyList = new PolicyList(this, [Policy]);
     }
 
-    public getOrderList() {
+    public getOrderList(): OrderList<Order> {
         return this.orderList;
     }
-    public getVehicleList() {
+    public getVehicleList(): VehicleList<Vehicle> {
         return this.vehicleList;
     }
-    public getPriceList() {
+    public getPriceList(): PriceList<Price> {
         return this.priceList;
     }
-    // Define the getPolicyList helper function
-    public getPolicyList() {
+    /*
+    Helper function to allow the vehicle context to
+    retrieve policy list class and interact with its functions
+    */
+    public getPolicyList(): PolicyList<Policy> {
         return this.policyList;
     }
 }

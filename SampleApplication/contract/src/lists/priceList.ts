@@ -10,10 +10,10 @@ export class PriceList <T extends Price> extends StateList<T> {
         this.use(...validTypes);
     }
     public async updatePrice(price: T) {
-        return this.updatePrivate('collectionVehiclePriceDetails', price);
+        return this.updatePrice('collectionVehiclePriceDetails', price);
     }
 
     public async getPrice(priceKey) {
-        return this.getPrivate('collectionVehiclePriceDetails', priceKey);
+        return this.getPrice('collectionVehiclePriceDetails', priceKey);
     }
 }

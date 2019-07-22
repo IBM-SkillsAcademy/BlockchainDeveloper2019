@@ -17,7 +17,12 @@
         "object-literal-key-quotes": [true, "as-needed"],
         "max-line-length": false,
         "object-literal-sort-keys": false,
-        "prefer-for-of": false
+        "prefer-for-of": false,
+        "ordered-imports": false,
+        "align": false,
+        "jsdoc-format": true,
+        "member-ordering": false,
+        "variable-name": false
     },
     "rulesDirectory": []
 }

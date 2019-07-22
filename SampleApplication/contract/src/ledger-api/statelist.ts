@@ -170,27 +170,6 @@ export class StateList<T extends State> {
         }
     }
 
-    public async updatePrivate(collection: string, state: T) {
-        const key = this.ctx.stub.createCompositeKey(this.name, state.getSplitKey());
-
-        const data = state.serialize();
-
-        await this.ctx.stub.putPrivateData(collection, key, data);
-
-    }
-
-    public async getPrivate(collection: string, key: string): Promise<T> {
-        const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
-        const data = await this.ctx.stub.getPrivateData(collection, ledgerKey);
-
-        if (data.length === 0) {
-            throw new Error(`Cannot get state. No state exists for key ${key} ${this.name}`);
-        }
-        const state = State.deserialize(data, this.supportedClasses) as T;
-
-        return state;
-    }
-
     // Return the History of specific asset , which will return all transaction over this asset
     // public async getHistory(key: string): Promise<Array<IHistoricState<T>>> {
     //     const ledgerKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(key));
