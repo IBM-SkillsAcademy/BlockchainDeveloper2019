@@ -7,7 +7,11 @@ import { VehicleList } from '../lists/vehicleList';
 /**
  * *** Exercise 2 > Part 4 > Step 6 ***
  */
-// Import the policy and policy list class to the vehicle context
+
+ /*
+Import the policy and policy list class to the vehicle context to allow the 
+smart contract application to recognize and interact with the policy asset.
+*/
 // import { Policy } from '../assets/policy';
 // import { PolicyList } from '../lists/policyList';
 
@@ -20,12 +24,12 @@ export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
     private vehicleList: VehicleList<Vehicle>;
     // Define policyList as list of policy objects
-    // private policyList: PolicyList<Policy>; //add
+    // private policyList: PolicyList<Policy>;
     constructor() {
         super();
         this.orderList = new OrderList(this, [Order]);
         this.vehicleList = new VehicleList(this, [Vehicle]);
-        // Create policy
+        // Create policy list upon context class construction
         // this.policyList = new PolicyList(this, [Policy]);
     }
 
@@ -35,7 +39,10 @@ export class VehicleContext extends Context {
     public getVehicleList(): VehicleList<Vehicle> {
         return this.vehicleList;
     }
-    // Define the getPolicyList helper function
+    /*
+    Helper function to allow the vehicle context to
+    retrieve policy list class and interact with its functions
+    /*
     // public getPolicyList(): PolicyList<Policy> {
     //     return this.policyList;
     // }

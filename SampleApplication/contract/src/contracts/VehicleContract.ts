@@ -355,47 +355,89 @@ export class VehicleContract extends Contract {
     }
 
     // ############################################################### Policy Functions #################################################
-    // Request policy, user / manufacturer request the insurance policy
+    /**
+     * *** Exercise 2 > Part 4 > Step 7 ***
+     *
+     * @param { ctx } the smart contract transaction context
+     */ 
+    /*
+    Request a new insurance policy for a vehicle.
+    This action will be performed by the manufacturer participant.
     // public async requestPolicy(ctx: VehicleContext, id: string,
     //     vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
     //     startDate: number, endDate: number) {
-    //     logger.info('============= START : request insurance policy ===========');
+        // This transaction will simulate the process of requesting a vehicle insurance policy for a vehicle.
+        // logger.info('============= START : request insurance policy ===========');
 
-    //     // check if role === 'Manufacturer'
+    //     // Check if role === manufacturer
     //     // await this.hasRole(ctx, ['Manufacturer']);
 
-    //     // check if vehicle exist
+    //     // Check if vehicle exist
     //     await ctx.getVehicleList().getVehicle(vehicleNumber);
 
-    //     //
+    //     // Create new policy asset.
     //     const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
+    //     // Add policy asset to the ledger.
     //     await ctx.getPolicyList().add(policy);
 
-    //     ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
-    //     logger.info('============= END : request insurance policy ===========');
-    // }
+        /* 
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
+        */
+        //ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
+        //logger.info('============= END : request insurance policy ===========');
+    //}
 
-    // get policy with an ID
+    /**
+     * *** Exercise 2 > Part 4 > Step 9 ***
+     * 
+     * @param { ctx } the smart contract transaction context
+     * @param { policyId } the insurance policy id
+     */
     // public async getPolicy(ctx: VehicleContext, policyId: string) {
-
+        // This transaction will query for a specific policy according to the supplied policy ID parameter.
     //     return await ctx.getPolicyList().get(policyId);
     // }
 
-    // Update requested policy to be issued
+    /**
+     * *** Exercise 2 > Part 4 > Step 8 ***
+     * 
+     * @param { ctx } the smart contract transaction context
+     * @param { id } the insurance policy ID
+     */
     // public async issuePolicy(ctx: VehicleContext, id: string) {
-    //     // await this.hasRole(ctx, ['Insurer']);
+    /*
+    This transaction will change the insurance policy status from "REQUESTED" to "ISSUED",
+    to simulate the process of issuing a vehicle insurance policy.
+    This action will be performed by the insurer participant.
+    */
+        // Check if role === insurer
+        //await this.hasRole(ctx, ['Insurer']);
 
-    //     const policy = await ctx.getPolicyList().get(id);
+        // Get policy by ID from policy list
+        //const policy = await ctx.getPolicyList().get(id);
 
-    //     policy.status = PolicyStatus.ISSUED;
-    //     await ctx.getPolicyList().update(policy);
+        // Set policy status to "ISSUED"
+        //policy.status = PolicyStatus.ISSUED;
 
-    //     ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
+        // Update policy asset in the ledger
+        //await ctx.getPolicyList().update(policy);
+
+        /* 
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
+        */
+        //ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
     // }
 
-    // Return All Policies
+    /**
+     * *** Exercise 2 > Part 4 > Step 10 ***
+     * 
+     * @param { ctx } the smart contract transaction context
+     */
     // public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
-    //     return await ctx.getPolicyList().getAll();
+        // This transaction will return a list of all the available insurance policies in the ledger.     
+        //return await ctx.getPolicyList().getAll();
     // }
 
     // ############################################################### Utility Functions #################################################
