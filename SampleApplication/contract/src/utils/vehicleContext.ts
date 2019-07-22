@@ -4,6 +4,9 @@ import { Order } from '../assets/order';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { VehicleList } from '../lists/vehicleList';
+/**
+ * *** Exercise 2 > Part 4 > Step 6 ***
+ */
 // Import the policy and policy list class to the vehicle context
 // import { Policy } from '../assets/policy';
 // import { PolicyList } from '../lists/policyList';

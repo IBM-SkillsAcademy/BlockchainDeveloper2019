@@ -28,6 +28,9 @@ policy status for the policy asset.
 //     ISSUED = 'ISSUED',
 // }
 
+/**
+ * *** Exercise 2 > Part 4 > Step 3 ***
+ */
 /*
 The "@ContractObject" modifier flags the policy class as an "object",
 or an asset within the smart contract applications. The policy class
