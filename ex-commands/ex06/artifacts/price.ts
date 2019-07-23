@@ -33,15 +33,15 @@ export class Price extends State {
     /**
      * *** Exercise 06 > Part 3 > Step 3 ***
      * Create a new price object instance
-     * @param vehicleNumber the vehicle key number
-     * @param price the price value
+     * @param {string} vehicleNumber the vehicle key number
+     * @param {number} value the price value
      */
-    public static createInstance(vehicleNumber, price) {
-        return new Price({ vehicleNumber, price});
+    public static createInstance(vehicleNumber, value) {
+        return new Price({ vehicleNumber, value});
     }
 
     public vehicleNumber: string;
-    public price: number;
+    public value: number;
 
     /**
      * *** Exercise 06 > Part 3 > Step 3 ***
