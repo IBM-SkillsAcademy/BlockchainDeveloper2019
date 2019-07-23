@@ -529,14 +529,14 @@
                 "type": "object",
                 "required": [
                   "vehicleID",
-                  "price"
+                  "value"
                 ],
                 "properties": {
                   "vehicleID": {
                     "type": "string",
                     "example": "vehicle13:Accord"
                   },
-                  "price": {
+                  "value": {
                     "type": "string",
                     "example": "40000"
                   }
