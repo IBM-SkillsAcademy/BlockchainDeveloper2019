@@ -250,8 +250,24 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicles', () => {
+    it('Manufacturer can query all vehicle', mochaAsync(async () => {
+      const res = await apiManufacturer
+        .get('/api/v1/vehicles')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .expect(200)
+    }));
+
     it('Regulator can query all vehicle', mochaAsync(async () => {
       const res = await apiRegulator
+        .get('/api/v1/vehicles')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .expect(200)
+    }));
+
+    it('Insurer can query all vehicle', mochaAsync(async () => {
+      const res = await apiInsurer
         .get('/api/v1/vehicles')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
@@ -386,6 +402,18 @@ describe('Vehicle cycle: ', () => {
         .send({
           vehicleID: key,
           owner: 'Wayne'
+        })
+        .expect(200)
+    }));
+
+    it('Insurer can change vehicle ownership', mochaAsync(async () => {
+      const res = await apiInsurer
+        .post('/api/v1/vehicles/owners/change')
+        .set('Content-Type', 'application/json')
+        .set('enrollment-id', 'unitTestUser')
+        .send({
+          vehicleID: key,
+          owner: 'John'
         })
         .expect(200)
     }));

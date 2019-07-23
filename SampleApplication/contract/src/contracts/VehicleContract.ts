@@ -131,11 +131,8 @@ export class VehicleContract extends Contract {
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
-        This action will be performed by the regulator participant.
+        This action can be performer by all participants.
         */
-
-        // Check if role === regulator
-        await this.hasRole(ctx, ['Regulator']);
 
         // Return all vehicles asset from ledger
         return await ctx.getVehicleList().getAll();
@@ -261,11 +258,11 @@ export class VehicleContract extends Contract {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
         vehicle’s owner to the new owner parameter.
-        This action will be performed by the regulator participant
+        This action will be performed by regulator or insurer participant
         */
         logger.info('============= START : Change Vehicle Owner ===========');
-        // Check if role === regulator
-        await this.hasRole(ctx, ['Regulator']);
+        // Check if role === Regulator / Insurer
+        await this.hasRole(ctx, ['Regulator', 'Insurer']);
 
         // Get vehicle by vehicle number
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
