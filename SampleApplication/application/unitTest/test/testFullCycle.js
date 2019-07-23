@@ -250,24 +250,8 @@ describe('Vehicle cycle: ', () => {
   });
 
   describe('GET /api/v1/vehicles', () => {
-    it('Manufacturer can query all vehicle', mochaAsync(async () => {
-      const res = await apiManufacturer
-        .get('/api/v1/vehicles')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'unitTestUser')
-        .expect(200)
-    }));
-
     it('Regulator can query all vehicle', mochaAsync(async () => {
       const res = await apiRegulator
-        .get('/api/v1/vehicles')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'unitTestUser')
-        .expect(200)
-    }));
-
-    it('Insurer can query all vehicle', mochaAsync(async () => {
-      const res = await apiInsurer
         .get('/api/v1/vehicles')
         .set('Content-Type', 'application/json')
         .set('enrollment-id', 'unitTestUser')
@@ -313,7 +297,7 @@ describe('Vehicle cycle: ', () => {
   describe('POST /api/v1/vehicles/prices', () => {
     const priceUpdate = {
       vehicleID: key,
-      price: '40000'
+      value: '40000'
     };
     it('Manufacturer can update vehicle price', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -335,7 +319,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal(40000);
+      res.body.result.value.should.equal(40000);
     }));
 
     it('Regulator can see vehicle price', mochaAsync(async () => {
@@ -347,7 +331,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal(40000);
+      res.body.result.value.should.equal(40000);
     }));
   });
 
@@ -402,18 +386,6 @@ describe('Vehicle cycle: ', () => {
         .send({
           vehicleID: key,
           owner: 'Wayne'
-        })
-        .expect(200)
-    }));
-
-    it('Insurer can change vehicle ownership', mochaAsync(async () => {
-      const res = await apiInsurer
-        .post('/api/v1/vehicles/owners/change')
-        .set('Content-Type', 'application/json')
-        .set('enrollment-id', 'unitTestUser')
-        .send({
-          vehicleID: key,
-          owner: 'John'
         })
         .expect(200)
     }));

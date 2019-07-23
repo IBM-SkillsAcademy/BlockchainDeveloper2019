@@ -91,13 +91,13 @@ export class VehicleContract extends Contract {
      * add or update a vehicle price details
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
-     * @param {string} priceString the price value of the vehicle
+     * @param {string} value the price value of the vehicle
      */
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, priceString: string) {
+    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, value: string) {
         // check if vehicle exist
         await ctx.getVehicleList().get(vehicleNumber);
         // create a new price object
-        const price = Price.createInstance(vehicleNumber, parseInt(priceString, 10));
+        const price = Price.createInstance(vehicleNumber, parseInt(value, 10));
         // get the pricelist instance and call its updatePrice function
         await ctx.getPriceList().updatePrice(price);
     }
@@ -303,7 +303,7 @@ export class VehicleContract extends Contract {
             less than / equal maximum number provided */
         const queryString = {
             selector: {
-                price: {
+                value: {
                     $gte: minNumber,
                     $lte: maxNumber,
                 },

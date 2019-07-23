@@ -269,7 +269,7 @@ describe('Negative Test for Vehicle cycle: ', () => {
     describe('POST /api/v1/vehicles/prices', () => {
       const priceUpdate = {
         vehicleID: key,
-        price: '40000'
+        value: '40000'
       };
       it('Cannot update vehicle price using Manufacturer application if using non-existing identity', mochaAsync(async () => {
         const res = await apiManufacturer
@@ -425,18 +425,6 @@ describe('Negative Test for Vehicle cycle: ', () => {
             owner: 'John'
           }).expect(401);
           res.body.message.should.include('An identity for the user user2 does not exist in the wallet');
-      }));
-
-      it('Cannot change vehicle ownership using Insurer application if it doesent exist', mochaAsync(async () => {
-        const res = await apiInsurer
-          .post('/api/v1/vehicles/owners/change')
-          .set('Content-Type', 'application/json')
-          .set('enrollment-id', 'unitTestUser')
-          .send({
-            vehicleID: key,
-            owner: 'Wayne'
-          }).expect(500);
-        res.text.should.contain('No state exists for key '+key+' org.vehiclelifecycle.vehicle');
       }));
 
       it('Cannot change vehicle ownership using Insurer application if missing owner params', mochaAsync(async () => {

@@ -107,7 +107,7 @@ exports.updateOrder = async (req, res, next) => {
     }
   }
 };
-/**  
+/**
 *** Exercise 7 part 2 ***
 *this function is to create a new vehicle from application using fabric SDK
 * @param {Object} req Express request object
@@ -116,30 +116,30 @@ exports.updateOrder = async (req, res, next) => {
 */
 exports.createVehicle = async (req, res, next) => {
   try {
-    /** 
-    this function is to check if the user is enrolled on the blockchain network and 
+    /**
+    this function is to check if the user is enrolled on the blockchain network and
     if he is authorized to do this transaction
     * @param {Object} req Express request object
     * @param {Object} res Express response object
     */
     await checkAuthorization(req, res);
     /**
-    *this function is to open a gateway to peer node with the user 
+    *this function is to open a gateway to peer node with the user
     *enrolled and the wallets
     *@param {String} enrollment-id user enrollment id
     **/
-      const gateway = await setupGateway(req.headers['enrollment-id']);
+    const gateway = await setupGateway(req.headers['enrollment-id']);
     /**
-     * this function is to get the contract that the transaction will be 
-     * performed on 
+     * this function is to get the contract that the transaction will be
+     * performed on
      * @param {Gateway} gateway the opened gateway to peer node
      */
-     const contract = await getContract(gateway);
+    const contract = await getContract(gateway);
     /**
      * this function is to submit the specified transaction
      * @property {function} submitTransaction to submit the specified transaction from the contract
      */
-    
+
     await contract.submitTransaction(
       'createVehicle',
       req.body.orderID,
@@ -204,7 +204,7 @@ exports.updatePrice = async (req, res, next) => {
     await contract.submitTransaction(
       'updatePriceDetails',
       req.body.vehicleID,
-      req.body.price
+      req.body.value
     );
 
     // Disconnect from the gateway.
@@ -455,29 +455,29 @@ exports.getOrdersByRange = async (req, res, next) => {
   }
 };
 
-async function checkAuthorization(req, res) {
+async function checkAuthorization (req, res) {
   try {
     const enrollmentID = req.headers['enrollment-id'];
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
-    console.log("User Exists " + userExists)
+    console.log('User Exists ' + userExists);
     if (!userExists) {
       return res.status(401).send({
         message: `An identity for the user ${enrollmentID} does not exist in the wallet`
       });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 }
-async function setupGateway(user) {
+async function setupGateway (user) {
   try {
     const ccp = await utils.getCCP();
     const gateway = new Gateway();
     const connectionOptions = {
       identity: user,
-      wallet: wallet,
+      wallet: wallet
     };
     // Create a new gateway for connecting to our peer node
     await gateway.connect(ccp, connectionOptions);
@@ -487,11 +487,11 @@ async function setupGateway(user) {
   }
 }
 
-async function getContract(gateway) {
+async function getContract (gateway) {
   try {
-    const network = await gateway.getNetwork("mychannel");
+    const network = await gateway.getNetwork('mychannel');
     // Get the contract from the network.
-    return await network.getContract("vehicle-manufacture");
+    return await network.getContract('vehicle-manufacture');
   } catch (err) {
     throw new Error('Error connecting to channel . ERROR:' + err.message);
   }
