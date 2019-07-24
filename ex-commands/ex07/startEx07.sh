@@ -2,7 +2,7 @@
 ROOT=${PWD}
 echo "Update Contract files with Completed EX06"
 
-cp -R ex07Artifacts/contract/. ../../SampleApplication/contract/
+#cp -R ex07Artifacts/contract/. ../../SampleApplication/contract/
 
 
 echo "################## START NETWORK ########################"

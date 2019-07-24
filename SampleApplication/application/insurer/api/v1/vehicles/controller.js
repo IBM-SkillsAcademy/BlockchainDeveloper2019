@@ -52,7 +52,7 @@ async function getContract(gateway) {
   }
 }
 /**
- *  Exerise 7 > part 3 
+ *  Exercise 7 > part 3 
  * this function is to get Vehicles with given ID or all vehicles
  * if id is not provided
  * @param {Object} req Express request object
@@ -73,7 +73,7 @@ exports.getVehicle = async (req, res, next) => {
        * this function is to query vehicles with specific ID 
        * @property {function} evaluateTransaction to get vehicle with ID
        */
-      result = await contract.evaluateTransaction('queryVehicle', req.query.id);
+      //result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
     } else {
       // queryAllVehicles transaction - requires no arguments, ex: ('queryAllVehicless')
