@@ -1,25 +1,23 @@
 import { Order } from '../assets/order';
+import { Policy } from '../assets/policy';
 import { IState } from '../ledger-api/state';
 import { StateList } from '../ledger-api/statelist';
 import {  VehicleContext } from '../utils/vehicleContext';
 
-export class OrderList <T extends Order> extends StateList<T> {
+export class PolicyList <T extends Policy> extends StateList<T> {
 
     constructor(ctx: VehicleContext, validTypes: Array<IState<T>>) {
 
-        super(ctx, 'org.vehiclelifecycle.order');
+        super(ctx, 'org.vehiclelifecycle.policy');
         this.use(...validTypes);
 
     }
-    public async addOrder(order: T) {
+    public async addPolicy(order: T) {
         return this.add(order);
     }
 
-  public async getOrder(orderKey) {
+  public async getPolicy(orderKey) {
    return this.get(orderKey);
    }
 
-  public async updateOrder(order) {
-      return this.update(order);
-    }
 }

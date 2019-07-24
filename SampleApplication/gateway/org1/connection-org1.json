@@ -72,7 +72,7 @@
   "certificateAuthorities": {
     "ca.org1.example.com": {
       "url": "https://localhost:7054",
-      "caName": "ca-org1",
+      "caName": "ca.org1.example.com",
       "tlsCACerts": {
         "path": "./../../../Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem"
       },

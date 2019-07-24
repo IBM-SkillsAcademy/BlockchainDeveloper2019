@@ -91,13 +91,13 @@ export class VehicleContract extends Contract {
      * add or update a vehicle price details
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
-     * @param {string} priceString the price value of the vehicle
+     * @param {string} value the price value of the vehicle
      */
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, priceString: string) {
+    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, value: string) {
         // check if vehicle exist
         await ctx.getVehicleList().get(vehicleNumber);
         // create a new price object
-        const price = Price.createInstance(vehicleNumber, parseInt(priceString, 10));
+        const price = Price.createInstance(vehicleNumber, parseInt(value, 10));
         // get the pricelist instance and call its updatePrice function
         await ctx.getPriceList().updatePrice(price);
     }
@@ -131,11 +131,8 @@ export class VehicleContract extends Contract {
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
-        This action will be performed by the regulator participant.
+        This action can be performer by all participants.
         */
-
-        // Check if role === regulator
-        await this.hasRole(ctx, ['Regulator']);
 
         // Return all vehicles asset from ledger
         return await ctx.getVehicleList().getAll();
@@ -261,11 +258,11 @@ export class VehicleContract extends Contract {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
         vehicle’s owner to the new owner parameter.
-        This action will be performed by the regulator participant
+        This action will be performed by regulator or insurer participant
         */
         logger.info('============= START : Change Vehicle Owner ===========');
-        // Check if role === regulator
-        await this.hasRole(ctx, ['Regulator']);
+        // Check if role === Regulator / Insurer
+        await this.hasRole(ctx, ['Regulator', 'Insurer']);
 
         // Get vehicle by vehicle number
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
@@ -303,7 +300,7 @@ export class VehicleContract extends Contract {
             less than / equal maximum number provided */
         const queryString = {
             selector: {
-                price: {
+                value: {
                     $gte: minNumber,
                     $lte: maxNumber,
                 },

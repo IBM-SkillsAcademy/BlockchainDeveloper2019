@@ -1,12 +1,23 @@
 #!/bin/bash
 
-#TODO: copy file from last exercise artifact
+# remove current contract src and replace it by last exercise solution
+rm -rf ../../SampleApplication/contract/src
+cp -r ../ex05/solution/src ../../SampleApplication/contract/src
 
 # go to Vehicle-Network and start the network
 cd ../../Vehicle-Network/
 ./byfn.sh up -l node -s couchdb
 
-# after the networks up, copy all the required file for ex06
+# start application and register user1 for each organizations
+cd ../SampleApplication/
+./start.sh
+curl -X POST "http://localhost:6001/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
+curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
+curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
+
+#TODO: register user for cli
+
+# after the networks and applications are up, copy all the required file for ex06
 cd ../
 if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections" ]; then
   mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
