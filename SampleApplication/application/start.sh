@@ -28,12 +28,12 @@ cd ${ROOT}/insurer/
 node_modules/pm2/bin/pm2 start ${ROOT}/insurer/index.js
 
 # run unit tests
-if [ "${#}" -ge 1 ]
-then
+
 
 cd ${ROOT}/unitTest/
+echo "running tests"
 npm run test
-fi
+
 
 echo ''
 echo '    The applications are ready. Please follow the links below to open swagger api'

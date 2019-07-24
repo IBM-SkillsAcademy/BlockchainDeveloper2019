@@ -1,0 +1,782 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Vehicle Manufacture Sample Application Smart Contract used for creating Blockchain Developer Course V2",
+    "version": "1.0.0",
+    "title": "Manufacturer"
+  },
+  "paths": {
+    "/api/v1/auth/registrar/enroll": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Enroll Admin",
+        "responses": {
+          "200": {
+            "description": "Admin enrolled"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/user/register-enroll": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enrollmentID"
+                ],
+                "properties": {
+                  "enrollmentID": {
+                    "type": "string",
+                    "example": "user1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User registered"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Create a new vehicle",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderID",
+                  "manufacturer",
+                  "model",
+                  "color",
+                  "owner"
+                ],
+                "properties": {
+                  "orderID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "manufacturer": {
+                    "type": "string",
+                    "example": "Honda"
+                  },
+                  "model": {
+                    "type": "string",
+                    "example": "Accord"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Black"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Tom"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle created"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+      "/api/v1/vehicles/history": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicle history",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All history listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
+    "/api/v1/vehicles/orders": {
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create a new vehicle order",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderID",
+                  "manufacturer",
+                  "model",
+                  "color",
+                  "owner"
+                ],
+                "properties": {
+                  "orderID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "manufacturer": {
+                    "type": "string",
+                    "example": "Honda"
+                  },
+                  "model": {
+                    "type": "string",
+                    "example": "Accord"
+                  },
+                  "color": {
+                    "type": "string",
+                    "example": "Black"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Tom"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle order issued"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Update vehicle order status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "orderID",
+                  "status"
+                ],
+                "properties": {
+                  "orderID": {
+                    "type": "string",
+                    "example": "vehicle13"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "PENDING" ,
+                      "INPROGRESS",
+                      "DELIVERED"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle order updated"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all vehicle orders or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+   
+    "/api/v1/vehicles/orders/status": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get vehicle orders by status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "status",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+     "/api/v1/vehicles/orders/status/paginated": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all orders by status with pagination",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "orderStatus",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        } , 
+         {
+          "in": "query",
+          "name": "pageSize",
+          "schema": {
+            "type": "string",
+            "example" : "5"
+          }
+        } , 
+         {
+          "in": "query",
+          "name": "bookmark",
+          "schema": {
+            "type": "string",
+            "example" : ""
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All orders listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+       "/api/v1/vehicles/orders/history": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all Order history",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All history listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
+  "/api/v1/vehicles/orders/range": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all Orders by range",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "startKey",
+          "schema": {
+            "type": "string",
+            "example": "Order11"
+          }
+           }
+           , {
+          "in": "query",
+          "name": "endKey",
+          "schema": {
+            "type": "string",
+            "example": "Order15"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All orders by range",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
+    "/api/v1/vehicles/prices": {
+      "post": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Update vehicle price",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "price"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "price": {
+                    "type": "string",
+                    "example": "40000"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle price updated"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get vehicle price",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/prices/range": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get vehicle price by range",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "min",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "10000"
+          }
+        }, {
+          "in": "query",
+          "name": "max",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "50000"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/policies/request": {
+      "post": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "request insurance policy",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "vehicleNumber",
+                  "insurerId",
+                  "holderId",
+                  "policyType",
+                  "startDate",
+                  "endDate"
+                ],
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "example": "policy1"
+                  },
+                  "vehicleNumber": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "insurerId": {
+                    "type": "string",
+                    "example": "insurer1"
+                  },
+                  "holderId": {
+                    "type": "string",
+                    "example": "holder1"
+                  },
+                  "policyType": {
+                    "type": "string",
+                    "example": "THIRD_PARTY"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "example": "12122019"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "example": "31122019"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/policies": {
+      "get": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "Get all policies or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "policy1"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+
+    },
+    "/api/v1/vehicles/vin/request": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Request vehicle VIN",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle VIN requested"
+          }
+        }
+      }
+    }
+
+  },
+
+  "components": {
+  }
+}
