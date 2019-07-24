@@ -13,7 +13,7 @@ echo "Update Contract with Ex07 Artifacts "
 cd $ROOT
 #cd ex03Artifacts
 pwd
-cp -R ex07Artifacts/applicatin/insurer/. ../../SampleApplication/application/insurer/
+cp -R ex07Artifacts/application/insurer/. ../../SampleApplication/application/insurer/
 cp -R ex07Artifacts/application/manufacturer/. ../../SampleApplication/manufacturer/
 
 

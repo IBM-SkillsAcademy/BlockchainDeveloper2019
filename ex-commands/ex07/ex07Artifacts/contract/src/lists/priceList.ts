@@ -20,7 +20,7 @@ export class PriceList <T extends Price> extends StateList<T> {
     /**
      * *** Exercise 06 > Part 3 > Step 5 ***
      * add or update price object to the ledger and private data collection
-     * @param price the price object
+     * @param {T} price the price object
      */
     public async updatePrice(price: T) {
         // calling updatePrivate function of the statelist class with collection name and object as input
@@ -30,7 +30,7 @@ export class PriceList <T extends Price> extends StateList<T> {
     /**
      * *** Exercise 06 > Part 3 > Step 5 ***
      * get price object
-     * @param vehicleNumber the price key (same as vehicle key number)
+     * @param {string} vehicleNumber the vehicle key number
      */
     public async getPrice(vehicleNumber) {
         // calling getPrivate function of the statelist class with collection name and object as input
