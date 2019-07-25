@@ -2,10 +2,10 @@
 
 # apply last exercise solution
 rm -rf ../../SampleApplication/contract/src
-rm -f ../../SampleApplication/contract/collection_config.json
+rm -f ../../SampleApplication/contract/collections_config.json
 rm -f ../../SampleApplication/contract/package.json
 cp -r ../ex05/solution/src ../../SampleApplication/contract/src
-cp ../ex05/solution/collection_config.json ../../SampleApplication/contract/collection_config.json
+cp ../ex05/solution/collections_config.json ../../SampleApplication/contract/collections_config.json
 cp ../ex05/solution/package.json ../../SampleApplication/contract/package.json
 
 # go to Vehicle-Network and start the network
@@ -15,10 +15,16 @@ cd ../../Vehicle-Network/
 # start application and register user1 for each organizations
 cd ../SampleApplication/application
 ./start.sh
-curl -X GET "http://localhost:6001/api/v1/auth/registrar/enroll" -H "accept: */*"
-curl -X POST "http://localhost:6001/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
-curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
-curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
+sleep 5
+curl -X GET "http://localhost:6001/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
+curl -X GET "http://localhost:6002/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
+curl -X GET "http://localhost:6003/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
+sleep 3;
+curl -X GET "http://localhost:6003/api/v1/auth/create-affiliation" -H "accept: */*"; printf "\n";
+sleep 3;
+curl -X POST "http://localhost:6001/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
+curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
+curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
 
 # after the networks and applications are up, copy all the required file for ex06
 cd ../../
