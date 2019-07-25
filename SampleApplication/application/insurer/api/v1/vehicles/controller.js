@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 const utils = require('../utils');
 
-// Create a new file system based wallet for managing identities.
+// Create a file system-based wallet for managing identities.
 const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 console.log(`Wallet path: ${walletPath}`);
@@ -34,7 +34,7 @@ async function setupGateway(user) {
       identity: user,
       wallet: wallet,
     };
-    // Create a new gateway for connecting to our peer node
+    // Create a new gateway for connecting to the peer node
     await gateway.connect(ccp, connectionOptions);
     return gateway;
   } catch (error) {
@@ -53,11 +53,11 @@ async function getContract(gateway) {
 }
 /**
  *  Exercise 7 > part 3 
- * this function is to get Vehicles with given ID or all vehicles
- * if id is not provided
- * @param {Object} req Express request object
- * @param {Object} res Express response object
- * @param {function} next Express next middleware function
+ * This function gets vehicles with a specific ID 
+ * or all vehicles if ID is not provided
+ * @param {Object} req: Express request object
+ * @param {Object} res: Express response object
+ * @param {function} next: Express next middleware function
  */
 exports.getVehicle = async (req, res, next) => {
   try {
@@ -70,8 +70,8 @@ exports.getVehicle = async (req, res, next) => {
 
     if (req.query.id) {
       /**
-       * this function is to query vehicles with specific ID 
-       * @property {function} evaluateTransaction to get vehicle with ID
+       * This function queries vehicles with a specific ID 
+       * @property {function} evaluateTransaction gets vehicle with ID
        */
       //result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
