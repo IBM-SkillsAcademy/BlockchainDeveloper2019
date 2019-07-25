@@ -10,22 +10,22 @@ import { Price } from './../assets/price';
  */
 
 /*
-Import the policy and policy list class to the vehicle context to allow the
+Import the policy and policy list class into the vehicle context to allow the
 smart contract application to recognize and interact with the policy asset.
 */
 import { Policy } from '../assets/policy';
 import { PolicyList } from '../lists/policyList';
 
-/* Custom Context that extend chain code Context class
- Used to define
-A smart contract transaction context allows smart contracts to define and maintain user variables across transaction invocations
+/* Custom Context that extends the chain code Context class
+ Used to define a smart contract transaction context that allows smart contracts 
+ to define and maintain user variables across transaction invocations.
 https://hyperledger-fabric.readthedocs.io/en/latest/developapps/transactioncontext.html
 */
 export class VehicleContext extends Context {
     private orderList: OrderList<Order>;
     private priceList: PriceList<Price>;
     private vehicleList: VehicleList<Vehicle>;
-    // Define policyList as list of policy objects
+    // Define policyList as a list of policy objects
     private policyList: PolicyList<Policy>;
     constructor() {
         super();
