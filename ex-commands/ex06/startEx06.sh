@@ -21,7 +21,7 @@ curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept
 curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"
 
 # after the networks and applications are up, copy all the required file for ex06
-cd ../
+cd ../../
 if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections" ]; then
   mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
 fi
