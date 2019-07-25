@@ -25,11 +25,12 @@ chmod +777 -R $HOME/fabric-ca/client/
 
 fabric-ca-client enroll -u https://admin:adminpw@ca.$2.example.com:7054  --tls.certfiles ca.$2.example.com-cert.pem
 
-OUTPUT=$(fabric-ca-client register --id.type client --id.name $1 --id.affiliation $2.department1 --id.attrs 'role=Manufacturer:ecert' --id.attrs 'hf.Revoker=true,admin=true:ecert' --tls.certfiles ca.$2.example.com-cert.pem | tail -1)
+ATTRS=role=$3:ecert
+OUTPUT=$(fabric-ca-client register --id.type client --id.name $1 --id.affiliation $2.department1 --id.attrs ${ATTRS} --id.attrs 'hf.Revoker=true,admin=true:ecert' --tls.certfiles ca.$2.example.com-cert.pem | tail -1)
 PASSWORD=$(echo $OUTPUT | awk -F" " '{print $2}')
 
 fabric-ca-client enroll -u https://$1:${PASSWORD}@ca.$2.example.com:7054  --tls.certfiles ca.$2.example.com-cert.pem
-cp -r signcerts admincerts
+cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts
 
 docker exec cli mkdir /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$2.example.com/users/$1@$2.example.com
 docker cp $HOME/fabric-ca/client/msp cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/user6@org1.example.com/msp
