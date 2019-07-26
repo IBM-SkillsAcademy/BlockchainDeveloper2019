@@ -12,7 +12,7 @@ ledger application.
 import { Object as ContractObject } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 /*
-Policy type and policy status enum objects. 
+Policy type and policy status enum objects.
 Policy type enumerates the insurance policy type.
 Policy status enumerates the insurance policy status for the policy asset.
 */
@@ -31,7 +31,7 @@ export enum PolicyStatus {
  * *** Exercise 02 > Part 4 > Step 3 ***
  */
 /*
-The "@ContractObject" modifier flags the policy class as an "object" 
+The "@ContractObject" modifier flags the policy class as an "object"
 or asset within the smart contract applications. The policy class
 extends the state class, allowing the policy class to have access to
 the set of business object functions and properties, such as the

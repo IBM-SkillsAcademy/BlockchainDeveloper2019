@@ -422,7 +422,7 @@ export class VehicleContract extends Contract {
      * @param  {VehicleContext} ctx
      * @param  {string} orderStatus
      * @returns {array} array of orders
-     * Return all orders with a specific status. Explain how to use the index defined in JSON format. 
+     * Return all orders with a specific status. Explain how to use the index defined in JSON format.
      * All indexes are defined in the META-INF folder.
      */
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
@@ -437,7 +437,7 @@ export class VehicleContract extends Contract {
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-          // Call queryWithQueryString with a custom function to run the query and return the results. 
+          // Call queryWithQueryString with a custom function to run the query and return the results.
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
 
@@ -458,7 +458,7 @@ export class VehicleContract extends Contract {
      * @param  {string} pagesize: Number of result per page.
      * @param  {string} bookmark: When the bookmark is not an empty string,
      * The iterator can be used to fetch the first `pageSize` key between the bookmark and the last key in the query results.
-     * Get all orders with status paginated by number of results per page and using bookmark 
+     * Get all orders with status paginated by number of results per page and using bookmark
      */
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
@@ -540,7 +540,7 @@ export class VehicleContract extends Contract {
      */
     public async issuePolicy(ctx: VehicleContext, id: string) {
         /*
-        This transaction changes the insurance policy status from "REQUESTED" to "ISSUED" 
+        This transaction changes the insurance policy status from "REQUESTED" to "ISSUED"
         to simulate the process of issuing a vehicle insurance policy.
         This action is performed by the insurer participant.
         */

@@ -291,9 +291,9 @@ export class StateList<T extends State> {
    * *** Exercise 3  > Part 4 ***
    *
    * @param { string } startKey: Start key used as starting point to search the ledger with
-   * @param { string } endkey: End key used as end point to search the ledger with 
-   * @returns T [] Array of states that exists in the range between start and end keys
-   *  Query assets by range by using startkey and endkey. This function uses the API getStateByRange 
+   * @param { string } endkey: End key used as end point to search the ledger with
+   * @returns T[] Array of states that exists in the range between start and end keys
+   *  Query assets by range by using startkey and endkey. This function uses the API getStateByRange
    */
     public async getAssetsByRange(startKey: string, endKey: string): Promise<T[]> {
 
@@ -302,7 +302,7 @@ export class StateList<T extends State> {
         const ledgerEndKey = this.ctx.stub.createCompositeKey(this.name, State.splitKey(endKey));
 
         // Returns a range iterator (StateQueryIterator) over a set of keys in the ledger.
-        // If the number of keys between startKey and endKey is greater than totalQueryLimit, 
+        // If the number of keys between startKey and endKey is greater than totalQueryLimit,
         // which is defined in the peer's configuration file core.yaml,
         // this iterator cannot be used to fetch all keys (results are limited by the totalQueryLimit).
         const result = await this.ctx.stub.getStateByRange(ledgerStartKey, ledgerEndKey);
