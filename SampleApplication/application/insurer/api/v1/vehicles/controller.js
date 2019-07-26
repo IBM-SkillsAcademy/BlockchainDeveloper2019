@@ -9,30 +9,29 @@ const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 console.log(`Wallet path: ${walletPath}`);
 
-
-async function checkAuthorization(req, res) {
+async function checkAuthorization (req, res) {
   try {
     const enrollmentID = req.headers['enrollment-id'];
     // Check to see if we've already enrolled the user.
     const userExists = await wallet.exists(enrollmentID);
-    console.log("User Exists " + userExists)
+    console.log('User Exists ' + userExists);
     if (!userExists) {
       return res.status(401).send({
         message: `An identity for the user ${enrollmentID} does not exist in the wallet`
       });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw error;
   }
 }
-async function setupGateway(user) {
+async function setupGateway (user) {
   try {
     const ccp = await utils.getCCP();
     const gateway = new Gateway();
     const connectionOptions = {
       identity: user,
-      wallet: wallet,
+      wallet: wallet
     };
     // Create a new gateway for connecting to the peer node
     await gateway.connect(ccp, connectionOptions);
@@ -42,18 +41,18 @@ async function setupGateway(user) {
   }
 }
 
-async function getContract(gateway) {
+async function getContract (gateway) {
   try {
-    const network = await gateway.getNetwork("mychannel");
+    const network = await gateway.getNetwork('mychannel');
     // Get the contract from the network.
-    return await network.getContract("vehicle-manufacture");
+    return await network.getContract('vehicle-manufacture');
   } catch (err) {
     throw new Error('Error connecting to channel . ERROR:' + err.message);
   }
 }
 /**
- *  Exercise 7 > part 3 
- * This function gets vehicles with a specific ID 
+ *  Exercise 7 > part 3
+ * This function gets vehicles with a specific ID
  * or all vehicles if ID is not provided
  * @param {Object} req: Express request object
  * @param {Object} res: Express response object
@@ -70,10 +69,10 @@ exports.getVehicle = async (req, res, next) => {
 
     if (req.query.id) {
       /**
-       * This function queries vehicles with a specific ID 
+       * This function queries vehicles with a specific ID
        * @property {function} evaluateTransaction gets vehicle with ID
        */
-      //result = await contract.evaluateTransaction('queryVehicle', req.query.id);
+      result = await contract.evaluateTransaction('queryVehicle', req.query.id);
       rawResult = result.toString();
     } else {
       // queryAllVehicles transaction - requires no arguments, ex: ('queryAllVehicless')
@@ -185,7 +184,7 @@ exports.getPolicy = async (req, res, next) => {
     await checkAuthorization(req, res);
     const gateway = await setupGateway(req.headers['enrollment-id']);
     const contract = await getContract(gateway);
- // Evaluate the specified transaction.
+    // Evaluate the specified transaction.
     let result;
     if (req.query.id) {
       result = await contract.evaluateTransaction('getPolicy', req.query.id);
@@ -233,4 +232,3 @@ exports.issuePolicy = async (req, res, next) => {
     }
   }
 };
-

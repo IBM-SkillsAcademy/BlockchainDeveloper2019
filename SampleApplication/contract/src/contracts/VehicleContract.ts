@@ -93,11 +93,21 @@ export class VehicleContract extends Contract {
      * @param {string} vehicleNumber: The vehicle key number
      * @param {string} value: The price of the vehicle
      */
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, value: string) {
+    public async updatePriceDetails(ctx: VehicleContext) {
+        // get value from transient data
+        const transient = ctx.stub.getTransient();
+        const bufferTranstient = transient.get('price');
+
+        // decode base64 encoded data
+        const base64String = bufferTranstient.toString('base64');
+        const bufferPrice = new Buffer(base64String, 'base64');
+
+        // deserialize data into price object
+        const price = Price.deserialize(bufferPrice.toString());
+
         // check if vehicle exist
-        await ctx.getVehicleList().get(vehicleNumber);
-        // create a new price object
-        const price = Price.createInstance(vehicleNumber, parseInt(value, 10));
+        await ctx.getVehicleList().get(price.vehicleNumber);
+
         // get the pricelist instance and call its updatePrice function
         await ctx.getPriceList().updatePrice(price);
     }

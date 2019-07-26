@@ -117,7 +117,7 @@ exports.updateOrder = async (req, res, next) => {
 exports.createVehicle = async (req, res, next) => {
   try {
     /**
-    This function checks if the user is enrolled on the blockchain network and 
+    This function checks if the user is enrolled on the blockchain network and
     if the user is authorized to perform this transaction.
     * @param {Object} req: Express request object
     * @param {Object} res: Express response object
@@ -198,13 +198,19 @@ exports.updatePrice = async (req, res, next) => {
     const gateway = await setupGateway(req.headers['enrollment-id']);
     const contract = await getContract(gateway);
 
-    // Submit the specified transaction.
-    // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
-    await contract.submitTransaction(
-      'updatePriceDetails',
-      req.body.vehicleID,
-      req.body.value
-    );
+    // price object
+    const price = {
+      vehicleNumber: req.body.vehicleID,
+      value: parseInt(req.body.value)
+    };
+    // private data sent as transient data
+    const transientData = {
+      price: Buffer.from(JSON.stringify(price))
+    };
+    // submit the transaction
+    await contract.createTransaction('updatePriceDetails')
+      .setTransient(transientData)
+      .submit();
 
     // Disconnect from the gateway.
     await gateway.disconnect();
