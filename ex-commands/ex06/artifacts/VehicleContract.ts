@@ -95,7 +95,7 @@ export class VehicleContract extends Contract {
      */
     public async updatePriceDetails(ctx: VehicleContext) {
         // uncomment one of the following line to get value from transient data
-        // const transient = ctx.stub.getArgs();        // option A        
+        // const transient = ctx.stub.getArgs();        // option A
         // const transient = ctx.stub.getTransient();   // option B
         const bufferTranstient = transient.get('price');
 
