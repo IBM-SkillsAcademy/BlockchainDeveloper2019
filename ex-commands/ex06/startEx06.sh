@@ -43,3 +43,5 @@ cp -f ex-commands/ex06/artifacts/statelist.ts SampleApplication/contract/src/led
 cp -f ex-commands/ex06/artifacts/price.ts SampleApplication/contract/src/assets/price.ts
 cp -f ex-commands/ex06/artifacts/priceList.ts SampleApplication/contract/src/lists/priceList.ts
 cp -f ex-commands/ex06/artifacts/VehicleContract.ts SampleApplication/contract/src/contracts/VehicleContract.ts
+cp -f ex-commands/ex06/artifacts/collections_config.json ../../SampleApplication/contract/collections_config.json
+cp -f ex-commands/ex06/artifacts/package.json ../../SampleApplication/contract/package.json
