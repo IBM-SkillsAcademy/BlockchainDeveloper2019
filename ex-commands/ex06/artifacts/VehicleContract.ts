@@ -87,15 +87,16 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 7 ***
+     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
      * Add or update a vehicle price details
      * @param {VehicleContext} ctx: vehicle context
      * @param {string} vehicleNumber: The vehicle key number
      * @param {string} value: The price of the vehicle
      */
     public async updatePriceDetails(ctx: VehicleContext) {
-        // get value from transient data
-        const transient = ctx.stub.getTransient();
+        // uncomment one of the following line to get value from transient data
+        // const transient = ctx.stub.getArgs();        // option A        
+        // const transient = ctx.stub.getTransient();   // option B
         const bufferTranstient = transient.get('price');
 
         // decode base64 encoded data
@@ -109,7 +110,7 @@ export class VehicleContract extends Contract {
         await ctx.getVehicleList().get(price.vehicleNumber);
 
         // get the pricelist instance and call its updatePrice function
-        await ctx.getPriceList().updatePrice();
+        await ctx.getPriceList().updatePrice(price);
     }
 
     /**
@@ -284,7 +285,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 7 ***
+     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 2 ***
      * get vehicle price details by vehicle key number
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
@@ -295,7 +296,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 8 > Step 1 ***
+     * *** Exercise 06 > Part 8 ***
      * Return all orders with specified query condition.
      * Index defined in META-INF folder.
      * @param {VehicleContext} ctx: Vehicle context.

@@ -44,8 +44,8 @@ export class Price extends State {
     public value: number;
 
     /**
-     * Contructing a price object from JSON object
-     * @param obj json object to be contructed to price object
+     * Constructing a price object from JSON object
+     * @param obj json object to be constructed to price object
      */
     constructor(obj) {
         super(Price.getClass(), [obj.vehicleNumber]);

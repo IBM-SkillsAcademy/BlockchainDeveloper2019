@@ -18,7 +18,7 @@ export class PriceList <T extends Price> extends StateList<T> {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 5 ***
+     * *** Exercise 06 > Part 3 > {Adding a new private price list} > Step 2 ***
      * Add or update price object to the ledger and private data collection
      * @param {T} price: The price object
      */
@@ -28,7 +28,7 @@ export class PriceList <T extends Price> extends StateList<T> {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 5 ***
+     * *** Exercise 06 > Part 3 > {Adding a new private price list} > Step 2 ***
      * Get price object
      * @param {string} vehicleNumber: The vehicle key number
      */

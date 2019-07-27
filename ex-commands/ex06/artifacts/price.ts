@@ -31,7 +31,6 @@ export class Price extends State {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 3 ***
      * Create a new price object instance
      * @param {string} vehicleNumber: The vehicle key number
      * @param {number} value: The price value
@@ -44,7 +43,8 @@ export class Price extends State {
     public value: number;
 
     /**
-     * Contruct a price object from a JSON object
+     * *** Exercise 06 > Part 3 > {Adding a new private price asset} > Step 2 ***
+     * Construct a price object from a JSON object
      * @param obj: JSON object to construct to price object
      */
     constructor(obj) {

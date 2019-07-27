@@ -87,7 +87,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 7 ***
+     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
      * Add or update a vehicle price details
      * @param {VehicleContext} ctx: vehicle context
      * @param {string} vehicleNumber: The vehicle key number
@@ -284,7 +284,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 7 ***
+     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 2 ***
      * get vehicle price details by vehicle key number
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
@@ -295,7 +295,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 8 > Step 1 ***
+     * *** Exercise 06 > Part 8 ***
      * Return all orders with specified query condition.
      * Index defined in META-INF folder.
      * @param {VehicleContext} ctx: Vehicle context.
