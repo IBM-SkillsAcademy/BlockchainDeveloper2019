@@ -2,7 +2,7 @@ import { Object as ContractObject } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 
 @ContractObject()
-// Price Asset
+// Price asset
 export class Price extends State {
 
     /**
@@ -10,7 +10,7 @@ export class Price extends State {
      * @param {BUffer} buffer to form back into price object
      */
     public static fromBuffer(buffer) {
-        // Calling deserialize function of Price class and return the value
+        // Call the deserialize function of Price class and return the value
         return Price.deserialize(Buffer.from(JSON.parse(buffer)));
     }
 
@@ -19,7 +19,7 @@ export class Price extends State {
      * @param {Buffer} data to form back into price object
      */
     public static deserialize(data) {
-        // Calling deserialize function of state class with price as the class input
+        // Call the deserialize function of state class with price as the class input
         return State.deserializeClass(data, Price);
     }
 
@@ -31,10 +31,9 @@ export class Price extends State {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 3 ***
      * Create a new price object instance
-     * @param {string} vehicleNumber the vehicle key number
-     * @param {number} value the price value
+     * @param {string} vehicleNumber: The vehicle key number
+     * @param {number} value: The price value
      */
     public static createInstance(vehicleNumber, value) {
         return new Price({ vehicleNumber, value});
@@ -44,9 +43,9 @@ export class Price extends State {
     public value: number;
 
     /**
-     * *** Exercise 06 > Part 3 > Step 3 ***
-     * Contructing a price object from JSON object
-     * @param obj json object to be contructed to price object
+     * *** Exercise 06 > Part 3 > {Adding a new private price asset} > Step 2 ***
+     * Construct a price object from a JSON object
+     * @param obj: JSON object to construct to price object
      */
     constructor(obj) {
         // uncomment one of the following line to be able to create a new price object

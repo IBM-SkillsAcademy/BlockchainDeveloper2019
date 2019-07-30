@@ -6,34 +6,34 @@ import {  VehicleContext } from '../utils/vehicleContext';
 export class PriceList <T extends Price> extends StateList<T> {
 
     /**
-     * create a new price list object
-     * @param {VehicleContext} ctx fabric context for vehicle chaincode
-     * @param {Array<IState<T>>} validTypes array of valid types of object
+     * Create a new price list object
+     * @param {VehicleContext} ctx: Fabric context for vehicle chaincode
+     * @param {Array<IState<T>>} validTypes: Array of valid types of objects
      */
     constructor(ctx: VehicleContext, validTypes: Array<IState<T>>) {
-        // create a statelist with price object class name
+        // Create a statelist with price object class name
         super(ctx, 'org.vehiclelifecycle.price');
-        // put price class as supported class
+        // Put price class as supported class
         this.use(...validTypes);
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 5 ***
-     * add or update price object to the ledger and private data collection
-     * @param {T} price the price object
+     * *** Exercise 06 > Part 3 > {Adding a new private price list} > Step 2 ***
+     * Add or update price object to the ledger and private data collection
+     * @param {T} price: The price object
      */
     public async updatePrice(price: T) {
-        // calling updatePrivate function of the statelist class with collection name and object as input
+        // Call the updatePrivate function of the statelist class with collection name and object as input
         return this.updatePrivate(price);
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 5 ***
-     * get price object
-     * @param {string} vehicleNumber the vehicle key number
+     * *** Exercise 06 > Part 3 > {Adding a new private price list} > Step 2 ***
+     * Get price object
+     * @param {string} vehicleNumber: The vehicle key number
      */
     public async getPrice(vehicleNumber) {
-        // calling getPrivate function of the statelist class with collection name and object as input
+        // Call the getPrivate function of the statelist class with collection name and object as input
         return this.getPrivate(vehicleNumber);
     }
 }

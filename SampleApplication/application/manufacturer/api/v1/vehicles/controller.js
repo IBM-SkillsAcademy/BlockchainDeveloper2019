@@ -4,7 +4,7 @@ const { FileSystemWallet, Gateway } = require('fabric-network');
 const path = require('path');
 const utils = require('../utils');
 
-// Create a new file system based wallet for managing identities.
+// Create a new file system-based wallet for managing identities.
 const walletPath = path.join(process.cwd(), 'wallet');
 const wallet = new FileSystemWallet(walletPath);
 console.log(`Wallet path: ${walletPath}`);
@@ -109,34 +109,33 @@ exports.updateOrder = async (req, res, next) => {
 };
 /**
 *** Exercise 7 part 2 ***
-*this function is to create a new vehicle from application using fabric SDK
-* @param {Object} req Express request object
-* @param {Object} res Express response object
-* @param {function} next Express next middleware function
+*This function creates a new vehicle from the application by using the Fabric SDK.
+* @param {Object} req: Express request object
+* @param {Object} res: Express response object
+* @param {function} next: Express next middleware function
 */
 exports.createVehicle = async (req, res, next) => {
   try {
     /**
-    this function is to check if the user is enrolled on the blockchain network and
-    if he is authorized to do this transaction
-    * @param {Object} req Express request object
-    * @param {Object} res Express response object
+    This function checks if the user is enrolled on the blockchain network and
+    if the user is authorized to perform this transaction.
+    * @param {Object} req: Express request object
+    * @param {Object} res: Express response object
     */
     await checkAuthorization(req, res);
     /**
-    *this function is to open a gateway to peer node with the user
-    *enrolled and the wallets
-    *@param {String} enrollment-id user enrollment id
+    *This function opens a gateway to the peer node with the user
+    *enrolled and the wallets.
+    *@param {String} enrollment-id user enrollment ID
     **/
     const gateway = await setupGateway(req.headers['enrollment-id']);
     /**
-     * this function is to get the contract that the transaction will be
-     * performed on
-     * @param {Gateway} gateway the opened gateway to peer node
+     * This function gets the contract on which the transaction is performed.
+     * @param {Gateway} gateway: The opened gateway to peer node
      */
     const contract = await getContract(gateway);
     /**
-     * this function is to submit the specified transaction
+     * This function submits the specified transaction
      * @property {function} submitTransaction to submit the specified transaction from the contract
      */
 
@@ -199,13 +198,19 @@ exports.updatePrice = async (req, res, next) => {
     const gateway = await setupGateway(req.headers['enrollment-id']);
     const contract = await getContract(gateway);
 
-    // Submit the specified transaction.
-    // createVehicle transaction - requires 5 argument, ex: ('createVehicle', 'Vehicle12', 'Honda', 'Accord', 'Black', 'Tom')
-    await contract.submitTransaction(
-      'updatePriceDetails',
-      req.body.vehicleID,
-      req.body.value
-    );
+    // price object
+    const price = {
+      vehicleNumber: req.body.vehicleID,
+      value: parseInt(req.body.value)
+    };
+    // private data sent as transient data
+    const transientData = {
+      price: Buffer.from(JSON.stringify(price))
+    };
+    // submit the transaction
+    await contract.createTransaction('updatePriceDetails')
+      .setTransient(transientData)
+      .submit();
 
     // Disconnect from the gateway.
     await gateway.disconnect();
@@ -479,7 +484,7 @@ async function setupGateway (user) {
       identity: user,
       wallet: wallet
     };
-    // Create a new gateway for connecting to our peer node
+    // Create a new gateway for connecting to the peer node.
     await gateway.connect(ccp, connectionOptions);
     return gateway;
   } catch (error) {

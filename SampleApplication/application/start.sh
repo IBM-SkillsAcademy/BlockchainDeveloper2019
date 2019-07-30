@@ -28,11 +28,9 @@ cd ${ROOT}/insurer/
 node_modules/pm2/bin/pm2 start ${ROOT}/insurer/index.js
 
 # run unit tests
-if [ "${#}" -ge 1 ]
-then
-
-cd ${ROOT}/unitTest/
-npm run test
+if [ "${#}" -ge 1 ]; then
+  cd ${ROOT}/unitTest/
+  npm run test
 fi
 
 echo ''
