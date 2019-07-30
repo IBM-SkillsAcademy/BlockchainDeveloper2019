@@ -2,15 +2,16 @@
 ROOT=${PWD}
 echo "Update Contract files with Completed EX03"
 
-# cp -R ../ex02/solution/contract/src/. ../../SampleApplication/contract/src/.
-# cp ../ex02/solution/contract/package.json ../../SampleApplication/contract/package.json
+cp -R ../ex03/solution/contract/src/. ../../SampleApplication/contract/src/.
+cp ../ex03/solution/contract/package.json ../../SampleApplication/contract/package.json
 
 
 echo "################## START NETWORK ########################"
 cd ../../Vehicle-Network/
 ./byfn.sh up -V 1.9.3
 
-echo "Update Contract with Ex03 Artifacts "
+echo "Update Contract with Ex05 Artifacts "
 cd $ROOT
 #cd ex05Artifacts
 pwd
+cp -R ex05Artifacts/VehicleContract.ts ../../SampleApplication/contract/src/contracts/VehicleContract.ts

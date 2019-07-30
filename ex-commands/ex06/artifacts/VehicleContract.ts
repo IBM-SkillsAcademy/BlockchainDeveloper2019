@@ -87,22 +87,6 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 7 ***
-     * add or update a vehicle price details
-     * @param {VehicleContext} ctx vehicle context
-     * @param {string} vehicleNumber the vehicle key number
-     * @param {string} value the price value of the vehicle
-     */
-    public async updatePriceDetails(ctx: VehicleContext, vehicleNumber: string, value: string) {
-        // check if vehicle exist
-        await ctx.getVehicleList().get(vehicleNumber);
-        // create a new price object
-        const price = Price.createInstance(vehicleNumber, parseInt(value, 10));
-        // get the pricelist instance and call its updatePrice function
-        await ctx.getPriceList().updatePrice();
-    }
-
-    /**
      * *** Exercise 02 > Part 1 > Step 5 ***
      *
      * @param { ctx } the smart contract transaction context
