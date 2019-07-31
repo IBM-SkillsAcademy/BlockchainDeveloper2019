@@ -7,5 +7,3 @@ then
  echo "remove options from /etc/resolv.conf"
    sed -i "/options /c\ " /etc/resolv.conf
 fi
-
-

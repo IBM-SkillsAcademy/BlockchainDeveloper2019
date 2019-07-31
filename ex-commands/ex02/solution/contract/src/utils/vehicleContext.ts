@@ -1,5 +1,3 @@
-vehicleContext
-
 // vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
