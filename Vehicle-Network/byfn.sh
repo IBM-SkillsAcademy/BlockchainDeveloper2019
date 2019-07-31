@@ -208,7 +208,7 @@ function networkUp() {
   fi
 
   # now run the end to end script
-  docker exec cli scripts/script.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE $NO_CHAINCODE
+  docker exec cli scripts/script.sh $CHANNEL_NAME $CLI_DELAY $LANGUAGE $CLI_TIMEOUT $VERBOSE false $CHAIN_CODE_VERSION
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Test failed"
     exit 1
@@ -569,7 +569,7 @@ else
   exit 1
 fi
 
-while getopts "h?c:t:d:f:s:l:i:o:anv" opt; do
+while getopts "h?c:t:d:f:s:l:i:o:V:anv" opt; do
   case "$opt" in
   h | \?)
     printHelp
@@ -608,7 +608,11 @@ while getopts "h?c:t:d:f:s:l:i:o:anv" opt; do
   v)
     VERBOSE=true
     ;;
+  V)
+  CHAIN_CODE_VERSION=$OPTARG
+    ;;
   esac
+
 done
 
 

@@ -313,7 +313,7 @@ describe('Vehicle cycle: ', () => {
   describe('POST /api/v1/vehicles/prices', () => {
     const priceUpdate = {
       vehicleID: key,
-      price: '40000'
+      value: '40000'
     };
     it('Manufacturer can update vehicle price', mochaAsync(async () => {
       const res = await apiManufacturer
@@ -335,7 +335,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal(40000);
+      res.body.result.value.should.equal(40000);
     }));
 
     it('Regulator can see vehicle price', mochaAsync(async () => {
@@ -347,7 +347,7 @@ describe('Vehicle cycle: ', () => {
           id: key
         })
         .expect(200)
-      res.body.result.price.should.equal(40000);
+      res.body.result.value.should.equal(40000);
     }));
   });
 

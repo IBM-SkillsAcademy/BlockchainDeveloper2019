@@ -461,6 +461,52 @@
       }
     
   },
+  "/api/v1/vehicles/orders/range": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all Orders by range",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "startKey",
+          "schema": {
+            "type": "string",
+            "example": "Order11"
+          }
+           }
+           , {
+          "in": "query",
+          "name": "endKey",
+          "schema": {
+            "type": "string",
+            "example": "Order15"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All orders by range",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    
+  },
     "/api/v1/vehicles/prices": {
       "post": {
         "tags": [
@@ -483,14 +529,14 @@
                 "type": "object",
                 "required": [
                   "vehicleID",
-                  "price"
+                  "value"
                 ],
                 "properties": {
                   "vehicleID": {
                     "type": "string",
                     "example": "vehicle13:Accord"
                   },
-                  "price": {
+                  "value": {
                     "type": "string",
                     "example": "40000"
                   }

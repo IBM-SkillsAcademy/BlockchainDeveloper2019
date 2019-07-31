@@ -1,6 +1,6 @@
 // Fabric smart contract classes
 import { Context, Contract } from 'fabric-contract-api';
-// Vehicle Manufacure classes
+// Vehicle manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { VehicleContext } from '../utils/vehicleContext';
@@ -11,7 +11,7 @@ import { newLogger } from 'fabric-shim';
 
 const logger = newLogger('VehicleContract');
 
-// Main Chaincode class contains all transactions that users can submit by extending Fabric Contract class
+// The main chaincode class contains all the transactions that users can submit by extending the Fabric Contract class
 
 export class VehicleContract extends Contract {
     constructor() {
@@ -22,9 +22,9 @@ export class VehicleContract extends Contract {
     public createContext() {
         return new VehicleContext();
     }
-    // init Ledger fucntion to be executed at the chaincode inistantiation
+    // init ledger function is executed at the chaincode instantiation
     public async initLedger(ctx: VehicleContext) {
-        logger.info('============= START : Initialize Ledger ===========');
+        logger.info('============= START : Initialize ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
         vehicles[0] = Vehicle.createInstance('CD58911', '4567788', 'Tomoko', 'Prius', 'Toyota', 'blue');
         vehicles[1] = Vehicle.createInstance('CD57271', '1230819', 'Jin soon', 'Tucson', 'Hyundai', 'green');
@@ -321,7 +321,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
 
-    // When Order completed and will be ready to be delivered , update order status and Manufacture now can create new Vehicle as an asset
+    // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
         // check if role === manufacturer
         // await this.hasRole(ctx, ['Manufacturer']);
@@ -339,7 +339,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
 
     }
-    // Return All order
+    // Return all orders
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
 

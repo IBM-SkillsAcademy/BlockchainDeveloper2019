@@ -22,3 +22,30 @@ curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H
 curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order9\",\"manufacturer\":\"Toyota\",\"model\":\"Accord\",\"color\":\"Black\",\"owner\":\"Chris\"}"
 
 curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"order10\",\"manufacturer\":\"Hyundai\",\"model\":\"Tucson\",\"color\":\"Blue\",\"owner\":\"James\"}"
+
+
+
+curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order11\",\"manufacturer\":\"Honda\",\"model\":\"Civic\",\"color\":\"Blue\",\"owner\":\"Mary\"}"
+
+curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order12\",\"manufacturer\":\"Toyota\",\"model\":\"Prius\",\"color\":\"Blue\",\"owner\":\"Tomas\"}"
+
+curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order13\",\"manufacturer\":\"Volklswagen\",\"model\":\"Passat\",\"color\":\"Black\",\"owner\":\"Sirnivas\"}"
+
+curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order14\",\"manufacturer\":\"Toyota\",\"model\":\"Accord\",\"color\":\"Orang\",\"owner\":\"Subermanian\"}"
+
+curl -X POST "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"order15\",\"manufacturer\":\"Hyundai\",\"model\":\"Tucson\",\"color\":\"Red\",\"owner\":\"David\"}"
+
+
+echo "Simulate updates over Order1"
+
+curl -X PUT "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order1\",\"status\":\"PENDING\"}"
+curl -X PUT "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order1\",\"status\":\"INPROGRESS\"}"
+curl -X PUT "http://localhost:6001/api/v1/vehicles/orders" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"orderID\":\"Order1\",\"status\":\"DELIVERED\"}"
+
+
+
+
+
+
+
+

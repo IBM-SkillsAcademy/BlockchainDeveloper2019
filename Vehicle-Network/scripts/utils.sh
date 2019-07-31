@@ -117,7 +117,7 @@ installChaincode() {
   PEER=$1
   ORG=$2
   setGlobals $PEER $ORG
-  VERSION=1.9.0
+  VERSION=$CHAIN_CODE_VERSION
   set -x
   peer chaincode install -n vehicle-manufacture -v ${VERSION} -l ${LANGUAGE} -p ${CC_SRC_PATH} >&log.txt
   res=$?
@@ -132,7 +132,7 @@ instantiateChaincode() {
   PEER=$1
   ORG=$2
   setGlobals $PEER $ORG
-  VERSION=1.9.0
+  VERSION=$CHAIN_CODE_VERSION
 
   # while 'peer chaincode' command can get the orderer endpoint from the peer
   # (if join was successful), let's supply it directly as we know it using
