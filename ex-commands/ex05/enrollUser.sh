@@ -1,5 +1,5 @@
 #!/bin/bash
-echo "Register and Enrolling User $1 $2" 
+echo "Register and Enrolling User $1 $2 $3" 
 
 CA_IP=`docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' ca.$2.example.com`
 echo "IP of CA ( ca.$2.example.com ) server ${CA_IP}"
@@ -32,5 +32,9 @@ PASSWORD=$(echo $OUTPUT | awk -F" " '{print $2}')
 fabric-ca-client enroll -u https://$1:${PASSWORD}@ca.$2.example.com:7054  --tls.certfiles ca.$2.example.com-cert.pem
 cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts
 
-docker exec cli mkdir /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/$2.example.com/users/$1@$2.example.com
-docker cp $HOME/fabric-ca/client/msp cli:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/user6@org1.example.com/msp
+# check if directory exists from cryptogen
+if [ -d "../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com" ]; then
+   rm -rf ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com
+fi
+mkdir ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com
+cp -rf $HOME/fabric-ca/client/msp ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com/msp
