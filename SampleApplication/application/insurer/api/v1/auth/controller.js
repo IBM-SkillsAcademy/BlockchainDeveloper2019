@@ -114,10 +114,13 @@ exports.createAffiliation = async (req, res, next) => {
     const ca = gateway.getClient().getCertificateAuthority();
     const adminIdentity = gateway.getCurrentIdentity();
 
-    await ca.newAffiliationService().create({ name: 'org3' }, adminIdentity);
+    await ca.newAffiliationService().create({
+      name: 'org3.department1',
+      force: true
+    }, adminIdentity);
 
     return res.send({
-      message: `Successfully created affiliation ${'org3'}`
+      message: `Successfully created affiliation 'org3.department1'`
     });
   } catch (err) {
     console.log(err);
