@@ -1,5 +1,5 @@
 /**
- * *** Exercise 2 > Part 4 > Step 2 ***
+ * *** Exercise 02 > Part 4 > Step 2 ***
  */
 
 /*
@@ -29,7 +29,7 @@ export enum PolicyStatus {
 }
 
 /**
- * *** Exercise 2 > Part 4 > Step 3 ***
+ * *** Exercise 02 > Part 4 > Step 3 ***
  */
 /*
 The "@ContractObject" modifier flags the policy class as an "object",
