@@ -1,6 +1,6 @@
 // Fabric smart contract classes
 import { Context, Contract } from 'fabric-contract-api';
-// Vehicle manufacure classes
+// Vehicle Manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { VehicleContext } from '../utils/vehicleContext';
@@ -15,7 +15,7 @@ import { newLogger } from 'fabric-shim';
 
 const logger = newLogger('VehicleContract');
 
-// The main chaincode class contains all the transactions that users can submit by extending the Fabric Contract class
+// Main Chaincode class contains all transactions that users can submit by extending Fabric Contract class
 
 export class VehicleContract extends Contract {
     constructor() {
@@ -26,9 +26,9 @@ export class VehicleContract extends Contract {
     public createContext() {
         return new VehicleContext();
     }
-    // init ledger function is executed at the chaincode instantiation
+    // init Ledger fucntion to be executed at the chaincode inistantiation
     public async initLedger(ctx: VehicleContext) {
-        logger.info('============= START : Initialize ledger ===========');
+        logger.info('============= START : Initialize Ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
         vehicles[0] = Vehicle.createInstance('CD58911', '4567788', 'Tomoko', 'Prius', 'Toyota', 'blue');
         vehicles[1] = Vehicle.createInstance('CD57271', '1230819', 'Jin soon', 'Tucson', 'Hyundai', 'green');
@@ -305,7 +305,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
 
-    // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
+    // When Order completed and will be ready to be delivered , update order status and Manufacture now can create new Vehicle as an asset
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
 
         if (!await ctx.getOrderList().exists(orderId)) {
@@ -321,7 +321,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
 
     }
-    // Return all orders
+    // Return All order
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
 
@@ -329,6 +329,78 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().getAll();
     }
 
+    /**
+     * *** Exercise 03 > Part 2 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderStatus
+     * @returns {array} array of orders
+     * return all orders with specific status,  explain how to use index defined as JSON format, all  indexes defined in META-INF folder
+     */
+    public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
+        logger.info('============= START : Get Orders by Status ===========');
+
+      // create query string and use orderStatusIndex and order status design document
+        const queryString = {
+            selector: {
+                orderStatus,
+            },
+            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+        };
+          // call queryWithQueryString which custom function to execute query and return result
+        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
+    }
+
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderID orderId to get history for
+     * return all transaction history for order  using orderID
+     */
+    public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
+        return await ctx.getOrderList().getOrderHistory(orderID);
+    }
+
+    /**
+     * *** Exercise 03 > Part 5 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} orderStatus
+     * @param  {string} pagesize number of result per page
+     * @param  {string} bookmark When the bookmark is a non-emptry string,
+     * the iterator can be used to fetch the first `pageSize` keys between the bookmark and the last key in the query result
+     * get all orders with status paginated by number of result per page and using bookmark
+     */
+    public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
+        // check if role === 'Manufacturer' / 'Regulator'
+<<<<<<< HEAD
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+=======
+        await this.hasRole();
+>>>>>>> 0a1b49ae305f48555b501dcb36a6044cdde369dd
+        // build query string
+        const queryString = {
+            selector: {
+                orderStatus,
+            },
+            use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
+        };
+       // convert string to integer using javascript function parseInt
+        const pagesizeInt = parseInt(pagesize, 10);
+
+        return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
+    }
+
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} startKey  start key as starting point for query
+     * @param  {string} endKey    end key as end point for queey
+     */
+    public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
+        // use objec retuned from getOrderList and call getOrdersByRange
+        return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
+    }
+
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
     // ############################################################### Policy Functions #################################################
     /**
      * *** Exercise 2 > Part 4 > Step 8 ***
@@ -344,8 +416,20 @@ export class VehicleContract extends Contract {
         */
         // logger.info('============= START : request insurance policy ===========');
 
+<<<<<<< HEAD
         // Check if vehicle exist
         // await ctx.getVehicleList().getVehicle(vehicleNumber);
+=======
+        // check if role === manufacturer
+<<<<<<< HEAD
+        await this.hasRole(ctx, ['Manufacturer']);
+=======
+        await this.hasRole();
+>>>>>>> 0a1b49ae305f48555b501dcb36a6044cdde369dd
+
+        // Check if vehicle exist
+        await ctx.getVehicleList().getVehicle(vehicleNumber);
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
 
         // Create new policy asset.
         // const policy = ;
@@ -366,10 +450,17 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { policyId } the insurance policy id
      */
+<<<<<<< HEAD
     // public async getPolicy(ctx: VehicleContext, policyId: string) {
         // This transaction will query for a specific policy according to the supplied policy ID parameter.
         // return await ;
     // }
+=======
+    public async getPolicy(ctx: VehicleContext, policyId: string) {
+        // This transaction will query for a specific policy according to the supplied policy ID parameter.
+        return await ctx.getPolicyList().get(policyId);
+    }
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
 
     /**
      * *** Exercise 2 > Part 4 > Step 9 ***
@@ -383,6 +474,11 @@ export class VehicleContract extends Contract {
         to simulate the process of issuing a vehicle insurance policy.
         This action will be performed by the insurer participant.
         */
+<<<<<<< HEAD
+=======
+        // Check if role === insurer
+        await this.hasRole();
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
 
         // Get policy by ID from policy list
         // const policy = await ctx.getPolicyList().get(id);
@@ -405,15 +501,98 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+<<<<<<< HEAD
     // public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
         // This transaction will return a list of all the available insurance policies in the ledger.
         // return await ;
     // }
 
     // ############################################################### Utility Functions #################################################
+=======
+    public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
+        // This transaction will return a list of all the available insurance policies in the ledger.
+        return await ctx.getPolicyList().getAll();
+    }
+
+    // ############################################################### Utility Functions #################################################
+    /**
+     * *** Exercise 05 > Part 2 > Step 1***
+     * 
+     * @param { ctx } the smart contract transaction context
+     * @param { roleName } the blockchain user identity
+     */
+    public async hasRole(ctx: VehicleContext, roleName: string[]) {
+        // Function to check if the user has right to perform the role bases on role
+<<<<<<< HEAD
+        const clientId = ctx.clientIdentity;
+=======
+        // const clientId = ctx.clientIdentity;
+>>>>>>> 0a1b49ae305f48555b501dcb36a6044cdde369dd
+        // const clientId = ctx.stub.getChannelID;
+        for (let i = 0; i < roleName.length; i++) {
+            if (clientId.assertAttributeValue('role', roleName[i])) {
+                return true;
+            }
+        }
+        throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+    }
+       /**
+        * *** Exercise 03 > Part 2 ***
+        * @param {VehicleContext } ctx the transaction context
+        * @param {string} queryString the query string to be evaluated
+        * @param {string } collection flag to identify this function will be used for getQueryResult or  getPrivateDataQueryResult
+        */
+    public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
+
+        logger.info('query String');
+        logger.info(JSON.stringify(queryString));
+
+        let resultsIterator: import('fabric-shim').Iterators.StateQueryIterator;
+        if (collection === '') {
+            resultsIterator = await ctx.stub.getQueryResult(queryString);
+        } else {
+            // workaround for tracked issue: https://jira.hyperledger.org/browse/FAB-14216
+            const result: any = await ctx.stub.getPrivateDataQueryResult(collection, queryString);
+            resultsIterator = result.iterator;
+        }
+
+        console.log(typeof resultsIterator);
+        // array to hold query result
+        const allResults = [];
+        while (true) {
+               // use iterator to get next element
+            const res = await resultsIterator.next();
+             // if next element has value
+            if (res.value && res.value.value.toString()) {
+                // create object of custom type QueryResponse to hold current element result
+                const jsonRes = new QueryResponse();
+               // assign current key value to key of QueryResponse object
+                jsonRes.key = res.value.key;
+
+                try {
+                    // assign current record value to value of QueryResponse object
+                    jsonRes.record = JSON.parse(res.value.value.toString('utf8'));
+                } catch (err) {
+                    logger.info(err);
+                    jsonRes.record = res.value.value.toString('utf8');
+                }
+                 // push current object to array of result
+                allResults.push(jsonRes);
+            }
+            if (res.done) {
+                logger.info('end of data');
+                // close iterator
+                await resultsIterator.close();
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
 
     // Regulator Can get number of vehicles
     public async getVehicleCount(ctx: VehicleContext) {
+<<<<<<< HEAD
+=======
+        // only regulator can access this function
+        await this.hasRole(ctx, ['Regulator']);
+
+>>>>>>> 08a1c216d888f5ff4089d1b0a42adec33fd7a84b
         return await ctx.getVehicleList().count();
     }
     // 'unknownTransaction' will be called if the required transaction function requested does not exist

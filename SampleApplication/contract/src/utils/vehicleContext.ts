@@ -1,6 +1,7 @@
 // vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
+import { Policy } from '../assets/policy';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { VehicleList } from '../lists/vehicleList';
@@ -15,9 +16,9 @@ smart contract application to recognize and interact with the policy asset.
 // import { Policy } from '../assets/policy';
 // import { PolicyList } from '../lists/policyList';
 
-/* Custom Context that extends the chain code Context class
- Used to define a smart contract transaction context that allows smart contracts
- to define and maintain user variables across transaction invocations.
+/* Custom Context that extend chain code Context class
+ Used to define
+A smart contract transaction context allows smart contracts to define and maintain user variables across transaction invocations
 https://hyperledger-fabric.readthedocs.io/en/latest/developapps/transactioncontext.html
 */
 export class VehicleContext extends Context {
@@ -33,7 +34,7 @@ export class VehicleContext extends Context {
         // this.policyList = new PolicyList(this, [Policy]);
     }
 
-    public getOrderList(): OrderList<Order> {
+    public getOrderList() {
         return this.orderList;
     }
     public getVehicleList(): VehicleList<Vehicle> {

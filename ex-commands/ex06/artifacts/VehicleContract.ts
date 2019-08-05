@@ -3,7 +3,6 @@
 import { Context, Contract } from 'fabric-contract-api';
 // Vehicle manufacure classes
 import { Order, OrderStatus } from '../assets/order';
-import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
@@ -87,34 +86,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
-     * Add or update a vehicle price details
-     * @param {VehicleContext} ctx: vehicle context
-     * @param {string} vehicleNumber: The vehicle key number
-     * @param {string} value: The price of the vehicle
-     */
-    public async updatePriceDetails(ctx: VehicleContext) {
-        // uncomment one of the following line to get value from transient data
-        // const transient = ctx.stub.getArgs();        // option A
-        // const transient = ctx.stub.getTransient();   // option B
-        const bufferTranstient = transient.get('price');
-
-        // decode base64 encoded data
-        const base64String = bufferTranstient.toString('base64');
-        const bufferPrice = new Buffer(base64String, 'base64');
-
-        // deserialize data into price object
-        const price = Price.deserialize(bufferPrice.toString());
-
-        // check if vehicle exist
-        await ctx.getVehicleList().get(price.vehicleNumber);
-
-        // get the pricelist instance and call its updatePrice function
-        await ctx.getPriceList().updatePrice(price);
-    }
-
-    /**
-     * *** Exercise 02 > Part 1 > Step 4 ***
+     * *** Exercise 02 > Part 1 > Step 5 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
@@ -282,45 +254,6 @@ export class VehicleContract extends Contract {
         // Update state in ledger
         await ctx.getVehicleList().updateVehicle(vehicle);
         logger.info('============= END : changevehicleOwner ===========');
-    }
-
-    /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 2 ***
-     * get vehicle price details by vehicle key number
-     * @param {VehicleContext} ctx vehicle context
-     * @param {string} vehicleNumber the vehicle key number
-     */
-    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
-        // get the priceList object and call its getPrice function
-        return await ctx.getPriceList().getPrice();
-    }
-
-    /**
-     * *** Exercise 06 > Part 8 ***
-     * Return all orders with specified query condition.
-     * Index defined in META-INF folder.
-     * @param {VehicleContext} ctx: Vehicle context.
-     * @param {string} min: Minimum price to be queried.
-     * @param {string} max: Maximum price to be queried.
-     */
-    public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
-        const minNumber = parseInt(min, 10);
-        const maxNumber = parseInt(max, 10);
-        /* Compose a couchdb query string for price with the value
-            more than / equal minimum number that is provided and
-            less than / equal maximum number that is provided */
-        const queryString = {
-            selector: {
-                value: {
-                    $gte: minNumber,
-                    $lte: maxNumber,
-                },
-            },
-            // use index defined in META-INF/statedb/couchdb/collections/collectionVehiclePriceDetails/indexes
-            use_index: ['_design/priceDoc', 'priceIndex'],
-        };
-        // call queryWithQueryString function with collection name to trigger getPrivateDataQueryResult instead of getQueryResult
-        return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
 
       /**
