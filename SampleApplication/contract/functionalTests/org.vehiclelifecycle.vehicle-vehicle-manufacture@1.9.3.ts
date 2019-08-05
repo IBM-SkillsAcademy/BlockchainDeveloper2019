@@ -60,7 +60,7 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
         gateway.disconnect();
     });
     const orderId: string = `Order${generate('1234567890abcdef', 4)}`;
-    const vehicleNumber = orderId + ':Toyota';
+    const vehicleNumber = orderId + ':Accord';
 
     // Test place order function using below parameter
     it('placeOrder', async () => {
@@ -77,7 +77,7 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
         // assert that returned class  should be the org.vehiclelifecycle.order
         assert.equal(returnedOrder.class, 'org.vehiclelifecycle.order');
         // assert that returned order status  should be ISSUED
-        assert.equal(returnedOrder.orderStatus, '');
+        assert.equal(returnedOrder.orderStatus, 'ISSUED');
     }).timeout(10000);
 
     it('getOrder', async () => {
@@ -115,9 +115,7 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
 
         const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'getOrders', args, gateway);
         const jsonarray = JSON.parse(response.toString());
-
         assert(Object.keys(jsonarray).length >= 1);
-
     }).timeout(10000);
 
     it('getOrdersByStatus', async () => {
@@ -140,7 +138,7 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
     it('getOrdersByStatusPaginated', async () => {
         // TODO: populate transaction parameters
         const orderStatus: string = 'ISSUED';
-        const pagesize: string = '5';
+        const pagesize: string = '2';
         const bookmark: string = '';
         const args: string[] = [ orderStatus, pagesize, bookmark];
 
@@ -156,5 +154,84 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
 
         const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'getOrdersByRange', args, gateway);
         console.log(JSON.parse(response.toString()));
+    }).timeout(10000);
+    it('createVehicle', async () => {
+        const owner: string = 'John';
+        const make: string = 'Toyota';
+        const model: string = 'Accord';
+        const color: string = 'Black';
+        const args: string[] = [ orderId, make, model, color, owner];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'createVehicle', args, gateway);
+        const returnedVehicle = JSON.parse(response.toString('utf8'));
+        // assert vehicle order equal to submitted order
+        assert.equal(returnedVehicle.orderId, orderId);
+        // asset class of object created
+        assert.equal(returnedVehicle.class, 'org.vehiclelifecycle.Vehicle');
+        // assert color equal to black
+        assert.equal(returnedVehicle.color, 'Black');
+        // assert VIN is empty when vehicle created
+        assert.equal(returnedVehicle.vin, '');
+        // assert VIN status to have no value
+        assert.equal(returnedVehicle.vinStatus, 'NOVALUE');
+
+        assert.equal(true, true);
+    }).timeout(10000);
+    it('changeVehicleOwner', async () => {
+        // TODO: populate transaction parameters
+        const newOwner: string = 'TestUser';
+        const args: string[] = [ vehicleNumber, newOwner];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'changeVehicleOwner', args, gateway);
+
+    }).timeout(10000);
+
+    it('queryVehicle', async () => {
+        // TODO: populate transaction parameters
+        const args: string[] = [ vehicleNumber];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'queryVehicle', args, gateway);
+        const returnedVehicle = JSON.parse(response.toString('utf8'));
+        // assert vehicle order equal to submitted order
+         assert.equal(returnedVehicle.orderId, orderId);
+         // assert color equal to black
+         assert.equal(returnedVehicle.color, 'Black');
+         // assert that owner changed by changeVehicleOwner test
+         assert.equal(returnedVehicle.owner, 'TestUser');
+    }).timeout(10000);
+    it('requestVehicleVIN', async () => {
+        // TODO: populate transaction parameters
+        const args: string[] = [ vehicleNumber];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'requestVehicleVIN', args, gateway);
+    }).timeout(10000);
+
+    it('issueVehicleVIN', async () => {
+        // TODO: populate transaction parameters
+        const vin: string = 'VIN909878';
+        const args: string[] = [ vehicleNumber, vin];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'issueVehicleVIN', args, gateway);
+
+    }).timeout(10000);
+    it('queryVehicle', async () => {
+        // TODO: populate transaction parameters
+        const args: string[] = [ vehicleNumber];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'queryVehicle', args, gateway);
+        const returnedVehicle = JSON.parse(response.toString('utf8'));
+        // assert vehicle order equal to submitted order
+         assert.equal(returnedVehicle.orderId, orderId);
+         // assert VIN changed
+         assert.equal(returnedVehicle.vin, 'VIN909878');
+         // assert VIN STATUS
+         assert.equal(returnedVehicle.vinStatus, 'ISSUED');
+    }).timeout(10000);
+    it('deleteVehicle', async () => {
+        const args: string[] = [ vehicleNumber];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'deleteVehicle', args, gateway);
+
+        // assert.equal(JSON.parse(response.toString()), undefined);
     }).timeout(10000);
 });
