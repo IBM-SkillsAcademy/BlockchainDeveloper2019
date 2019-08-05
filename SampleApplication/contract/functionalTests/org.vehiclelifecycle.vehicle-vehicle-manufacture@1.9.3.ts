@@ -227,11 +227,19 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
          // assert VIN STATUS
          assert.equal(returnedVehicle.vinStatus, 'ISSUED');
     }).timeout(10000);
+    it('getVehicleCount', async () => {
+        // TODO: Update with parameters of transaction
+        const args: string[] = [];
+
+        const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'getVehicleCount', args, gateway);
+
+        assert(JSON.parse(response.toString()) > 1 , 'Vehicle count should be more than 1');
+
+    }).timeout(10000);
     it('deleteVehicle', async () => {
         const args: string[] = [ vehicleNumber];
 
         const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'deleteVehicle', args, gateway);
 
-        // assert.equal(JSON.parse(response.toString()), undefined);
     }).timeout(10000);
 });
