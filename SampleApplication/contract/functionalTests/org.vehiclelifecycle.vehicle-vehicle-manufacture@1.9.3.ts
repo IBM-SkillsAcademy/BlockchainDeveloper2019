@@ -63,6 +63,7 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
     const vehicleNumber = orderId + ':Accord';
 
     // Test place order function using below parameter
+
     it('placeOrder', async () => {
         const owner: string = 'John';
         const make: string = 'Toyota';

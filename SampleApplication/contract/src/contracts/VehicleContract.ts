@@ -629,7 +629,14 @@ export class VehicleContract extends Contract {
     // ############################################################### Utility Functions #################################################
     // Function to check whether the users have rights to perform the role based on their role
     public async hasRole(ctx: VehicleContext, roleName: string[]) {
-       return true;
+        // const clientId = ctx.clientIdentity;
+        // for (let i = 0; i < roleName.length; i++) {
+        //     if (clientId.assertAttributeValue('role', roleName[i])) {
+        //         return true;
+        //     }
+        // }
+        // throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+        return true;
     }
        /**
         * *** Exercise 03 > Part 2 ***
