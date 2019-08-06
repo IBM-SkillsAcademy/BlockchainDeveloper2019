@@ -1,5 +1,5 @@
 // Fabric smart contract classes
-import { Context, Contract } from 'fabric-contract-api';
+import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
@@ -27,6 +27,7 @@ export class VehicleContract extends Contract {
         return new VehicleContext();
     }
     // init ledger function is executed at the chaincode instantiation
+    @Transaction(true)
     public async initLedger(ctx: VehicleContext) {
         logger.info('============= START : Initialize ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
@@ -53,7 +54,8 @@ export class VehicleContract extends Contract {
      * @param { color } vehicle color.
      * @param { owner } vehicle owner.
      */
-    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
+    @Transaction(true)
+    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) : Promise <Vehicle> {
         /*
         Create a vehicle from existing vehicle order, this action will be performed by the manufacturer participant.
         The createVehicle transaction will check for an existing order asset for the vehicle before creating a new vehicle asset
@@ -64,17 +66,18 @@ export class VehicleContract extends Contract {
         that extends the context class of the fabric-contract-api node sdk.
         */
         logger.info('============= START : Create vehicle ===========');
-
+        let vehicle: Vehicle;
         // Check if order exists in ledger
         if (await ctx.getOrderList().exists(orderId)) {
             // Retrieve order asset from ledger
+
             const order = await ctx.getOrderList().getOrder(orderId);
             // If order status is not equal to 'DELIVERED', throw error
             if (order.orderStatus !== OrderStatus.DELIVERED) {
                 throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
             }
             // Creates a new vehicle asset
-            const vehicle: Vehicle = Vehicle.createInstance('');
+             vehicle: Vehicle = Vehicle.createInstance('');
             // Append vehicle asset to ledger
             await ctx.getVehicleList().add();
         } else {
@@ -82,6 +85,7 @@ export class VehicleContract extends Contract {
         }
 
         logger.info('============= END : Create vehicle ===========');
+        return vehicle;
     }
 
     /**
@@ -90,6 +94,8 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
      */
+    @Transaction(false)
+    @Returns('Vehicle')
     public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
         /*
         Return vehicle details with ID
@@ -110,6 +116,8 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+    @Transaction(false)
+    @Returns('Vehicle[]')
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
@@ -126,6 +134,7 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to delete
      */
+    @Transaction(true)
     public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
         /*
         The transaction will delete the vehicle asset according to the provided vehicle number parameter.
@@ -148,6 +157,7 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to request VIN
      */
+    @Transaction(true)
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
         /*
         Transaction simulates the request for a vehicle identity number (VIN).
@@ -188,6 +198,7 @@ export class VehicleContract extends Contract {
      * @param { vehicleNumber } vehicle number to issue VIN
      * @param { vin } vehicle VIN
      */
+    @Transaction(true)
     public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
         /*
         Transaction simulates vehicle identity number (VIN) issuance.
@@ -230,6 +241,7 @@ export class VehicleContract extends Contract {
      * @param { vehicleNumber } vehicle number
      * @param { newOwner } new vehicle owner name
      */
+    @Transaction(true)
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
@@ -249,9 +261,11 @@ export class VehicleContract extends Contract {
 
     // ############################################################### Order Functions #################################################
     // End user place order function
+    @Transaction(true)
+    @Returns('Order')
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
         make: string, model: string, color: string,
-    ) {
+    ): Promise <Order> {
         logger.info('============= START : place order ===========');
 
         const vehicleDetails: VehicleDetails = {
@@ -268,9 +282,11 @@ export class VehicleContract extends Contract {
         ctx.stub.setEvent('ORDER_EVENT', order.toBuffer());
 
         logger.info('============= END : place order ===========');
+        return order;
     }
 
     // Update order status to be in progress
+    @Transaction(true)
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
 
         const order = await ctx.getOrderList().getOrder(orderId);
@@ -283,6 +299,8 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
     // Return order with ID
+    @Transaction(false)
+    @Returns('Order')
     public async getOrder(ctx: VehicleContext, orderId: string) {
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -291,6 +309,7 @@ export class VehicleContract extends Contract {
     }
 
     // Update order status to be pending if vehicle creation process has an issue
+    @Transaction(true)
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -306,7 +325,8 @@ export class VehicleContract extends Contract {
     }
 
     // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
-    public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
+    @Transaction(true)
+    public async updateOrderDelivered(ctx: VehicleContext, orderId: string) {
 
         if (!await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -322,6 +342,8 @@ export class VehicleContract extends Contract {
 
     }
     // Return all orders
+    @Transaction(false)
+    @Returns('Order[]')
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
 
@@ -335,6 +357,7 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+    // @Transaction(true)
     // public async requestPolicy(ctx: VehicleContext, id: string,
         // vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
         // startDate: number, endDate: number) {
@@ -366,6 +389,8 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { policyId } the insurance policy id
      */
+    //  @Transaction(false)
+    // @Returns('Policy')
     // public async getPolicy(ctx: VehicleContext, policyId: string) {
         // This transaction will query for a specific policy according to the supplied policy ID parameter.
         // return await ;
@@ -377,6 +402,7 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { id } the insurance policy ID
      */
+    //    @Transaction(true)
     // public async issuePolicy(ctx: VehicleContext, id: string) {
         /*
         This transaction will change the insurance policy status from "REQUESTED" to "ISSUED",
@@ -405,6 +431,8 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+    // @Transaction(false)
+    // @Returns('Policy[]')
     // public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
         // This transaction will return a list of all the available insurance policies in the ledger.
         // return await ;
