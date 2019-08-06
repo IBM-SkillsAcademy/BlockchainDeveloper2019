@@ -1,4 +1,3 @@
-
 // Fabric smart contract classes
 import { Context, Contract } from 'fabric-contract-api';
 // Vehicle Manufacure classes
@@ -43,7 +42,7 @@ export class VehicleContract extends Contract {
 
     // ############################################################### Vehicle Functions #################################################
     /**
-     * *** Exercise 02 > Part 1 > Step 4 ***
+     * *** Exercise 02 > Part 1 > Step 3 ***
      *
      * @param { ctx } the smart contract transaction context.
      * @param { orderId } vehicle order id.
@@ -64,7 +63,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : Create vehicle ===========');
         // Check if role === manufacturer
-        await this.hasRole(ctx, ['Manufacturer']);
+        await this.hasRole();
 
         // Check if order exists in ledger
         if (await ctx.getOrderList().exists(orderId)) {
@@ -86,7 +85,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 5 ***
+     * *** Exercise 02 > Part 1 > Step 4 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
@@ -107,14 +106,14 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 6 ***
+     * *** Exercise 02 > Part 1 > Step 5 ***
      *
      * @param { ctx } the smart contract transaction context
      */
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
-        This action can be performer by all participants.
+        This action can be performed by all participants.
         */
 
         // Return all vehicles asset from ledger
@@ -122,7 +121,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 7 ***
+     * *** Exercise 02 > Part 1 > Step 6 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to delete
@@ -146,7 +145,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 8 ***
+     * *** Exercise 02 > Part 1 > Step 7 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to request VIN
@@ -187,7 +186,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 9 ***
+     * *** Exercise 02 > Part 1 > Step 8 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to issue VIN
@@ -231,7 +230,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 10 ***
+     * *** Exercise 02 > Part 1 > Step 9 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number
@@ -353,7 +352,6 @@ export class VehicleContract extends Contract {
     // Return All order
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
-
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole();
 
@@ -370,10 +368,10 @@ export class VehicleContract extends Contract {
      */
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         logger.info('============= START : Get Orders by Status ===========');
-
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole();
-      // create query string and use orderStatusIndex and order status design document
+
+        // create query string and use orderStatusIndex and order status design document
         const queryString = {
             selector: {
                 orderStatus,
@@ -406,6 +404,7 @@ export class VehicleContract extends Contract {
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole();
+
         // build query string
         const queryString = {
             selector: {
@@ -444,7 +443,10 @@ export class VehicleContract extends Contract {
         This action will be performed by the manufacturer participant.
         */
         logger.info('============= START : request insurance policy ===========');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 79d58f4df156045576b5c1de607cf6ff3419f7eb
         // check if role === manufacturer
         await this.hasRole();
 
@@ -487,6 +489,10 @@ export class VehicleContract extends Contract {
         to simulate the process of issuing a vehicle insurance policy.
         This action will be performed by the insurer participant.
         */
+<<<<<<< HEAD
+=======
+
+>>>>>>> 79d58f4df156045576b5c1de607cf6ff3419f7eb
         // Check if role === insurer
         await this.hasRole();
 
@@ -534,12 +540,13 @@ export class VehicleContract extends Contract {
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
-       /**
-        * *** Exercise 03 > Part 2 ***
-        * @param {VehicleContext } ctx the transaction context
-        * @param {string} queryString the query string to be evaluated
-        * @param {string } collection flag to identify this function will be used for getQueryResult or  getPrivateDataQueryResult
-        */
+
+    /**
+    * *** Exercise 03 > Part 2 ***
+    * @param {VehicleContext } ctx the transaction context
+    * @param {string} queryString the query string to be evaluated
+    * @param {string } collection flag to identify this function will be used for getQueryResult or  getPrivateDataQueryResult
+    */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
         logger.info('query String');
