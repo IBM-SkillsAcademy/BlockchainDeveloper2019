@@ -94,6 +94,9 @@ export class VehicleContract extends Contract {
      * @param {string} value: The price of the vehicle
      */
     public async updatePriceDetails(ctx: VehicleContext) {
+        // Check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
+
         // uncomment one of the following line to get value from transient data
         // const transient = ctx.stub.getArgs();        // option A
         // const transient = ctx.stub.getTransient();   // option B

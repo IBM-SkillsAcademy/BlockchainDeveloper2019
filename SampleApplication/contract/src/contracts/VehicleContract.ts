@@ -55,7 +55,7 @@ export class VehicleContract extends Contract {
      * @param { owner } vehicle owner.
      */
     @Transaction(true)
-    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) : Promise <Vehicle> {
+    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string): Promise <Vehicle> {
         /*
         Create a vehicle from existing vehicle order, this action will be performed by the manufacturer participant.
         The createVehicle transaction will check for an existing order asset for the vehicle before creating a new vehicle asset
@@ -77,7 +77,7 @@ export class VehicleContract extends Contract {
                 throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
             }
             // Creates a new vehicle asset
-             vehicle: Vehicle = Vehicle.createInstance('');
+            vehicle = Vehicle.createInstance('');
             // Append vehicle asset to ledger
             await ctx.getVehicleList().add();
         } else {
@@ -389,7 +389,7 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { policyId } the insurance policy id
      */
-    //  @Transaction(false)
+    // @Transaction(false)
     // @Returns('Policy')
     // public async getPolicy(ctx: VehicleContext, policyId: string) {
         // This transaction will query for a specific policy according to the supplied policy ID parameter.
@@ -402,7 +402,7 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { id } the insurance policy ID
      */
-    //    @Transaction(true)
+    // @Transaction(true)
     // public async issuePolicy(ctx: VehicleContext, id: string) {
         /*
         This transaction will change the insurance policy status from "REQUESTED" to "ISSUED",

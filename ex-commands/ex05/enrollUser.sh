@@ -31,3 +31,10 @@ PASSWORD=$(echo $OUTPUT | awk -F" " '{print $2}')
 
 fabric-ca-client enroll -u https://$1:${PASSWORD}@ca.$2.example.com:7054  --tls.certfiles ca.$2.example.com-cert.pem
 cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts
+
+# check if directory exists from cryptogen
+if [ -d "../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com" ]; then
+   rm -rf ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com
+fi
+mkdir ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com
+cp -rf $HOME/fabric-ca/client/msp ../../Vehicle-Network/crypto-config/peerOrganizations/$2.example.com/users/$1@$2.example.com/msp
