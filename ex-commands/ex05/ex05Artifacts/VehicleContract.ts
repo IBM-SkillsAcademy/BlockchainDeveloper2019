@@ -144,6 +144,11 @@ export class VehicleContract extends Contract {
         This action will be performed by the regulator or insurer participant.
         */
         logger.info('============= START : delete vehicle ===========');
+        /**
+        * *** Exercise 05 > Part 3 > Step 6 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // Check if role === 'Regulator' / 'Insurer'
         await this.hasRole();
 
@@ -172,7 +177,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : requestVehicleVIN ===========');
         // Check if role === 'Manufacturer'
-        await this.hasRole();
+        // await this.hasRole();
 
         // Check if the Vehicle exists
         if (!ctx.getVehicleList().exists(vehicleNumber)) {
@@ -215,7 +220,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : issueVehicleVIN ===========');
         // Check if role === 'Regulator'
-        await this.hasRole();
+        // await this.hasRole();
 
         // Check if the vehicle exists
         if (! await ctx.getVehicleList().exists(vehicleNumber)) {
@@ -259,7 +264,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : Change Vehicle Owner ===========');
         // Check if role === 'Regulator' / 'Insurer'
-        await this.hasRole();
+        // await this.hasRole();
 
         // Get vehicle by vehicle number
         const vehicle = await ctx.getVehicleList().get(vehicleNumber);
@@ -290,6 +295,11 @@ export class VehicleContract extends Contract {
         make: string, model: string, color: string,
     ): Promise <Order> {
         logger.info('============= START : place order ===========');
+        /**
+        * *** Exercise 05 > Part 3 > Step 3 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // Check if role === 'Manufacturer'
         await this.hasRole();
 
@@ -314,7 +324,7 @@ export class VehicleContract extends Contract {
     @Transaction(true)
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
-        await this.hasRole();
+        // await this.hasRole();
 
         const order = await ctx.getOrderList().getOrder(orderId);
         // If The order status is already IN progress then throw error
@@ -339,7 +349,7 @@ export class VehicleContract extends Contract {
     @Transaction(true)
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
-        await this.hasRole();
+        // await this.hasRole();
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -356,6 +366,11 @@ export class VehicleContract extends Contract {
     // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
     @Transaction(true)
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string) {
+        /**
+        * *** Exercise 05 > Part 3 > Step 4 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // check if role === 'Manufacturer'
         await this.hasRole();
 
@@ -377,6 +392,11 @@ export class VehicleContract extends Contract {
     @Returns('Order[]')
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
+        /**
+        * *** Exercise 05 > Part 3 > Step 5 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole();
         logger.info('============= END : Get Orders ===========');
@@ -397,7 +417,7 @@ export class VehicleContract extends Contract {
         logger.info('============= START : Get Orders by Status ===========');
 
         // Check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole();
+        // await this.hasRole();
       // Create query string and use orderStatusIndex and order status design document
         const queryString = {
             selector: {
@@ -434,7 +454,7 @@ export class VehicleContract extends Contract {
     @Returns('QueryPaginationResponse[]')
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole();
+        // await this.hasRole();
         // Build query string
         const queryString = {
             selector: {
@@ -476,16 +496,8 @@ export class VehicleContract extends Contract {
         This action will be performed by the manufacturer participant.
         */
         logger.info('============= START : request insurance policy ===========');
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
->>>>>>> 79d58f4df156045576b5c1de607cf6ff3419f7eb
-        // check if role === manufacturer
-=======
         // check if role === 'Manufacturer'
->>>>>>> 4f76b062d47d3353753ffa1bfbdac8dd10ab9a13
-        await this.hasRole();
+        // await this.hasRole();
 
         // Check if vehicle exist
         await ctx.getVehicleList().getVehicle(vehicleNumber);
@@ -529,16 +541,6 @@ export class VehicleContract extends Contract {
         to simulate the process of issuing a vehicle insurance policy.
         This action will be performed by the insurer participant.
         */
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 79d58f4df156045576b5c1de607cf6ff3419f7eb
-        // Check if role === insurer
-=======
-        // check if role === 'Insurer'
->>>>>>> 4f76b062d47d3353753ffa1bfbdac8dd10ab9a13
-        await this.hasRole();
 
         // Get policy by ID from policy list
         const policy = await ctx.getPolicyList().get(id);
@@ -570,17 +572,17 @@ export class VehicleContract extends Contract {
 
     // ############################################################### Utility Functions #################################################
     /**
-     * *** Exercise 05 > Part 2 > Step 1 ***
+     * *** Exercise 05 > Part 3 > Step 2 ***
      * 
      * @param { ctx } the smart contract transaction context
      * @param { roleName } the blockchain user identity
      */
     public async hasRole(ctx: VehicleContext, roleName: string[]) {
         // Function to check if the user has right to perform the role bases on role
-        // const clientId = ctx.clientIdentity;
-        // const clientId = ctx.stub.getChannelID;
+        const clientId = ctx.clientIdentity;
         for (let i = 0; i < roleName.length; i++) {
-            if (clientId.assertAttributeValue('role', roleName[i])) {
+            // if (clientId.getAttributeValue('role')) {
+            // if (clientId.assertAttributeValue('role', roleName[i])) {
                 return true;
             }
         }
