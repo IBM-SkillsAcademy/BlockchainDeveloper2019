@@ -86,7 +86,37 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 5 ***
+     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
+     * Add or update a vehicle price details
+     * @param {VehicleContext} ctx: vehicle context
+     * @param {string} vehicleNumber: The vehicle key number
+     * @param {string} value: The price of the vehicle
+     */
+    public async updatePriceDetails(ctx: VehicleContext) {
+        // Check if role === 'Manufacturer'
+        await this.hasRole(ctx, ['Manufacturer']);
+
+        // uncomment one of the following line to get value from transient data
+        // const transient = ctx.stub.getArgs();        // option A
+        // const transient = ctx.stub.getTransient();   // option B
+        const bufferTranstient = transient.get('price');
+
+        // decode base64 encoded data
+        const base64String = bufferTranstient.toString('base64');
+        const bufferPrice = new Buffer(base64String, 'base64');
+
+        // deserialize data into price object
+        const price = Price.deserialize(bufferPrice.toString());
+
+        // check if vehicle exist
+        await ctx.getVehicleList().get(price.vehicleNumber);
+
+        // get the pricelist instance and call its updatePrice function
+        await ctx.getPriceList().updatePrice(price);
+    }
+
+    /**
+     * *** Exercise 02 > Part 1 > Step 4 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
