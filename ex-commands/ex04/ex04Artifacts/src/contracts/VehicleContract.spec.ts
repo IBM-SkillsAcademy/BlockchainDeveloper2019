@@ -74,7 +74,6 @@ describe('#VehicleContract', () => {
             };
             const order = Order.createInstance('Order909090', 'Stark', OrderStatus.ISSUED, vehicleDetails);
             const returnedOrder = await contract.placeOrder(ctx as any, order.orderId, order.owner, order.vehicleDetails.make, order.vehicleDetails.model, order.vehicleDetails.color);
-            console.log(returnedOrder);
             expect(returnedOrder.orderId).to.equal(vehicleDetails.orderId);
             // expect that order status equal to ISSUED
             expect(returnedOrder.orderStatus).to.equal('ISSUED');

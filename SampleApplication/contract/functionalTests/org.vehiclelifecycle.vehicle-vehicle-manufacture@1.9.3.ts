@@ -90,18 +90,6 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
         // TODO: Update with return value of transaction
         console.log(JSON.parse(response.toString()));
     }).timeout(10000);
-    it('updateOrderStatusInProgress', async () => {
-        // TODO: populate transaction parameters
-        const args: string[] = [ orderId];
-
-        await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'updateOrderStatusInProgress', args, gateway);
-    }).timeout(10000);
-    it('updateOrderStatusPending', async () => {
-        // TODO: populate transaction parameters
-        const args: string[] = [ orderId];
-
-        await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'updateOrderStatusPending', args, gateway);
-    }).timeout(10000);
 
     it('updateOrderDelivered', async () => {
         // TODO: populate transaction parameters
@@ -176,14 +164,14 @@ describe('org.vehiclelifecycle.vehicle-vehicle-manufacture@1.9.3' , () => {
         // assert VIN status to have no value
         assert.equal(returnedVehicle.vinStatus, 'NOVALUE');
 
-        assert.equal(true, true);
     }).timeout(10000);
     it('changeVehicleOwner', async () => {
-        // TODO: populate transaction parameters
         const newOwner: string = 'TestUser';
         const args: string[] = [ vehicleNumber, newOwner];
 
         const response: Buffer = await SmartContractUtil.submitTransaction('org.vehiclelifecycle.vehicle', 'changeVehicleOwner', args, gateway);
+        const returnedVehicle = JSON.parse(response.toString('utf8'));
+        assert.equal(returnedVehicle.owner, newOwner);
 
     }).timeout(10000);
 

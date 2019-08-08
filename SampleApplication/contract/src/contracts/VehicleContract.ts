@@ -279,6 +279,7 @@ export class VehicleContract extends Contract {
      * @param { newOwner } new vehicle owner name
      */
     @Transaction(true)
+    @Returns('Vehicle')
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
@@ -296,6 +297,8 @@ export class VehicleContract extends Contract {
         // Update state in ledger
         await ctx.getVehicleList().updateVehicle(vehicle);
         logger.info('============= END : changevehicleOwner ===========');
+
+        return await ctx.getVehicleList().get(vehicleNumber);
     }
 
     /**
@@ -400,6 +403,9 @@ export class VehicleContract extends Contract {
     @Transaction(false)
     @Returns('Order')
     public async getOrder(ctx: VehicleContext, orderId: string) {
+
+         // Check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -491,6 +497,8 @@ export class VehicleContract extends Contract {
     @Transaction(false)
     @Returns('IHistoricState[]')
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
+           // Check if role === 'Manufacturer' / 'Regulator'
+           await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
@@ -530,6 +538,8 @@ export class VehicleContract extends Contract {
     @Transaction(false)
     @Returns('Order[]')
     public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
+           // check if role === 'Manufacturer' / 'Regulator'
+           await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         // Use the object that is retuned by getOrderList and call getOrdersByRange.
         return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }
