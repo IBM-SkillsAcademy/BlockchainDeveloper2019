@@ -3,6 +3,7 @@ import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Vehicle, VinStatus } from '../assets/vehicle';
+import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
@@ -67,7 +68,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : Create vehicle ===========');
         // Check if role === Manufacturer
-        await this.hasRole();
+        // await this.hasRole();
 
         let vehicle: Vehicle;
         // Check if order exists in ledger
@@ -145,7 +146,7 @@ export class VehicleContract extends Contract {
         */
         logger.info('============= START : delete vehicle ===========');
         /**
-        * *** Exercise 05 > Part 3 > Step 6 ***
+        * *** Exercise 05 > Part 3 > Step 5 ***
         * 
         * Add the correct parameters to the hasRole function
         */
@@ -366,13 +367,8 @@ export class VehicleContract extends Contract {
     // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
     @Transaction(true)
     public async updateOrderDelivered(ctx: VehicleContext, orderId: string) {
-        /**
-        * *** Exercise 05 > Part 3 > Step 4 ***
-        * 
-        * Add the correct parameters to the hasRole function
-        */
         // check if role === 'Manufacturer'
-        await this.hasRole();
+        // await this.hasRole();
 
         if (!await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
@@ -393,7 +389,7 @@ export class VehicleContract extends Contract {
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
         /**
-        * *** Exercise 05 > Part 3 > Step 5 ***
+        * *** Exercise 05 > Part 3 > Step 4 ***
         * 
         * Add the correct parameters to the hasRole function
         */
