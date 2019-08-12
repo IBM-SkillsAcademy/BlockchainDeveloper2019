@@ -145,13 +145,8 @@ export class VehicleContract extends Contract {
         This action will be performed by the regulator or insurer participant.
         */
         logger.info('============= START : delete vehicle ===========');
-        /**
-        * *** Exercise 05 > Part 3 > Step 5 ***
-        * 
-        * Add the correct parameters to the hasRole function
-        */
         // Check if role === 'Regulator' / 'Insurer'
-        await this.hasRole();
+        // await this.hasRole();
 
         // Check if the vehicle exists
         if (!await ctx.getVehicleList().exists(vehicleNumber)) {
