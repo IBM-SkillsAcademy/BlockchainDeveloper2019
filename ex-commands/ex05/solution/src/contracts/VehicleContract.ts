@@ -7,7 +7,7 @@ import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
 /**
- * *** Exercise 2 > Part 4 > Step 7 ***
+ * *** Exercise 02 > Part 4 > Step 7 ***
  *
  */
 // Import definitions from the policy asset
@@ -290,6 +290,11 @@ export class VehicleContract extends Contract {
         make: string, model: string, color: string,
     ): Promise <Order> {
         logger.info('============= START : place order ===========');
+        /**
+        * *** Exercise 05 > Part 3 > Step 3 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
@@ -378,6 +383,11 @@ export class VehicleContract extends Contract {
     @Returns('Order[]')
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
+        /**
+        * *** Exercise 05 > Part 3 > Step 4 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         logger.info('============= END : Get Orders ===========');
@@ -464,7 +474,7 @@ export class VehicleContract extends Contract {
 
     // ############################################################### Policy Functions #################################################
     /**
-     * *** Exercise 2 > Part 4 > Step 8 ***
+     * *** Exercise 02 > Part 4 > Step 8 ***
      *
      * @param { ctx } the smart contract transaction context
      */
@@ -510,7 +520,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 2 > Part 4 > Step 9 ***
+     * *** Exercise 02 > Part 4 > Step 9 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { id } the insurance policy ID
@@ -542,7 +552,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 2 > Part 4 > Step 11 ***
+     * *** Exercise 02 > Part 4 > Step 11 ***
      *
      * @param { ctx } the smart contract transaction context
      */
@@ -554,8 +564,8 @@ export class VehicleContract extends Contract {
     }
 
     // ############################################################### Utility Functions #################################################
-    /**
-     * *** Exercise 05 > Part 2 > Step 1 ***
+     /**
+     * *** Exercise 05 > Part 3 > Step 2 ***
      * 
      * @param { ctx } the smart contract transaction context
      * @param { roleName } the blockchain user identity
