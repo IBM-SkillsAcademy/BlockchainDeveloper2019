@@ -24,7 +24,7 @@ Part 1
                // Update state in ledger
                await ctx.getVehicleList().updateVehicle(vehicle);
 Part 2
-Part 3
+Part 4
            Step 3
                 ["order1","Georg","Honda","Fit","blue"]
            Step 4
@@ -43,6 +43,9 @@ Part 3
                return await ctx.getPolicyList().get(policyId);
           Step 11
                return await ctx.getPolicyList().getAll();
+Part 5
+      Step 5 
+["policy1","order1:Fit","insr1","hldr1","THIRD_PART","12122019","31122019"]
 
 
 
