@@ -1,0 +1,66 @@
+Part 1
+            Step 1
+         set-title Vehicle-Network
+Step 2
+
+docker rm -f $(docker ps -aq); docker volume rm -f $(docker volume ls -q)
+docker ps -a
+Step 4
+cd ~/BlockchainDeveloper2019/ex-commands/ex06/
+./startEx06.sh
+
+
+
+
+Part 2
+[
+    {
+        "name": "collectionVehiclePriceDetails",
+        "policy": "OR('Org1MSP.member', 'Org2MSP.member')",
+        "requiredPeerCount": 1,
+        "maxPeerCount": 3,
+        "blockToLive": 3,
+        "memberOnlyRead": true
+    }
+]
+
+Part 3
+super(Price.getClass(), [obj.vehicleNumber]);    // option A
+Step 5
+return this.updatePrivate(price, 'collectionVehiclePriceDetails');
+return this.getPrivate(vehicleNumber, 'collectionVehiclePriceDetails');
+
+
+return await ctx.getPriceList().getPrice()
+
+Part 4
+cd ~/BlockchainDeveloper2019/Vehicle-Network
+./upgrade.sh 1.9.5
+
+Part 5
+set-title Manufacturer
+set-title Regulator
+set-title Insurer 
+
+docker exec -it cli bash
+=========================================
+export CORE_PEER_LOCALMSPID=Org1MSP
+export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp
+export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
+===============================
+export PRICE=$(echo -n "{\"vehicleNumber\":\"1230819:Tucson\",\"value\":40000}" | base64 | tr -d \\n)
+peer chaincode invoke -o orderer.example.com:7050 --tls \
+--cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+--peerAddresses peer0.org1.example.com:7051 \
+--tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
+--peerAddresses peer0.org2.example.com:9051 \
+--tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt \
+--peerAddresses peer0.org3.example.com:11051 \
+--tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt \
+-C mychannel -n vehicle-manufacture -c '{"Args":["updatePriceDetails"]}' --transient "{\"price\":\"$PRICE\"}"
+=========================================
+
+
+
+
