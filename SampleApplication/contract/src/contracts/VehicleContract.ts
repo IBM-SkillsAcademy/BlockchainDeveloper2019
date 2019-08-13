@@ -68,7 +68,7 @@ export class VehicleContract extends Contract {
         logger.info('============= START : Create vehicle ===========');
         let vehicle: Vehicle;
         // Check if order exists in ledger
-        // if (await ctx.getOrderList().exists(orderId)) {
+        if (await ctx.getOrderList().exists(orderId)) {
             // Retrieve order asset from ledger
             const order = await ctx.getOrderList().getOrder(orderId);
             // If order status is not equal to 'DELIVERED', throw error
