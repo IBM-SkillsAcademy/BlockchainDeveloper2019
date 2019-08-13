@@ -1,0 +1,50 @@
+Part 1
+            Step 1
+                  cd ~/BlockchainDeveloper2019/SampleApplication/contract/
+                  npm install
+                  code .
+            Step 3   
+                  vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
+            Step 4
+                 return await ctx.getVehicleList().get(vehicleNumber);
+            Step 5
+                 return await ctx.getVehicleList().getAll();
+            Step 6
+                 await ctx.getVehicleList().delete(vehicleNumber);
+
+            Step 7
+                vehicle.vinStatus = VinStatus.REQUESTED;
+                // Update state in ledger
+               await ctx.getVehicleList().updateVehicle(vehicle);
+            Step 8
+                vehicle.vinStatus = VinStatus.ISSUED;
+                await ctx.getVehicleList().updateVehicle(vehicle);
+            Step 9
+                vehicle.owner = newOwner;
+               // Update state in ledger
+               await ctx.getVehicleList().updateVehicle(vehicle);
+Part 2
+Part 3
+           Step 3
+                ["order1","Georg","Honda","Fit","blue"]
+           Step 4
+                ["order1"]
+          Step 5 
+                ["order1","Honda","Fit","blue","Georg"]
+          Step 8 
+                 const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
+                 // Add policy asset to the ledger.
+                 await ctx.getPolicyList().add(policy);
+          Step 9
+               policy.status = PolicyStatus.ISSUED;
+               // Update policy asset in the ledger
+               await ctx.getPolicyList().update(policy);
+           Step 10
+               return await ctx.getPolicyList().get(policyId);
+          Step 11
+               return await ctx.getPolicyList().getAll();
+
+
+
+
+
