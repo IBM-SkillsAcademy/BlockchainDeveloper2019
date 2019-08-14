@@ -55,6 +55,7 @@ export class VehicleContract extends Contract {
      * @param { owner } vehicle owner.
      */
     @Transaction(true)
+    @Returns('Vehicle')
     public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string): Promise <Vehicle> {
         /*
         Create a vehicle from existing vehicle order, this action will be performed by the manufacturer participant.
