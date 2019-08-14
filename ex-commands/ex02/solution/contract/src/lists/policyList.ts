@@ -28,12 +28,12 @@ export class PolicyList <T extends Policy> extends StateList<T> {
     }
 
     // Utilitity functions to add policy assets to ledger
-    public async addPolicy(order: T) {
-        return this.add(order);
+    public async addPolicy(policy: T) {
+        return this.add(policy);
     }
 
     // Utility functions to retrieve policy assets from ledger
-    public async getPolicy(orderKey) {
-        return this.get(orderKey);
+    public async getPolicy(policyKey) {
+        return this.get(policyKey);
     }
 }

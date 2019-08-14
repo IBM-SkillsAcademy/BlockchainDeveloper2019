@@ -75,34 +75,6 @@ export class StateList<T extends State> {
         return this.query({});
     }
 
-    /**
-     * *** Exercise 3 > Part 3 ***
-     *
-     * @returns { Number }   count total number of assets of specific type
-     * Get Count of specific state (Vehicle , Order , ...)
-     */
-    public async count(): Promise<number> {
-       /*Queries the state in the ledger based on a given partial composite key.
-       This function returns an iterator which can be used to iterate over all composite keys
-       whose prefix matches the given partial composite key */
-        const data = await this.ctx.stub.getStateByPartialCompositeKey(this.name, []);
-        let counter = 0;
-
-        while (true) {
-            const next = await data.next();
-
-            if (next.value) {
-                counter++;
-            }
-
-            if (next.done) {
-                break;
-            }
-        }
-
-        return counter;
-    }
-
    /**
     * generic function used across exercises to update assets
     * Update a state in the list. Puts the new state in world state with
