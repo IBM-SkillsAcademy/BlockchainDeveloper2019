@@ -1,6 +1,6 @@
 {
   "index": {
-    "fields": ["value"]
+      "fields": ["value"]
   },
   "ddoc": "priceDoc",
   "name": "priceIndex",
