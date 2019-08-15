@@ -15,12 +15,11 @@ export class OrderList <T extends Order> extends StateList<T> {
         return this.add(order);
     }
 
-  public async getOrder(orderKey) {
-   return this.get(orderKey);
-   }
+    public async getOrder(orderKey) {
+        return this.get(orderKey);
+    }
 
-  public async updateOrder(order) {
-      return this.update(order);
+    public async updateOrder(order) {
+        return this.update(order);
     }
 }
-

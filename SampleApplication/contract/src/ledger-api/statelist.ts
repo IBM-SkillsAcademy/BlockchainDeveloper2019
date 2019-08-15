@@ -154,4 +154,3 @@ export class StateList<T extends State> {
         }
     }
 }
-
