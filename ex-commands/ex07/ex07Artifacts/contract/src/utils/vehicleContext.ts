@@ -6,7 +6,7 @@ import { PriceList } from '../lists/priceList';
 import { VehicleList } from '../lists/vehicleList';
 import { Price } from './../assets/price';
 /**
- * *** Exercise 02 > Part 4 > Step 6 ***
+ * *** Exercise 02 > Part 4 ***
  */
 
 /*

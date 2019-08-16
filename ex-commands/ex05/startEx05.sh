@@ -14,4 +14,4 @@ echo "Update Contract with Ex05 Artifacts "
 cd $ROOT
 #cd ex05Artifacts
 pwd
-cp -R ex05Artifacts/VehicleContract.ts ../../SampleApplication/contract/src/contracts/VehicleContract.ts
+cp -R ex05Artifacts/src/contracts/VehicleContract.ts ../../SampleApplication/contract/src/contracts/VehicleContract.ts
