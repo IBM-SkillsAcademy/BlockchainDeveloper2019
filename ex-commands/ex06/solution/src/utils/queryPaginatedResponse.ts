@@ -14,5 +14,4 @@ export class QueryPaginationResponse  <T extends State> {
         this.bookmark = bookmark;
 
     }
-
 }

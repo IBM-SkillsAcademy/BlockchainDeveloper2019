@@ -15,14 +15,13 @@ export class VehicleList <T extends Vehicle> extends StateList<T> {
         return this.add(vehicle);
     }
 
-  public async getVehicle(vehicle) {
-   return this.get(vehicle);
-   }
+    public async getVehicle(vehicle) {
+        return this.get(vehicle);
+    }
 
-  public async updateVehicle(vehicle) {
-      return this.update(vehicle);
-  }
-
+    public async updateVehicle(vehicle) {
+        return this.update(vehicle);
+    }
     /**
      * *** Exercise 03 > Part 4 ***
      * @param  {string} vehicleNumber vehicle number to return history for

@@ -1,23 +1,25 @@
-
 // Fabric smart contract classes
-import { Context, Contract } from 'fabric-contract-api';
+import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes
 import { Order, OrderStatus } from '../assets/order';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
-import { QueryResponse } from '../utils/queryResponse';
 import { VehicleContext } from '../utils/vehicleContext';
 import { VehicleDetails } from '../utils/vehicleDetails';
 import { newLogger } from 'fabric-shim';
+/**
+ * *** Exercise 02 > Part 4 ***
+ *
+ */
 // Import definitions from the policy asset
 import { Policy, PolicyStatus, PolicyType } from '../assets/policy';
+import { QueryResponse } from '../utils/queryResponse';
 
 const logger = newLogger('VehicleContract');
 
-// The main chaincode class contains all the transactions that users can submit by extending the Fabric Contract class
+// Main Chaincode class contains all transactions that users can submit by extending Fabric Contract class
 
 export class VehicleContract extends Contract {
-
     constructor() {
         // Unique name when multiple contracts per chaincode file
         super('org.vehiclelifecycle.vehicle');
@@ -27,6 +29,7 @@ export class VehicleContract extends Contract {
         return new VehicleContext();
     }
     // init ledger function is executed at the chaincode instantiation
+    @Transaction(true)
     public async initLedger(ctx: VehicleContext) {
         logger.info('============= START : Initialize ledger ===========');
         const vehicles: Vehicle[] = new Array<Vehicle>();
@@ -39,10 +42,10 @@ export class VehicleContract extends Contract {
             await ctx.getVehicleList().add(vehicles[i]);
             logger.info('Added <--> ', vehicles[i]);
         }
-        logger.info('============= END : Initialize ledger ===========');
+        logger.info('============= END : Initialize Ledger ===========');
     }
 
-    // ############################################################### Vehicle functions #################################################
+    // ############################################################### Vehicle Functions #################################################
     /**
      * *** Exercise 02 > Part 1 ***
      *
@@ -53,7 +56,9 @@ export class VehicleContract extends Contract {
      * @param { color } vehicle color.
      * @param { owner } vehicle owner.
      */
-    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string) {
+    @Transaction(true)
+    @Returns('Vehicle')
+    public async createVehicle(ctx: VehicleContext, orderId: string, make: string, model: string, color: string, owner: string): Promise <Vehicle> {
         /*
         Create a vehicle from existing vehicle order, this action will be performed by the manufacturer participant.
         The createVehicle transaction will check for an existing order asset for the vehicle before creating a new vehicle asset
@@ -64,19 +69,21 @@ export class VehicleContract extends Contract {
         that extends the context class of the fabric-contract-api node sdk.
         */
         logger.info('============= START : Create vehicle ===========');
-        // Check if role === manufacturer
+        // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
+        let vehicle: Vehicle;
         // Check if order exists in ledger
         if (await ctx.getOrderList().exists(orderId)) {
             // Retrieve order asset from ledger
+
             const order = await ctx.getOrderList().getOrder(orderId);
             // If order status is not equal to 'DELIVERED', throw error
             if (order.orderStatus !== OrderStatus.DELIVERED) {
                 throw new Error(`Order  with ID : ${orderId} Should be with Status Delivered to be able to create Vehicle`);
             }
             // Creates a new vehicle asset
-            const vehicle: Vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
+            vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
             // Append vehicle asset to ledger
             await ctx.getVehicleList().add(vehicle);
         } else {
@@ -84,6 +91,7 @@ export class VehicleContract extends Contract {
         }
 
         logger.info('============= END : Create vehicle ===========');
+        return vehicle;
     }
 
     /**
@@ -93,10 +101,11 @@ export class VehicleContract extends Contract {
      * @param {string} vehicleNumber: The vehicle key number
      * @param {string} value: The price of the vehicle
      */
+    @Transaction(true)
     public async updatePriceDetails(ctx: VehicleContext) {
         // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
-        
+
         // get value from transient data
         const transient = ctx.stub.getTransient();
         const bufferTranstient = transient.get('price');
@@ -116,15 +125,17 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 ***
+     * *** Exercise 02 > Part 1 > Step 4 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
      */
+    @Transaction(false)
+    @Returns('Vehicle')
     public async queryVehicle(ctx: VehicleContext, vehicleNumber: string): Promise<Vehicle> {
         /*
         Return vehicle details with ID
-        The transaction returns a vehicle asset that has the same vehicle number parameter
+        The transaction will return a vehicle asset that has the same vehicle number parameter
         */
 
         // Check if the vehicle exists
@@ -141,13 +152,15 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+    @Transaction(false)
+    @Returns('Vehicle[]')
     public async queryAllVehicles(ctx: VehicleContext): Promise<Vehicle[]> {
         /*
         This transaction will return a list of vehicle assets from the ledger.
         This action can be performed by all participants.
         */
 
-        // Return all vehicles asset from the ledger
+        // Return all vehicles asset from ledger
         return await ctx.getVehicleList().getAll();
     }
 
@@ -157,16 +170,17 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to delete
      */
+    @Transaction(true)
     public async deleteVehicle(ctx: VehicleContext, vehicleNumber: string) {
         /*
-        The transaction deletes the vehicle asset according to the provided vehicle number parameter.
-        This action is performed by the regulator participant.
+        The transaction will delete the vehicle asset according to the provided vehicle number parameter.
+        This action will be performed by the regulator participant.
         */
         logger.info('============= START : delete vehicle ===========');
-        // Check if role === regulator
+        // Check if role === 'Regulator'
         await this.hasRole(ctx, ['Regulator']);
 
-        // Check whether the vehicle exists
+        // Check if the vehicle exists
         if (!await ctx.getVehicleList().exists(vehicleNumber)) {
             throw new Error(`vehicle with ID : ${vehicleNumber} doesn't exists`);
         }
@@ -181,18 +195,19 @@ export class VehicleContract extends Contract {
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to request VIN
      */
+    @Transaction(true)
     public async requestVehicleVIN(ctx: VehicleContext, vehicleNumber: string) {
         /*
         Transaction simulates the request for a vehicle identity number (VIN).
-        This action is performed by the manufacturer participant
-        The transaction changes the vin status state of the vehicle asset to “REQUESTED”
+        This action will be performed by the manufacturer participant
+        The transaction will change the vin status state of the vehicle asset to “REQUESTED”
         to mark that the vehicle is awaiting a VIN that will be issued later by the regulator participant.
         */
         logger.info('============= START : requestVehicleVIN ===========');
-        // Check if role === manufacturer
+        // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
-        // Check whether the Vehicle exists
+        // Check if the Vehicle exists
         if (!ctx.getVehicleList().exists(vehicleNumber)) {
             throw new Error(`Error  Vehicle ${vehicleNumber} doesn't exists `);
         }
@@ -209,8 +224,8 @@ export class VehicleContract extends Contract {
         await ctx.getVehicleList().updateVehicle(vehicle);
 
         /*
-        Fire an event after the transaction is successfully committed to the ledger.
-        Applications that act as event listeners can listen for this event trigger and respond accordingly.
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
         */
         ctx.stub.setEvent('REQUEST_VIN', vehicle.toBuffer());
         logger.info('============= END : requestVehicleVIN ===========');
@@ -223,15 +238,16 @@ export class VehicleContract extends Contract {
      * @param { vehicleNumber } vehicle number to issue VIN
      * @param { vin } vehicle VIN
      */
+    @Transaction(true)
     public async issueVehicleVIN(ctx: VehicleContext, vehicleNumber: string, vin: string) {
         /*
         Transaction simulates vehicle identity number (VIN) issuance.
-        This action is performed by the regulator participant.
-        The transaction changes the vin status state of the vehicle asset to “ISSUED”
+        This action will be performed by the regulator participant
+        The transaction will change the vin status state of the vehicle asset to “ISSUED”
         to mark that the vehicle has been issued a VIN.
         */
         logger.info('============= START : issueVehicleVIN ===========');
-        // Check if role === regulator
+        // Check if role === 'Regulator'
         await this.hasRole(ctx, ['Regulator']);
 
         // Check if the vehicle exists
@@ -253,28 +269,29 @@ export class VehicleContract extends Contract {
         await ctx.getVehicleList().updateVehicle(vehicle);
 
         /*
-        Fire an event after the transaction is successfully committed to the ledger.
-        Applications that act as event listeners can listen for this event trigger and respond accordingly.
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
         */
         ctx.stub.setEvent('VIN_ISSUED', vehicle.toBuffer());
         logger.info('============= END : issueVehicleVIN ===========');
     }
 
-    /**
+/**
      * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number
      * @param { newOwner } new vehicle owner name
      */
+    @Transaction(true)
     public async changeVehicleOwner(ctx: VehicleContext, vehicleNumber: string, newOwner: string) {
         /*
         Transaction simulates the ownership transfer of a vehicle asset by changing the
         vehicle’s owner to the new owner parameter.
-        This action is performed by the regulator or insurer participant.
+        This action will be performed by regulator or insurer participant
         */
         logger.info('============= START : Change Vehicle Owner ===========');
-        // Check if role === Regulator / Insurer
+        // Check if role === 'Regulator' / 'Insurer'
         await this.hasRole(ctx, ['Regulator', 'Insurer']);
 
         // Get vehicle by vehicle number
@@ -292,7 +309,9 @@ export class VehicleContract extends Contract {
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
      */
-    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string) {
+    @Transaction(false)
+    @Returns('Price')
+    public async getPriceDetails(ctx: VehicleContext, vehicleNumber: string): Promise <Price> {
         // get the priceList object and call its getPrice function
         return await ctx.getPriceList().getPrice(vehicleNumber);
     }
@@ -305,6 +324,7 @@ export class VehicleContract extends Contract {
      * @param {string} min: Minimum price to be queried.
      * @param {string} max: Maximum price to be queried.
      */
+    @Transaction(false)
     public async getPriceByRange(ctx: VehicleContext, min: string, max: string) {
         const minNumber = parseInt(min, 10);
         const maxNumber = parseInt(max, 10);
@@ -326,24 +346,38 @@ export class VehicleContract extends Contract {
     }
 
       /**
-       * *** Exercise 03 > Part 4 ***
-       * @param  {VehicleContext} ctx: Vehicle context.
-       * @param  {string} vehicleNumber: Vehicle number to return history for
-       * get history for vehicle as provenance of changes over vehicle
-       */
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx: Vehicle context.
+     * @param  {string} vehicleNumber: Vehicle number to return history for
+     * get history for vehicle as provenance of changes over vehicle
+     */
+    @Transaction(false)
     public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
         // get vehicle history using vehiclelist and function getVehicleHistory
         return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
     }
-
+    /**
+     * *** Exercise 03 > Part 3 ***
+     * @param  {VehicleContext} ctx
+     */
+    @Transaction(false)
+    public async getVehicleCount(ctx: VehicleContext) {
+        return await ctx.getVehicleList().count();
+    }
     // ############################################################### Order Functions #################################################
-    // end user palce order function
+    // End user place order function
+    @Transaction(true)
+    @Returns('Order')
     public async placeOrder(ctx: VehicleContext, orderId: string, owner: string,
         make: string, model: string, color: string,
-    ) {
+    ): Promise <Order> {
         logger.info('============= START : place order ===========');
-
-        // check if role === 'Manufacturer'
+        /**
+        * *** Exercise 05 > Part 3 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
+        // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
         const vehicleDetails: VehicleDetails = {
@@ -360,9 +394,11 @@ export class VehicleContract extends Contract {
         ctx.stub.setEvent('ORDER_EVENT', order.toBuffer());
 
         logger.info('============= END : place order ===========');
+        return order;
     }
 
     // Update order status to be in progress
+    @Transaction(true)
     public async updateOrderStatusInProgress(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
@@ -377,7 +413,11 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().updateOrder(order);
     }
     // Return order with ID
+    @Transaction(false)
+    @Returns('Order')
     public async getOrder(ctx: VehicleContext, orderId: string) {
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -385,9 +425,11 @@ export class VehicleContract extends Contract {
     }
 
     // Update order status to be pending if vehicle creation process has an issue
+    @Transaction(true)
     public async updateOrderStatusPending(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
+
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -402,7 +444,8 @@ export class VehicleContract extends Contract {
     }
 
     // When the order completed and it is ready to be delivered, update order status. The manufacturer now can create a new vehicle as an asset.
-    public async updateOrderDelivered(ctx: VehicleContext, orderId: string, vehicleNumber: string) {
+    @Transaction(true)
+    public async updateOrderDelivered(ctx: VehicleContext, orderId: string) {
         // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
@@ -420,10 +463,16 @@ export class VehicleContract extends Contract {
 
     }
     // Return all orders
+    @Transaction(false)
+    @Returns('Order[]')
     public async getOrders(ctx: VehicleContext): Promise<Order[]> {
         logger.info('============= START : Get Orders ===========');
-
-        // Check if role === 'Manufacturer' / 'Regulator'
+        /**
+        * *** Exercise 05 > Part 3 ***
+        * 
+        * Add the correct parameters to the hasRole function
+        */
+        // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
 
         logger.info('============= END : Get Orders ===========');
@@ -431,26 +480,28 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 03 > Part 2 ***
+     * *** Exercise 03 > Part 3 ***
      * @param  {VehicleContext} ctx
      * @param  {string} orderStatus
      * @returns {array} array of orders
      * Return all orders with a specific status. Explain how to use the index defined in JSON format.
      * All indexes are defined in the META-INF folder.
      */
+    @Transaction(false)
+    @Returns('Order[]')
     public async getOrdersByStatus(ctx: VehicleContext, orderStatus: string) {
         logger.info('============= START : Get Orders by Status ===========');
-
         // Check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
-      // Create query string and use orderStatusIndex and order status design document
+
+        // Create query string and use orderStatusIndex and order status design document
         const queryString = {
             selector: {
                 orderStatus,
             },
             use_index: ['_design/orderStatusDoc', 'orderStatusIndex'],
         };
-          // Call queryWithQueryString with a custom function to run the query and return the results.
+        // Call queryWithQueryString with a custom function to run the query and return the results.
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), '');
     }
 
@@ -460,8 +511,29 @@ export class VehicleContract extends Contract {
      * @param  {string} orderID: orderId to get the history for.
      * Return all transactions history for orders by using orderID.
      */
+    @Transaction(false)
+    @Returns('IHistoricState[]')
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
+        // Check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
         return await ctx.getOrderList().getOrderHistory(orderID);
+    }
+
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx
+     * @param  {string} startKey: Start key as starting point for query.
+     * @param  {string} endKey: End key as end point for queey.
+     */
+    @Transaction(false)
+    @Returns('Order[]')
+    public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
+        // Use the object that is retuned by getOrderList and call getOrdersByRange.
+        return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }
 
     /**
@@ -473,9 +545,12 @@ export class VehicleContract extends Contract {
      * The iterator can be used to fetch the first `pageSize` key between the bookmark and the last key in the query results.
      * Get all orders with status paginated by number of results per page and using bookmark
      */
+    @Transaction(false)
+    @Returns('QueryPaginationResponse[]')
     public async getOrdersByStatusPaginated(ctx: VehicleContext, orderStatus: string, pagesize: string, bookmark: string) {
         // check if role === 'Manufacturer' / 'Regulator'
         await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+
         // Build query string
         const queryString = {
             selector: {
@@ -489,36 +564,25 @@ export class VehicleContract extends Contract {
         return await ctx.getOrderList().queryStatusPaginated(JSON.stringify(queryString), pagesizeInt, bookmark);
     }
 
-    /**
-     * *** Exercise 03 > Part 4 ***
-     * @param  {VehicleContext} ctx
-     * @param  {string} startKey: Start key as starting point for query.
-     * @param  {string} endKey: End key as end point for queey.
-     */
-    public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
-        // Use the object that is retuned by getOrderList and call getOrdersByRange.
-        return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
-    }
-
     // ############################################################### Policy Functions #################################################
     /**
-     * *** Exercise 02 > Part 4 > Step 7 ***
+     * *** Exercise 02 > Part 4 ***
      *
      * @param { ctx } the smart contract transaction context
      */
+    @Transaction(true)
     public async requestPolicy(ctx: VehicleContext, id: string,
         vehicleNumber: string, insurerId: string, holderId: string, policyType: PolicyType,
         startDate: number, endDate: number) {
         /*
-        This transaction simulates the process of requesting a vehicle insurance policy for a vehicle.
-        This action is performed by the manufacturer participant.
+        This transaction will simulate the process of requesting a vehicle insurance policy for a vehicle.
+        This action will be performed by the manufacturer participant.
         */
         logger.info('============= START : request insurance policy ===========');
-
-        // Check whether role === manufacturer
+        // check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
-        // Check whether the vehicle exists
+        // Check if vehicle exist
         await ctx.getVehicleList().getVehicle(vehicleNumber);
 
         // Create new policy asset.
@@ -527,8 +591,8 @@ export class VehicleContract extends Contract {
         await ctx.getPolicyList().add(policy);
 
         /*
-        Fire an event after the transaction is successfully committed to the ledger.
-        Applications that acs as event listeners can listen for this event trigger and respond accordingly.
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
         */
         ctx.stub.setEvent('CREATE_POLICY', policy.toBuffer());
         logger.info('============= END : request insurance policy ===========');
@@ -537,9 +601,11 @@ export class VehicleContract extends Contract {
     /**
      * *** Exercise 02 > Part 4 ***
      *
-     * @param { ctx }: The smart contract transaction context
-     * @param { policyId }: The insurance policy id
+     * @param { ctx } the smart contract transaction context
+     * @param { policyId } the insurance policy id
      */
+    @Transaction(false)
+    @Returns('Policy')
     public async getPolicy(ctx: VehicleContext, policyId: string) {
         // This transaction queries for a specific policy according to the supplied policy ID parameter.
         return await ctx.getPolicyList().get(policyId);
@@ -548,18 +614,18 @@ export class VehicleContract extends Contract {
     /**
      * *** Exercise 02 > Part 4 ***
      *
-     * @param { ctx }: The smart contract transaction context
-     * @param { id }: The insurance policy ID
+     * @param { ctx } the smart contract transaction context
+     * @param { id } the insurance policy ID
      */
+    @Transaction(true)
     public async issuePolicy(ctx: VehicleContext, id: string) {
         /*
-        This transaction changes the insurance policy status from "REQUESTED" to "ISSUED"
+        This transaction will change the insurance policy status from "REQUESTED" to "ISSUED",
         to simulate the process of issuing a vehicle insurance policy.
-        This action is performed by the insurer participant.
+        This action will be performed by the insurer participant.
         */
-        // Check if role === insurer
+        // check if role === 'Insurer'
         await this.hasRole(ctx, ['Insurer']);
-
         // Get policy by ID from policy list
         const policy = await ctx.getPolicyList().get(id);
 
@@ -570,8 +636,8 @@ export class VehicleContract extends Contract {
         await ctx.getPolicyList().update(policy);
 
         /*
-        Fire an event after the transaction is successfully committed to the ledger.
-        Applications that act as event listeners can listen for this event trigger and respond accordingly.
+        Fire an event after the transaction is successfully committed to the ledger,
+        applications that acts as event listeners can listen for this event trigger and respond accordingly.
         */
         ctx.stub.setEvent('POLICY_ISSUED', policy.toBuffer());
     }
@@ -581,28 +647,38 @@ export class VehicleContract extends Contract {
      *
      * @param { ctx } the smart contract transaction context
      */
+    @Transaction(false)
+    @Returns('Policy[]')
     public async getPolicies(ctx: VehicleContext): Promise<Policy[]> {
         // This transaction returns a list of all the available insurance policies in the ledger.
         return await ctx.getPolicyList().getAll();
     }
 
     // ############################################################### Utility Functions #################################################
-    // Function to check whether the users have rights to perform the role based on their role
+    /**
+     * *** Exercise 05 > Part 3 ***
+     * 
+     * @param { ctx } the smart contract transaction context
+     * @param { roleName } the blockchain user identity
+     */
     public async hasRole(ctx: VehicleContext, roleName: string[]) {
+        // Function to check if the user has right to perform the role bases on role
         const clientId = ctx.clientIdentity;
         for (let i = 0; i < roleName.length; i++) {
+            // if (clientId.getAttributeValue('role')) {
             if (clientId.assertAttributeValue('role', roleName[i])) {
                 return true;
             }
         }
         throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
     }
-       /**
-        * *** Exercise 03 > Part 2 ***
-        * @param {VehicleContext } ctx: The transaction context
-        * @param {string} queryString: The query string to be evaluated
-        * @param {string } collection: Flag to identify this function. It is used in getQueryResult or getPrivateDataQueryResult
-        */
+
+    /**
+    * *** Exercise 03 > Part 3 ***
+    * @param {VehicleContext } ctx: The transaction context
+    * @param {string} queryString: The query string to be evaluated
+    * @param {string } collection: Flag to identify this function. It is used in getQueryResult or getPrivateDataQueryResult
+    */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
         logger.info('query String');
@@ -651,30 +727,20 @@ export class VehicleContract extends Contract {
 
     }
 
-    /**
-     * *** Exercise 03 > Part 3 ***
-     * @param  {VehicleContext} ctx
-     */
-    public async getVehicleCount(ctx: VehicleContext) {
-        // Only the regulator can access this function
-        await this.hasRole(ctx, ['Regulator']);
-
-        return await ctx.getVehicleList().count();
-    }
-    // 'unknownTransaction' is called if the transaction function requested does not exist
+    // 'unknownTransaction' will be called if the required transaction function requested does not exist
     public async unknownTransaction(ctx: VehicleContext) {
         throw new Error(`The transaction function ${ctx.stub.getFunctionAndParameters().fcn} doesn't exists, provide a valid transaction function `);
     }
-    // 'beforeTransaction' is called before any of the transaction functions within contract.
-    // Examples of what you might want to code are Logging, Event Publishing, or Permissions checks.
-    // If an error is thrown, the transaction is rejected.
+    // 'beforeTransaction' will be called before any of the transaction functions within  contract
+    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks
+    // If an error is thrown, the whole transaction will be rejected
 
     public async beforeTransaction(ctx: VehicleContext) {
         logger.info(`Before Calling Transaction function ${ctx.stub.getFunctionAndParameters().fcn}`);
     }
-    // 'afterTransaction' is called after any of the transaction functions within contract.
-    // Examples of what you might want to code are Logging, Event Publishing, or Permissions checks.
-    // If an error is thrown, the transaction is rejected
+    // 'afterTransaction' will be called after any of the transaction functions within  contract
+    // Examples of what you may wish to code are Logging, Event Publishing or Permissions checks
+    // If an error is thrown, the whole transaction will be rejected
     public async afterTransaction(ctx: VehicleContext, result: any) {
 
         logger.info(`After Calling Transaction function ${ctx.stub.getFunctionAndParameters().fcn}`);

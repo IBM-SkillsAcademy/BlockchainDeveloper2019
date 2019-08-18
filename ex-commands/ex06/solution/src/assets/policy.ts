@@ -4,17 +4,18 @@
 
 /*
 The following import statements imports the contract object module
-from the fabric-contract-api Node.js SDK and the state class from the state definition file.
-The state object contains the set of function that allow the smart
+from the fabric-contract-api node sdk and the state class from the
+state definition file.
+The state object contains the set of function to allow the smart
 contract application to interact with the policy asset within the
-ledger application.
+ledger application
 */
 import { Object as ContractObject } from 'fabric-contract-api';
 import { State } from '../ledger-api/state';
 /*
-Policy type and policy status enum objects.
-Policy type enumerates the insurance policy type.
-Policy status enumerates the insurance policy status for the policy asset.
+Policy type and policy status enum objects. The first will enumerate
+the insurance policy type, and the latter will enumerate the insurance
+policy status for the policy asset.
 */
 export enum PolicyType {
     THIRD_PARTY = 'THIRD_PARTY',
@@ -31,12 +32,12 @@ export enum PolicyStatus {
  * *** Exercise 02 > Part 4 ***
  */
 /*
-The "@ContractObject" modifier flags the policy class as an "object"
-or asset within the smart contract applications. The policy class
+The "@ContractObject" modifier flags the policy class as an "object",
+or an asset within the smart contract applications. The policy class
 extends the state class, allowing the policy class to have access to
 the set of business object functions and properties, such as the
-generation of a composite key, and the serialization or deserialization of
-object into buffers.
+generation of a composite key, the serialization or deserialization of
+object into buffers, etc.
 */
 @ContractObject()
 export class Policy extends State {
@@ -81,8 +82,8 @@ export class Policy extends State {
 
     private policyType: PolicyType;
     /*
-    Within the constructor function, the policy class creates a key (which is the policy ID) when
-    the policy object is created. This key is used to access the ledger.
+    Within the constructor function, the policy class creates a key (which is the policy id) when
+    the policy object is created, this key will be used when accessing the ledger.
     */
     constructor(obj) {
         super(Policy.getClass(), [obj.id]);
