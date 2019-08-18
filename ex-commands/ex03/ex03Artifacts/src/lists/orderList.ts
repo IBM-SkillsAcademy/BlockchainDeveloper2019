@@ -15,13 +15,14 @@ export class OrderList <T extends Order> extends StateList<T> {
         return this.add(order);
     }
 
-  public async getOrder(orderKey) {
-   return this.get(orderKey);
-   }
-
-  public async updateOrder(order) {
-      return this.update(order);
+    public async getOrder(orderKey) {
+        return this.get(orderKey);
     }
+
+    public async updateOrder(order) {
+        return this.update(order);
+    }
+
     /**
      * *** Exercise 03 > Part 4 ***
      * @param  {string} orderID
@@ -29,7 +30,7 @@ export class OrderList <T extends Order> extends StateList<T> {
      */
     public async getOrderHistory(orderID: string) {
         // Call the history function, which is defined in stateList.ts
-        return this.getHistory(orderID);
+       // return this.getHistory(orderID);
     }
     /**
      * *** Exercise 03 > Part 4 ***
@@ -38,7 +39,7 @@ export class OrderList <T extends Order> extends StateList<T> {
      */
     public async getOrdersByRange(startkey: string, endkey: string) {
         // Call getAssetsByRange from stateList.ts
-    //    return this.getAssetsByRange(startkey, endkey);
+       // return this.getAssetsByRange(startkey, endkey);
     }
     /**
      * *** Exercise 03 > Part 5 ***

@@ -1,7 +1,7 @@
 =======
 Part 1
 =======
-~/BlockchainDeveloper2019/SampleApplication/ex-commands/ex02/cleanENV.sh
+~/BlockchainDeveloper2019/ex-commands/ex02/cleanENV.sh
 
 cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 npm install

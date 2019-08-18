@@ -44,7 +44,7 @@ export class VehicleContract extends Contract {
 
     // ############################################################### Vehicle functions #################################################
     /**
-     * *** Exercise 02 > Part 1 > Step 4 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context.
      * @param { orderId } vehicle order id.
@@ -116,7 +116,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 5 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to query
@@ -137,7 +137,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 6 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      */
@@ -152,7 +152,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 7 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to delete
@@ -176,7 +176,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 8 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to request VIN
@@ -217,7 +217,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 9 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number to issue VIN
@@ -261,7 +261,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 1 > Step 10 ***
+     * *** Exercise 02 > Part 1 ***
      *
      * @param { ctx } the smart contract transaction context
      * @param { vehicleNumber } vehicle number
@@ -535,7 +535,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 4 > Step 9 ***
+     * *** Exercise 02 > Part 4 ***
      *
      * @param { ctx }: The smart contract transaction context
      * @param { policyId }: The insurance policy id
@@ -546,7 +546,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 4 > Step 8 ***
+     * *** Exercise 02 > Part 4 ***
      *
      * @param { ctx }: The smart contract transaction context
      * @param { id }: The insurance policy ID
@@ -577,7 +577,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 02 > Part 4 > Step 10 ***
+     * *** Exercise 02 > Part 4 ***
      *
      * @param { ctx } the smart contract transaction context
      */

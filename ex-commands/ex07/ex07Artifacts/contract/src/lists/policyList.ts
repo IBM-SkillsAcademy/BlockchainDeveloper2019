@@ -1,5 +1,5 @@
 /**
- * *** Exercise 02 > Part 4 > Step 5
+ * *** Exercise 02 > Part 4 ***
  */
 // Import policy asset class definition.
 import { Policy } from '../assets/policy';

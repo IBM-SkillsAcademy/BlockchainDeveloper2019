@@ -15,6 +15,6 @@ cd $ROOT
 #cd ex03Artifacts
 pwd
 cp -R ex03Artifacts/src/. ../../SampleApplication/contract/src
-cp  ex03Artifacts/package.json ../../SampleApplication/contract/src/contracts/package.json
+cp  ex03Artifacts/package.json ../../SampleApplication/contract/package.json
 
 
