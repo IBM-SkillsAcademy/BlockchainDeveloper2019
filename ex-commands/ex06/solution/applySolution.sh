@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # copy solution file
-cp -rf ./src ../../../SampleApplication/contract/src
-cp -f ./collections_config.json ../../../SampleApplication/contract/collections_config.json
-cp -f ./package.json ../../../SampleApplication/contract/package.json
+cp -rf ./src ../../../SampleApplication/contract
+cp -f ./collections_config.json ../../../SampleApplication/contract
+cp -f ./package.json ../../../SampleApplication/contract
 
 # upgrade the network
 cd ../../../Vehicle-Network

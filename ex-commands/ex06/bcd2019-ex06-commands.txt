@@ -14,6 +14,8 @@ cd ~/BlockchainDeveloper2019/ex-commands/ex06/
 =======
 Part 2
 =======
+code ~/BlockchainDeveloper2019
+
 [
     {
         "name": "collectionVehiclePriceDetails",
@@ -34,7 +36,7 @@ return this.updatePrivate(price, 'collectionVehiclePriceDetails');
 
 return this.getPrivate(vehicleNumber, 'collectionVehiclePriceDetails');
 
-return await ctx.getPriceList().getPrice()
+return await ctx.getPriceList().getPrice(vehicleNumber)
 
 =======
 Part 4

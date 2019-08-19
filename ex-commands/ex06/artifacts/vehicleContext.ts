@@ -1,5 +1,5 @@
 import { Context, Contract } from 'fabric-contract-api';
-import { Order } from '../assets/order;
+import { Order } from '../assets/order';
 import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { PriceList } from '../lists/priceList';

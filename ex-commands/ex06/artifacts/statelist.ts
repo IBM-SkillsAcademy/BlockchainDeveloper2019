@@ -183,7 +183,7 @@ export class StateList<T extends State> {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > Step 5 ***
+     * *** Exercise 06 > Part 3 ***
      * @param {T} state data object that will be stored in private data collection
      * @param {string} collection the name of the private data collection being used
      */

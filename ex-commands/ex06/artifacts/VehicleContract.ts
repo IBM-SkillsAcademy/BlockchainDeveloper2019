@@ -2,7 +2,7 @@
 // Fabric smart contract classes
 import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes
-import { Order, OrderStatus } from '../assets/order;
+import { Order, OrderStatus } from '../assets/order';
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { QueryResponse } from '../utils/queryResponse';
@@ -90,7 +90,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
+     * *** Exercise 06 > Part 3 ***
      * Add or update a vehicle price details
      * @param {VehicleContext} ctx: vehicle context
      * @param {string} vehicleNumber: The vehicle key number
@@ -303,7 +303,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 2 ***
+     * *** Exercise 06 > Part 3 ***
      * get vehicle price details by vehicle key number
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number

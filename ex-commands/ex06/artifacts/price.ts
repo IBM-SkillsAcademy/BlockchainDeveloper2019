@@ -43,7 +43,7 @@ export class Price extends State {
     public value: number;
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding a new private price asset} > Step 2 ***
+     * *** Exercise 06 > Part 3 ***
      * Construct a price object from a JSON object
      * @param obj: JSON object to construct to price object
      */
