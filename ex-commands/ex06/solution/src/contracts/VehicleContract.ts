@@ -90,7 +90,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 3 ***
+     * *** Exercise 06 > Part 3 ***
      * Add or update a vehicle price details
      * @param {VehicleContext} ctx: vehicle context
      * @param {string} vehicleNumber: The vehicle key number
@@ -101,8 +101,9 @@ export class VehicleContract extends Contract {
         // Check if role === 'Manufacturer'
         await this.hasRole(ctx, ['Manufacturer']);
 
-        // get value from transient data
-        const transient = ctx.stub.getTransient();
+        // uncomment one of the following line to get value from transient data
+        // const transient = ctx.stub.getArgs();        // option A
+        const transient = ctx.stub.getTransient();   // option B
         const bufferTranstient = transient.get('price');
 
         // decode base64 encoded data
@@ -302,7 +303,7 @@ export class VehicleContract extends Contract {
     }
 
     /**
-     * *** Exercise 06 > Part 3 > {Adding price functions} > Step 2 ***
+     * *** Exercise 06 > Part 3 ***
      * get vehicle price details by vehicle key number
      * @param {VehicleContext} ctx vehicle context
      * @param {string} vehicleNumber the vehicle key number
@@ -343,13 +344,13 @@ export class VehicleContract extends Contract {
         return await this.queryWithQueryString(ctx, JSON.stringify(queryString), 'collectionVehiclePriceDetails');
     }
 
-      /**
-       * *** Exercise 03 > Part 4 ***
-       * @param  {VehicleContext} ctx: Vehicle context.
-       * @param  {string} vehicleNumber: Vehicle number to return history for
-       * get history for vehicle as provenance of changes over vehicle
-       */
-      @Transaction(false)
+    /**
+     * *** Exercise 03 > Part 4 ***
+     * @param  {VehicleContext} ctx: Vehicle context.
+     * @param  {string} vehicleNumber: Vehicle number to return history for
+     * get history for vehicle as provenance of changes over vehicle
+     */
+    @Transaction(false)
     public async getHistoryForVehicle(ctx: VehicleContext, vehicleNumber: string) {
         // get vehicle history using vehiclelist and function getVehicleHistory
         return await ctx.getVehicleList().getVehicleHistory(vehicleNumber);
@@ -404,8 +405,8 @@ export class VehicleContract extends Contract {
     @Returns('Order')
     public async getOrder(ctx: VehicleContext, orderId: string) {
 
-         // Check if role === 'Manufacturer' / 'Regulator'
-        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+        // Check if role === 'Manufacturer' / 'Regulator'
+       await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         if (! await ctx.getOrderList().exists(orderId)) {
             throw new Error(`Error  order ${orderId} doesn't exists `);
         }
@@ -497,8 +498,8 @@ export class VehicleContract extends Contract {
     @Transaction(false)
     @Returns('IHistoricState[]')
     public async getHistoryForOrder(ctx: VehicleContext, orderID: string) {
-           // Check if role === 'Manufacturer' / 'Regulator'
-           await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+        // Check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         return await ctx.getOrderList().getOrderHistory(orderID);
     }
 
@@ -538,8 +539,8 @@ export class VehicleContract extends Contract {
     @Transaction(false)
     @Returns('Order[]')
     public async getOrdersByRange(ctx: VehicleContext, startKey: string, endKey: string) {
-           // check if role === 'Manufacturer' / 'Regulator'
-           await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
+        // check if role === 'Manufacturer' / 'Regulator'
+        await this.hasRole(ctx, ['Manufacturer', 'Regulator']);
         // Use the object that is retuned by getOrderList and call getOrdersByRange.
         return await ctx.getOrderList().getOrdersByRange(startKey, endKey);
     }

@@ -8,5 +8,4 @@ export class QueryResponse {
     public txId: string;
     public key: string;
     public record: string;
-
 }

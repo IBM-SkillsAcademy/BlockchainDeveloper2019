@@ -31,7 +31,7 @@ export class Order extends State {
     public static createInstance(orderId, owner, orderStatus, vehicleDetails) {
         return new Order({ orderId, owner, orderStatus, vehicleDetails});
     }
-    @Property()
+
     public orderId: string;
     public owner: string;
     public orderStatus: OrderStatus;
