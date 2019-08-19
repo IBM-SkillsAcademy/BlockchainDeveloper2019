@@ -1,7 +1,7 @@
 import { State } from '../ledger-api/state';
-// Query Response as container for Query result with Pagination option
+// Query response as a container for query results with pagination option
 /*
-The container define attributes for fetched rocord count and bookmark
+The container defines attributes for fetched record count and bookmark
 */
 
 export class QueryPaginationResponse  <T extends State> {
