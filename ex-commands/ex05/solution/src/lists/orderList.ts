@@ -1,4 +1,4 @@
-import { Order } from '../assets/order';
+import { Order } from '../assets/orders';
 import { IState } from '../ledger-api/state';
 import { StateList } from '../ledger-api/statelist';
 import {  VehicleContext } from '../utils/vehicleContext';

@@ -4,9 +4,9 @@
 rm -rf ../../SampleApplication/contract/src
 rm -f ../../SampleApplication/contract/collections_config.json
 rm -f ../../SampleApplication/contract/package.json
-cp -r ../ex05/solution/src ../../SampleApplication/contract/src
-cp ../ex05/solution/collections_config.json ../../SampleApplication/contract/collections_config.json
-cp ../ex05/solution/package.json ../../SampleApplication/contract/package.json
+cp -r ../ex05/solution/src ../../SampleApplication/contract
+cp ../ex05/solution/collections_config.json ../../SampleApplication/contract
+cp ../ex05/solution/package.json ../../SampleApplication/contract
 
 # go to Vehicle-Network and start the network
 cd ../../Vehicle-Network/
@@ -28,9 +28,9 @@ curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept
 
 # register user for cli
 cd ../../ex-commands/ex05/
-./enrollUser.sh User1 org1 department1 Manufacturer
-./enrollUser.sh User1 org2 department1 Regulator
-./enrollUser.sh User1 org3 department1 Insurer
+./enrollUser.sh User1 org1 department1 department1 Manufacturer
+./enrollUser.sh User1 org2 department1 department1 Regulator
+./enrollUser.sh User1 org3 department1 department1 Insurer
 
 # after the networks and applications are up, copy all the required file for ex06
 cd ../../
