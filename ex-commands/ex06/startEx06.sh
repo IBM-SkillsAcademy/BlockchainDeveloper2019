@@ -1,39 +1,50 @@
 #!/bin/bash
 
-# apply last exercise solution
-rm -rf ../../SampleApplication/contract/src
-rm -f ../../SampleApplication/contract/collections_config.json
-rm -f ../../SampleApplication/contract/package.json
-cp -r ../ex05/solution/src ../../SampleApplication/contract
-cp ../ex05/solution/collections_config.json ../../SampleApplication/contract
-cp ../ex05/solution/package.json ../../SampleApplication/contract
+# set project's root folder
+cd ../../
+ROOT=`pwd`
 
-# go to Vehicle-Network and start the network
-cd ../../Vehicle-Network/
+# apply last exercise solution
+rm -rf ${ROOT}/SampleApplication/contract/src
+rm -f ${ROOT}/SampleApplication/contract/collections_config.json
+rm -f ${ROOT}/SampleApplication/contract/package.json
+cp -r ${ROOT}/ex-commands/ex05/solution/src ${ROOT}/SampleApplication/contract
+cp ${ROOT}/ex-commands/ex05/solution/collections_config.json ${ROOT}/SampleApplication/contract
+cp ${ROOT}/ex-commands/ex05/solution/package.json ${ROOT}/SampleApplication/contract
+
+# start the network
+cd ${ROOT}/Vehicle-Network/
 ./byfn.sh up -V 1.9.4
 
-# start application and register user1 for each organizations
-cd ../SampleApplication/application
+# start application
+cd ${ROOT}/SampleApplication/application
 ./start.sh
-sleep 5
+
+# enroll admin
+sleep 5;
 curl -X GET "http://localhost:6001/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
 curl -X GET "http://localhost:6002/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
 curl -X GET "http://localhost:6003/api/v1/auth/registrar/enroll" -H "accept: */*"; printf "\n";
+
+# create org3 affiliation
 sleep 3;
 curl -X GET "http://localhost:6003/api/v1/auth/create-affiliation" -H "accept: */*"; printf "\n";
-sleep 3;
-curl -X POST "http://localhost:6001/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
-curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
-curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"user1\"}"; printf "\n";
 
 # register user for cli
-cd ../../ex-commands/ex05/
-./enrollUser.sh User1 org1 department1 department1 Manufacturer
-./enrollUser.sh User1 org2 department1 department1 Regulator
-./enrollUser.sh User1 org3 department1 department1 Insurer
+sleep 3;
+cd ${ROOT}/ex-commands/ex05/
+./enrollUser.sh CLI-Manu-User org1 department1 Manufacturer
+./enrollUser.sh CLI-Regu-User org2 department1 Regulator
+./enrollUser.sh CLI-Insu-User org3 department1 Insurer
+
+# register user for app
+sleep 3;
+curl -X POST "http://localhost:6001/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"App-Manu-User\"}"; printf "\n";
+curl -X POST "http://localhost:6002/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"App-Regu-User\"}"; printf "\n";
+curl -X POST "http://localhost:6003/api/v1/auth/user/register-enroll" -H "accept: */*" -H "Content-Type: application/json" -d "{\"enrollmentID\":\"App-Insu-User\"}"; printf "\n";
 
 # after the networks and applications are up, copy all the required file for ex06
-cd ../../
+cd ${ROOT}
 if [ ! -d "SampleApplication/contract/META-INF/statedb/couchdb/collections" ]; then
   mkdir SampleApplication/contract/META-INF/statedb/couchdb/collections
 fi
