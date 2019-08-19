@@ -2,7 +2,7 @@
 // Fabric smart contract classes
 import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes
-import { Order, OrderStatus } from '../assets/order';
+import { Order, OrderStatus } from '../assets/order;
 import { Price } from '../assets/price';
 import { Vehicle, VinStatus } from '../assets/vehicle';
 import { QueryResponse } from '../utils/queryResponse';
