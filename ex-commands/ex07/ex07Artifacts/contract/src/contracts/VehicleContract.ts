@@ -1,4 +1,4 @@
-
+//complete Code
 // Fabric smart contract classes
 import { Context, Contract, Transaction, Returns } from 'fabric-contract-api';
 // Vehicle manufacure classes

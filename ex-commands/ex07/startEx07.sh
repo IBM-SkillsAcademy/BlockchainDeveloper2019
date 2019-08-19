@@ -1,9 +1,8 @@
 #!/bin/bash
 ROOT=${PWD}
-echo "Update Contract files with Completed EX06"
+echo "Update Contract files with Completed smart Contract"
 
-cd /home/blockchain/Desktop/BlockchainDeveloper2019/ex-commands/ex06/solution
-./applySolution.sh
+cp -R ex07Artifacts/contract/. ../../SampleApplication/contract/.
 
 
 echo "################## START NETWORK ########################"
