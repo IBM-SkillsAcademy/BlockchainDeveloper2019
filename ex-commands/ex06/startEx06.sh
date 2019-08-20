@@ -8,9 +8,9 @@ ROOT=`pwd`
 rm -rf ${ROOT}/SampleApplication/contract/src
 rm -f ${ROOT}/SampleApplication/contract/collections_config.json
 rm -f ${ROOT}/SampleApplication/contract/package.json
-cp -r ${ROOT}/ex-commands/ex05/solution/src ${ROOT}/SampleApplication/contract
-cp ${ROOT}/ex-commands/ex05/solution/collections_config.json ${ROOT}/SampleApplication/contract
-cp ${ROOT}/ex-commands/ex05/solution/package.json ${ROOT}/SampleApplication/contract
+cp -r ${ROOT}/code-solutions/ex05/src ${ROOT}/SampleApplication/contract
+cp ${ROOT}/code-solutions/ex05/collections_config.json ${ROOT}/SampleApplication/contract
+cp ${ROOT}/code-solutions/ex05/package.json ${ROOT}/SampleApplication/contract
 
 # start the network
 cd ${ROOT}/Vehicle-Network/
