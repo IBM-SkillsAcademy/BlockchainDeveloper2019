@@ -1,0 +1,43 @@
+Part 1
+        Step 1
+		docker rm -f $(docker ps -aq) && docker volume rm -f $(docker volume ls -q)
+		step 2
+		docker ps -a
+		step 3 
+		cd ~/BlockchainDeveloper2019/ex-commands/ex03/
+                ./startEx03.sh
+
+Part 5
+        Step 1 
+               const result = await this.ctx.stub.getQueryResultWithPagination(queryString, pageSize, bookmark);
+		
+Part 6
+       step 2 
+             cd ~/BlockchainDeveloper2019/SampleApplication/contract 
+			 npm run-script build 
+			 cd ~/BlockchainDeveloper2019/Vehicle-Network
+			 ./upgrade.sh 1.9.3
+			 cd ~/BlockchainDeveloper2019/SampleApplication/application
+			 Set-title "Clients App"
+                         ./start.sh
+     Start Client Application 
+         Step 4
+               ./populateOrders.sh 
+
+Part 7 
+        Test CLI 
+              Step 2
+                     peer chaincode query -C mychannel -n vehicle-manufacture -c '{"args":["getOrdersByStatus", "ISSUED"]}'
+
+              Step 3
+                     peer chaincode query -C mychannel -n vehicle-manufacture -c '{"args":["getOrdersByStatusPaginated", "ISSUED","5",""]}' 
+              Step 4
+                    peer chaincode query -C mychannel -n vehicle-manufacture -c '{"args":["getHistoryForOrder", "Order1"]}'
+
+              Step 5
+                    peer chaincode query -C mychannel -n vehicle-manufacture -c '{"args":["getOrdersByRange", "Order11","Order15"]}'
+
+			 
+             REST Call 
+              curl -X POST "http://localhost:5984/mychannel_vehicle-manufacture/_find" -H  "accept: */*"  -H  "Content-Type: application/json" -d "{\"selector\":{\"orderStatus\":\"ISSUED\"},\"use_index\":[\"_design/orderStatusDoc\",\"orderStatusIndex\"],\"execution_stats\":true,\"limit\":2,\"skip\":0}"
+
