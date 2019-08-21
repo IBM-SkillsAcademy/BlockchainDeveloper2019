@@ -123,6 +123,6 @@ cd ~/BlockchainDeveloper2019/ex-commands/ex06
 ========================================
 Troubleshooting collection config issue
 ========================================
-cd ~/BlockchainDeveloper2019/ex-commands/ex06/solution
+cd ~/BlockchainDeveloper2019/code-solutions/ex06
 
 ./applyEx06Solution.sh
