@@ -1,12 +1,16 @@
 =======
 Part 1
 =======     
-docker rm -f $(docker ps -aq) ; docker volume rm -f $(docker volume ls -q)
+docker rm -f $(docker ps -aq); docker volume rm -f $(docker volume ls -q)
 
 docker ps -a
 
 cd ~/BlockchainDeveloper2019/ex-commands/ex03/
 ./startEx03.sh
+
+=======
+Part 2
+=======  
 
 cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 npm install

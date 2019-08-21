@@ -1,0 +1,72 @@
+=======
+Part 1
+=======
+~/BlockchainDeveloper2019/ex-commands/ex02/cleanENV.sh
+
+cd ~/BlockchainDeveloper2019/SampleApplication/contract/
+npm install
+code .
+
+// Creates a new vehicle asset
+vehicle = Vehicle.createInstance('', orderId, owner, model, make, color);
+// Append vehicle asset to ledger
+await ctx.getVehicleList().add(vehicle)
+
+return await ctx.getVehicleList().get(vehicleNumber);
+
+return await ctx.getVehicleList().getAll();
+
+await ctx.getVehicleList().delete(vehicleNumber);
+
+vehicle.vinStatus = VinStatus.REQUESTED;
+// Update state in ledger
+await ctx.getVehicleList().updateVehicle(vehicle);
+
+vehicle.vinStatus = VinStatus.ISSUED;
+// Update state in ledger
+await ctx.getVehicleList().updateVehicle(vehicle);
+
+vehicle.owner = newOwner;
+// Update state in ledger
+await ctx.getVehicleList().updateVehicle(vehicle);
+
+=======
+Part 2
+=======
+initLedger
+
+=======
+Part 3
+=======
+["order1","George","Honda","Fit","blue"]
+
+["order1"]
+
+["order1","Honda","Fit","blue","George"]
+
+=======
+Part 4
+=======
+const policy = Policy.createInstance(id, vehicleNumber, insurerId, holderId, policyType, startDate, endDate);
+// Add policy asset to the ledger.
+await ctx.getPolicyList().add(policy);
+
+
+policy.status = PolicyStatus.ISSUED;
+
+// Update policy asset in the ledger
+await ctx.getPolicyList().update(policy);
+
+return await ctx.getPolicyList().get(policyId);
+
+return await ctx.getPolicyList().getAll();
+
+=======
+Part 5
+=======
+["policy1","order1:Fit","insr1","hldr1","THIRD_PART","12122019","31122019"]
+
+
+
+
+

@@ -1,0 +1,29 @@
+=======
+Part 1
+=======     
+cd ~/BlockchainDeveloper2019/ex-commands/ex04
+./startEx04.sh
+
+cd ~/BlockchainDeveloper2019/SampleApplication/contract/
+npm install
+code .
+
+ docker ps -a
+docker logs fabricvscodelocalfabric_peer0.org1.example.com
+docker ps -a | grep fabricvscodelocalfabric_logspout
+curl http://localhost:17056/logs
+
+=======
+Part 2
+=======
+["debugOrder","John","Toyota","Accord","Blue"]
+["debugOrder","John","Toyota","Accord","Blue"]
+["debugOrder"]
+
+=======
+Part 3
+=======
+
+cd ~/BlockchainDeveloper2019/SampleApplication/contract/
+npm test
+
