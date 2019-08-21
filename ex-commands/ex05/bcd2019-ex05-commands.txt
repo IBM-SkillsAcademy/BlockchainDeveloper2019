@@ -28,7 +28,7 @@ fabric-ca-client register --id.type client --id.name Manu-User --id.affiliation 
 
 fabric-ca-client enroll -u https://Manu-User:<your-enrollment-secret>@ca.org1.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
 
-cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOranizations/org1.example.com/users/Manu-User@org1.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
+cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
 
 ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users
 
@@ -44,7 +44,7 @@ fabric-ca-client register --id.type client --id.name Regu-User --id.affiliation 
 
 fabric-ca-client enroll -u https://Regu-User:<your-enrollment-secret>@ca.org2.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
 
-cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOranizations/org2.example.com/users/Regu-User@org2.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
+cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
  
 ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users 
 
