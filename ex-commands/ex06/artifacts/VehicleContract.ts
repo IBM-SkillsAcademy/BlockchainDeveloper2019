@@ -640,20 +640,28 @@ export class VehicleContract extends Contract {
     // ############################################################### Utility Functions #################################################
     // Function to check whether the users have rights to perform the role based on their role
     public async hasRole(ctx: VehicleContext, roleName: string[]) {
+        // Function to check if the user has right to perform the role bases on role
         const clientId = ctx.clientIdentity;
         for (let i = 0; i < roleName.length; i++) {
+            // if (clientId.getAttributeValue('role')) {
             if (clientId.assertAttributeValue('role', roleName[i])) {
-                return true;
+                if(clientId.getMSPID() === 'Org1MSP' && clientId.getAttributeValue('role') === 'Manufacturer'){
+                    return true;
+                }else if (clientId.getMSPID() === 'Org2MSP' && clientId.getAttributeValue('role') === 'Regulator'){
+                    return true;
+                }else if (clientId.getMSPID() === 'Org3MSP' && clientId.getAttributeValue('role') === 'Insurer'){
+                    return true;
+                }
             }
         }
-        throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+        throw new Error(`${clientId.getAttributeValue('role')} with MSPID: ${clientId.getMSPID()} is not allowed to submit this transaction`);
     }
-       /**
-        * *** Exercise 03 > Part 2 ***
-        * @param {VehicleContext } ctx: The transaction context
-        * @param {string} queryString: The query string to be evaluated
-        * @param {string } collection: Flag to identify this function. It is used in getQueryResult or getPrivateDataQueryResult
-        */
+    /**
+    * *** Exercise 03 > Part 2 ***
+    * @param {VehicleContext } ctx: The transaction context
+    * @param {string} queryString: The query string to be evaluated
+    * @param {string } collection: Flag to identify this function. It is used in getQueryResult or getPrivateDataQueryResult
+    */
     public async queryWithQueryString(ctx: VehicleContext, queryString: string, collection: string) {
 
         logger.info('query String');

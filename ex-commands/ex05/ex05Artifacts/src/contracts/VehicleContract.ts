@@ -603,7 +603,7 @@ export class VehicleContract extends Contract {
                 }
             }
         }
-        throw new Error(`${clientId.getAttributeValue('role')} is not allowed to submit this transaction`);
+        throw new Error(`${clientId.getAttributeValue('role')} with MSPID: ${clientId.getMSPID()} is not allowed to submit this transaction`);
     }
 
     /**

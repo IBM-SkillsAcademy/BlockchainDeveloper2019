@@ -11,7 +11,7 @@ export class VehicleList <T extends Vehicle> extends StateList<T> {
         this.use(...validTypes);
 
     }
-    public async addVehilce(vehicle: T) {
+    public async addVehicle(vehicle: T) {
         return this.add(vehicle);
     }
 
@@ -22,8 +22,4 @@ export class VehicleList <T extends Vehicle> extends StateList<T> {
     public async updateVehicle(vehicle) {
         return this.update(vehicle);
     }
-
-    // public async getVehicleHistory(vehicleNumber){
-    //     return this.getHistory(vehicleNumber)
-    // }
 }

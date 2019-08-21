@@ -22,7 +22,6 @@ export class State  {
     private class: string;
     private subClass?: string;
     private key: string;
-
     constructor(stateClass: string, keyParts: string[]) {
         this.class = stateClass;
         this.key = State.makeKey(keyParts);
@@ -72,7 +71,6 @@ export class State  {
      * Join the keyParts to make a unififed string
      * @param (String[]) keyParts
      */
-
     public static makeKey(keyParts: string[]): string {
         return keyParts.join(':');
     }

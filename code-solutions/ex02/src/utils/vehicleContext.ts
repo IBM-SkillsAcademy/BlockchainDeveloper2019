@@ -1,5 +1,3 @@
-vehicleContext
-
 // vehicleContext
 import { Context, Contract } from 'fabric-contract-api';
 import { Order } from '../assets/order';
@@ -7,7 +5,7 @@ import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { VehicleList } from '../lists/vehicleList';
 /**
- * *** Exercise 2 > Part 4 > Step 6 ***
+ * *** Exercise 02 > Part 4 ***
  */
 
 /*
