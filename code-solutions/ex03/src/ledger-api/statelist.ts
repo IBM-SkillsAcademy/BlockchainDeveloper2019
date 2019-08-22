@@ -205,7 +205,7 @@ export class StateList<T extends State> {
     // If the number of keys between startKey and endKey is greater than totalQueryLimit,
     // which is defined in the peer's configuration file core.yaml,
     // this iterator cannot be used to fetch all keys (results are limited by the totalQueryLimit).
-    const result = await this.ctx.stub.getStateByRange(ledgerStartKey, endKey );
+    const result = await this.ctx.stub.getStateByRange(ledgerStartKey, ledgerEndKey );
 
     // The iterator can be used to iterate over all keys between the startKey (inclusive) and endKey (exclusive).
     let value = (await result.next()).value;
