@@ -264,7 +264,7 @@ export class StateList<T extends State> {
 
 }
     /**
-     * *** Exercise 3 > Part 3 ***
+     * *** Exercise 3 > Part 4 ***
      *
      * @returns { Number }   count total number of assets of specific type
      * Get Count of specific state (Vehicle , Order , ...)
