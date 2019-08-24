@@ -301,7 +301,7 @@ export class VehicleContract extends Contract {
         await ctx.getOrderList().add(order);
 
         // Fire Event
-         ctx.stub.setEvent('ORDER_EVENT', order.toBuffer());
+        // ctx.stub.setEvent('ORDER_EVENT', order.toBuffer());
 
         logger.info('============= END : place order ===========');
         return order;
