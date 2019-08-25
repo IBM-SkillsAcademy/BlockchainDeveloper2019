@@ -31,10 +31,12 @@ initLedger
 =======
 Part 3
 =======
-ISSUED
+
+assert.equal(returnedOrder.orderStatus, 'ISSUED');
+
 assert(Object.keys(jsonarray).length >= 1); 
 
-vehicle
+return vehicle;
 
 cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 npm test
