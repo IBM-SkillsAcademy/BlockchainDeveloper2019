@@ -16,7 +16,13 @@ cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 npm install
 code .
 
+=======
+Part 4
+=======  
+
 const result = await this.ctx.stub.getStateByRange(ledgerStartKey, ledgerEndKey);
+const data = await this.ctx.stub.getStateByPartialCompositeKey(this.name, []);
+
 =======
 Part 5
 =======
@@ -31,7 +37,7 @@ npm run-script build
 cd ~/BlockchainDeveloper2019/Vehicle-Network
 ./upgrade.sh 1.9.3
 cd ~/BlockchainDeveloper2019/SampleApplication/application
-Set-title "Clients App"
+set-title "Clients App"
 ./start.sh
 
 http://localhost:6001/api-docs

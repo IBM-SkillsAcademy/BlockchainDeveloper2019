@@ -5,25 +5,46 @@ cd ~/BlockchainDeveloper2019/ex-commands/ex04
 ./startEx04.sh
 
 cd ~/BlockchainDeveloper2019/SampleApplication/contract/
+set-title "Terminal1"
 npm install
 code .
 
- docker ps -a
+docker ps -a
 docker logs fabricvscodelocalfabric_peer0.org1.example.com
 docker ps -a | grep fabricvscodelocalfabric_logspout
+set-title "Logs"
 curl http://localhost:17056/logs
 
 =======
 Part 2
 =======
+initLedger
+
 ["debugOrder","John","Toyota","Accord","Blue"]
+
 ["debugOrder","John","Toyota","Accord","Blue"]
+
 ["debugOrder"]
+
+["debugOrder","John","Toyota","Accord","Blue"]
 
 =======
 Part 3
 =======
 
+assert.equal(returnedOrder.orderStatus, 'ISSUED');
+
+assert(Object.keys(jsonarray).length >= 1); 
+
+return vehicle;
+
 cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 npm test
+
+
+=======
+Troubleshooting
+=======
+cd ~/BlockchainDeveloper2019/ex-commands/ex04/
+./updateAdminIdentity.sh
 
