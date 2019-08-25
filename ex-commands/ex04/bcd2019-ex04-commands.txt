@@ -18,9 +18,14 @@ curl http://localhost:17056/logs
 =======
 Part 2
 =======
+initLedger
+
 ["debugOrder","John","Toyota","Accord","Blue"]
+
 ["debugOrder","John","Toyota","Accord","Blue"]
+
 ["debugOrder"]
+
 ["debugOrder","John","Toyota","Accord","Blue"]
 
 =======
