@@ -76,3 +76,4 @@ Vehicle-Network/channel-artifacts/*
 # Vehicle-Network generated yaml
 Vehicle-Network/docker-compose-cli.yaml
 Vehicle-Network/docker-compose-cli.yamlt
+Vehicle-Network/logs.txt
