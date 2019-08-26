@@ -1,0 +1,33 @@
+=======
+Part 1
+=======
+Set-title “Start Network”
+
+docker rm -f $(docker ps -aq); docker volume rm -f $(docker volume ls -q)
+
+docker ps -a
+
+cd ~/BlockchainDeveloper2019/ex-commands/ex07
+
+./startEx07.sh
+
+=======
+Part 2
+=======
+cd ~/BlockchainDeveloper2019/SampleApplication/application
+. code 
+
+
+
+=======
+Part 4
+=======
+cd ~/BlockchainDeveloper2019/SampleApplication/application
+
+set-title “Clients App”
+
+./start.sh
+
+./enrollUsers.sh
+
+./populateOrders.sh

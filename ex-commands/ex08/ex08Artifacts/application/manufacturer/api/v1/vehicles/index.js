@@ -8,17 +8,21 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
+router.post('/orders', controller.placeOrder);
+router.put('/orders', controller.updateOrder);
 router.get('/orders', controller.getOrder);
-router.get('/channelheight', controller.getChannelHeight);
-router.get('/queryblocks' , controller.queryBlock);
-
 router.get('/orders/status', controller.getOrder);
+router.get('/orders/status/paginated', controller.getOrdersByStatusPaginated);
+router.get('/orders/history', controller.getHistoryForOrder);
+router.get('/orders/range', controller.getOrdersByRange);
+
+router.post('/', controller.createVehicle);
 router.get('/', controller.getVehicle);
-router.post('/owners/change', controller.changeOwner);
-router.delete('/delete', controller.deleteVehicle);
 router.get('/prices', controller.getPrice);
 router.get('/prices/range', controller.getPriceByRange);
-router.post('/vin/issue', controller.issueVIN);
+router.post('/prices', controller.updatePrice);
+router.post('/vin/request', controller.requestVIN);
+router.post('/policies/request', controller.requestPolicy);
 router.get('/policies', controller.getPolicy);
-router.get('/count', controller.countVehicle);
+router.get('/history', controller.getHistoryForVehicle);
 module.exports = router;
