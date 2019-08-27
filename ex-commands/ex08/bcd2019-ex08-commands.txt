@@ -1,7 +1,7 @@
 =======
 Part 1
 =======
-Set-title “Start Network”
+Set-title "Start Network"
 
 docker rm -f $(docker ps -aq); docker volume rm -f $(docker volume ls -q)
 
@@ -18,11 +18,11 @@ Part 2
 =======
 cd ~/BlockchainDeveloper2019/SampleApplication/application/manufacturer 
 
-set-title “manufacturer screen” 
+set-title "manufacturer screen"
 
 cd ~/BlockchainDeveloper2019/SampleApplication/application/insurer
 
-set-title “insurer screen”
+set-title "insurer screen"
 
 cd ~/BlockchainDeveloper2019/SampleApplication/application
 . code 
@@ -37,7 +37,7 @@ npm start
 =======
 Part 3
 =======
-set-title “regulator screen”
+set-title "regulator screen"
 
 npm start
 
