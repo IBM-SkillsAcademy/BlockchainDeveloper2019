@@ -24,11 +24,11 @@ mkdir  $HOME/fabric-ca/client/
 
 fabric-ca-client enroll -u https://admin:adminpw@ca.org1.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
 
-fabric-ca-client register --id.type client --id.name Manu-User --id.affiliation org1.department1 --id.attrs ‘role=Manufacturer:ecert’ --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+fabric-ca-client register --id.type client --id.name Manu-User --id.affiliation org1.department1 --id.attrs 'role=Manufacturer:ecert' --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
 
-fabric-ca-client enroll -u https://Manu-User:<your-enrollment-secret> @ca.org1.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
+fabric-ca-client enroll -u https://Manu-User:<your-enrollment-secret>@ca.org1.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/ca/ca.org1.example.com-cert.pem
 
-cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerorganizations/org1.example.com/users/Manu-User@org1.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
+cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
 
 ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org1.example.com/users
 
@@ -38,20 +38,26 @@ export FABRIC_CA_CLIENT_HOME=$HOME/fabric-ca/client
 
 mkdir  $HOME/fabric-ca/client/
 
-fabric-ca-client enroll -u https://admin:adminpw@ca.org2.example.com:8054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+fabric-ca-client enroll -u https://admin:adminpw@ca.org2.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
 
-fabric-ca-client register --id.type client --id.name Regu-User --id.affiliation org2.department1 --id.attrs ‘role=Regulator:ecert’ --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+fabric-ca-client register --id.type client --id.name Regu-User --id.affiliation org2.department1 --id.attrs 'role=Regulator:ecert' --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
 
-fabric-ca-client enroll -u https://Regu-User:<your-enrollment-secret> @ca.org2.example.com:8054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
+fabric-ca-client enroll -u https://Regu-User:<your-enrollment-secret>@ca.org2.example.com:7054  --tls.certfiles ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/ca/ca.org2.example.com-cert.pem
 
-cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerorganizations/org2.example.com/users/Regu-User@org2.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
+cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
  
 ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users 
 
 for (let i = 0; i < roleName.length; i++) {
    // if (clientId.getAttributeValue('role')) {
    if (clientId.assertAttributeValue('role', roleName[i])) {
-      return true;
+      if(clientId.getMSPID() === 'Org1MSP' && clientId.getAttributeValue('role') === 'Manufacturer'){
+         return true;
+      }else if (clientId.getMSPID() === 'Org2MSP' && clientId.getAttributeValue('role') === 'Regulator'){
+         return true;
+      }else if (clientId.getMSPID() === 'Org3MSP' && clientId.getAttributeValue('role') === 'Insurer'){
+         return true;
+      }
    }
 }
 
@@ -66,16 +72,14 @@ cd ~/BlockchainDeveloper2019/Vehicle-Network
 =======
 Part 4 
 =======
-docker exec -it cli bash
+set-title Manufacturer
 
-Step 2
+docker exec -it cli bash
 
 export CORE_PEER_LOCALMSPID=Org1MSP
 export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
 export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-
-Step 3
 
 peer chaincode invoke -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
@@ -87,14 +91,15 @@ peer chaincode invoke -o orderer.example.com:7050 --tls \
 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt \
 -C mychannel -n vehicle-manufacture -c '{"Args":["placeOrder", "order1", "George", "Honda", "Fit", "blue"]}'
 
- Step 4
+set-title Regulator
+
+docker exec -it cli bash
 
 export CORE_PEER_LOCALMSPID=Org2MSP
 export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
 export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 
-Step 5 
 peer chaincode invoke -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 --peerAddresses peer0.org1.example.com:7051 \
@@ -105,25 +110,12 @@ peer chaincode invoke -o orderer.example.com:7050 --tls \
 --tlsRootCertFiles /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt \
 -C mychannel -n vehicle-manufacture -c '{"Args":["placeOrder", "order2", "Michael", "Honda", "Civic", "red"]}'
 
-
-================================================Invoke the getOrders transaction with the newly created identities=======================================================
 peer chaincode query -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n vehicle-manufacture -c '{"Args":["getOrders"]}'
-
-Step 2
-export CORE_PEER_LOCALMSPID=Org1MSP
-export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Manu-User@org1.example.com/msp
-export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
-
 
 peer chaincode query -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n vehicle-manufacture -c '{"Args":["getOrders"]}'
 
+=======
 Part 5
+=======
 cd ~/BlockchainDeveloper2019/ex-commands/ex05
 ./stopEx05.sh
-
-
-
-
-
-
