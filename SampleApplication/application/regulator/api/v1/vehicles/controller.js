@@ -305,12 +305,12 @@ exports.getChannelHeight = async (req,res ,next) =>{
   try{
     await checkAuthorization(req, res)
     const gateway = await setupGateway(req.headers['enrollment-id']);
-   /* 
+   
     const network = await gateway.getNetwork("mychannel");
     const   channel = network.getChannel();
     //get Blockchain info 
     let channelHeight =  await channel.queryInfo(null, false);
-    */
+    
     let prevHash = JSON.stringify(channelHeight.previousBlockHash);
     let currentHash = JSON.stringify(channelHeight.currentBlockHash);
       let prevHashStr = prevHash.toString();
@@ -339,9 +339,9 @@ exports.queryBlock = async (req,res ,next) =>{
     const network = await gateway.getNetwork("mychannel");
     const   channel = network.getChannel();
     console.log(parseInt(req.query.blockNumber));
-    /*
+    
      let block = await channel.queryBlock(parseInt(req.query.blockNumber));
-     */
+     
   return    res.send({
       message: `Block Details listed`,
       details: `Block Info : ${ block.header.number}   Number of Transactions :  ${block.data.data.length}

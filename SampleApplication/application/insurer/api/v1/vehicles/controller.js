@@ -52,7 +52,7 @@ async function getContract (gateway) {
    let network = await gateway.getNetwork('mychannel');
    
    // Adding Block Listener to listen to new Blocks
-   /*
+   
    const blockListener = await network.addBlockListener('my-block-listener', (err, block) => {
     if (err) {
         console.error(err);
@@ -60,7 +60,7 @@ async function getContract (gateway) {
     }
     console.log(`Block Added-----------------: ${JSON.stringify(block)}`);
 });
-*/
+
     // Get the contract from the network.
     console.log("get Contract called")
     return await network.getContract('vehicle-manufacture');
@@ -234,8 +234,7 @@ exports.issuePolicy = async (req, res, next) => {
     const contract = await getContract(gateway);
     //add Contract Listener
   
-  /*  
- const listener = await contract.addContractListener('my-contract-listener', 'POLICY_ISSUED', (err, event, blockNumber, transactionId, status) => {
+   const listener = await contract.addContractListener('my-contract-listener', 'POLICY_ISSUED', (err, event, blockNumber, transactionId, status) => {
   if (err) {
       console.error(err);
       return;
@@ -243,7 +242,7 @@ exports.issuePolicy = async (req, res, next) => {
   
   console.log(`Block Number: ${blockNumber} Transaction ID: ${transactionId} Status: ${status}`);
 })
-*/
+
     // Submit the specified transaction.
     // issuePolicy transaction - requires 2 argument, ex: ('issuePolicy', 'policy1')
    await contract.submitTransaction(

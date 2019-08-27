@@ -16,4 +16,7 @@ curl -X POST "http://localhost:6001/api/v1/vehicles" -H  "accept: */*" -H  "enro
 curl -X POST "http://localhost:6001/api/v1/vehicles/policies/request" -H  "accept: */*" -H  "enrollment-id: user1" -H  "Content-Type: application/json" -d "{\"id\":\"policy1\",\"vehicleNumber\":\"Order1:Accord\",\"insurerId\":\"insurer1\",\"holderId\":\"holder1\",\"policyType\":\"THIRD_PARTY\",\"startDate\":\"12122019\",\"endDate\":\"31122019\"}"
 
 
+./stop.sh
+
+
 
