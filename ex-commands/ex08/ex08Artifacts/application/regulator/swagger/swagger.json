@@ -1,0 +1,506 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Vehicle Manufacture Sample Application Smart Contract used for creating Blockchain Developer Course V2",
+    "version": "1.0.0",
+    "title": "Regulator"
+  },
+  "paths": {
+    "/api/v1/auth/registrar/enroll": {
+      "get": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Enroll Admin",
+        "responses": {
+          "200": {
+            "description": "Admin enrolled"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/user/register-enroll": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Register user",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enrollmentID"
+                ],
+                "properties": {
+                  "enrollmentID": {
+                    "type": "string",
+                    "example": "user1"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User registered"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/orders": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all vehicle orders or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/orders/status": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get vehicle orders by status",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "status",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "ISSUED",
+              "PENDING" ,
+              "INPROGRESS",
+              "DELIVERED"]
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/count": {
+      "get": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Get all vehicles Count ",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles Count",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/prices": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get vehicle price",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "vehicle13:Accord"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/prices/range": {
+      "get": {
+        "tags": [
+          "Price"
+        ],
+        "summary": "Get vehicle price by range",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "min",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "10000"
+          }
+        }, {
+          "in": "query",
+          "name": "max",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "50000"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "Vehicle price listed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/owners/change": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Change vehicle ownership",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "owner"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "owner": {
+                    "type": "string",
+                    "example": "Dave"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle ownership changed"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/policies": {
+      "get": {
+        "tags": [
+          "Policy"
+        ],
+        "summary": "Get all policies or by id",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "id",
+          "schema": {
+            "type": "string",
+            "example": "insurerId:holderId"
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All vehicles listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    "/api/v1/vehicles/channelheight": {
+      "get": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Get channel height of the network",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+      
+        }],
+        "responses": {
+          "200": {
+            "description": "All channel details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    "/api/v1/vehicles/queryblocks": {
+      "get": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Get all details of specific Block",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "blockNumber",
+          "schema": {
+            "type": "number",
+            "example": 1
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All Block details listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/vin/issue": {
+      "post": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Issue vehicle VIN",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID",
+                  "vin"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  },
+                  "vin": {
+                    "type": "string",
+                    "example": "G33KS"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle VIN issued"
+          }
+        }
+      }
+    },
+    "/api/v1/vehicles/delete": {
+      "delete": {
+        "tags": [
+          "Vehicle"
+        ],
+        "summary": "Delete vehicle",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "vehicleID"
+                ],
+                "properties": {
+                  "vehicleID": {
+                    "type": "string",
+                    "example": "vehicle13:Accord"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Vehicle deleted"
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+  }
+}
