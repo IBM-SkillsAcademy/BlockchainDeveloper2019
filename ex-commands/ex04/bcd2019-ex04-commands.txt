@@ -13,7 +13,7 @@ docker ps -a
 docker logs fabricvscodelocalfabric_peer0.org1.example.com
 docker ps -a | grep fabricvscodelocalfabric_logspout
 set-title "Logs"
-curl http://localhost:17056/logs
+curl http://localhost:<your_port>/logs
 
 =======
 Part 2
