@@ -47,6 +47,9 @@ fabric-ca-client enroll -u https://Regu-User:<your-enrollment-secret>@ca.org2.ex
 cp -r $HOME/fabric-ca/client/msp/signcerts $HOME/fabric-ca/client/msp/admincerts && mkdir ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com && cp -rf $HOME/fabric-ca/client/msp ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users/Regu-User@org2.example.com/msp
  
 ~/BlockchainDeveloper2019/Vehicle-Network/crypto-config/peerOrganizations/org2.example.com/users 
+=======
+Part 3 
+=======
 
 for (let i = 0; i < roleName.length; i++) {
    // if (clientId.getAttributeValue('role')) {
