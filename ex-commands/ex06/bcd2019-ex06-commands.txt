@@ -60,10 +60,11 @@ docker exec -it cli bash
 
 export CORE_PEER_LOCALMSPID=Org1MSP
 export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
-export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/User1@org1.example.com/msp
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/CLI-Manu-User@org1.example.com/msp
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 
 export PRICE=$(echo -n "{\"vehicleNumber\":\"1230819:Tucson\",\"value\":40000}" | base64 | tr -d \\n)
+
 peer chaincode invoke -o orderer.example.com:7050 --tls \
 --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 --peerAddresses peer0.org1.example.com:7051 \
@@ -78,7 +79,7 @@ docker exec -it cli bash
 
 export CORE_PEER_LOCALMSPID=Org2MSP
 export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
-export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/CLI-Regu-User@org2.example.com/msp
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 
 peer chaincode query -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n vehicle-manufacture -c '{"Args":["getPriceDetails", "1230819:Tucson"]}'
@@ -87,7 +88,7 @@ docker exec -it cli bash
 
 export CORE_PEER_LOCALMSPID=Org3MSP
 export CORE_PEER_ADDRESS=peer0.org3.example.com:11051
-export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/users/User1@org3.example.com/msp
+export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/users/CLI-Insu-User@org3.example.com/msp
 export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
 
 peer chaincode query -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem -C mychannel -n vehicle-manufacture -c '{"Args":["getPriceDetails", "1230819:Tucson"]}'
@@ -96,10 +97,31 @@ peer chaincode query -o orderer.example.com:7050 --tls --cafile /opt/gopath/src/
 Part 6
 =======
 docker ps | grep fabric-couchdb
+http://localhost:5984/_utils
+http://localhost:9984/_utils
+=======
+Part 7
+=======
+
+http://localhost:6001/api-docs 
+4567788:Prius                       
+30000
+App-Manu-User
+
+mycar1
+App-Manu-User
+
 
 =======
 Part 8
 =======
+http://localhost:6001/api-docs 
+
+3456777:Passat
+35000
+
+http://localhost:5984/_utils 
+
 {
    "selector": {
       "value": {
