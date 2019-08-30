@@ -1,4 +1,4 @@
-mport { State } from '../ledger-api/state';
+import { State } from '../ledger-api/state';
 // Query response as a container for query results with pagination option
 /*
 The container defines attributes for fetched record count and bookmark
