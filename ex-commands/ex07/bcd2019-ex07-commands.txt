@@ -1,7 +1,7 @@
 =======
 Part 1
 =======
-Set-title “Start Network”
+set-title "Start Network"
 
 docker rm -f $(docker ps -aq); docker volume rm -f $(docker volume ls -q)
 
@@ -15,7 +15,7 @@ cd ~/BlockchainDeveloper2019/ex-commands/ex07
 Part 2
 =======
 cd ~/BlockchainDeveloper2019/SampleApplication/application
-. code 
+code . 
 
 
 
@@ -24,10 +24,25 @@ Part 4
 =======
 cd ~/BlockchainDeveloper2019/SampleApplication/application
 
-set-title “Clients App”
+set-title "Clients App"
 
 ./start.sh
 
 ./enrollUsers.sh
 
 ./populateOrders.sh
+
+http://localhost:6001/api-docs
+
+Order1:Accord 
+
+http://localhost:6003/api-docs
+
+Insu-User
+Order1:Accord 
+
+=======
+Part 4
+=======
+cd ~/BlockchainDeveloper2019/ex-commands/ex07
+./stopEx07.sh
