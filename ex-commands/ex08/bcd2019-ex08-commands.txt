@@ -29,10 +29,17 @@ code .
 
 npm start
 
-npm start
+http://localhost:6003/api-docs
+
+Order1:Accord
 
 npm start
 
+policy1
+
+npm start
+
+http://localhost:6001/api-docs
 
 =======
 Part 3
@@ -43,6 +50,7 @@ cd ~/BlockchainDeveloper2019/SampleApplication/application/regulator
 
 npm start
 
+http://localhost:6002/api-docs
 npm start
 
 =======
