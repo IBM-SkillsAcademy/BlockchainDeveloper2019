@@ -1,5 +1,6 @@
 #!/bin/bash
 echo " enroll Admin and users"
+sleep 10
 
 curl -X GET "http://localhost:6001/api/v1/auth/registrar/enroll" -H  "accept: */*"
 
