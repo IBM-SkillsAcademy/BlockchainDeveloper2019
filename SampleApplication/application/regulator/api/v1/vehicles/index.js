@@ -18,4 +18,6 @@ router.get('/prices/range', controller.getPriceByRange);
 router.post('/vin/issue', controller.issueVIN);
 router.get('/policies', controller.getPolicy);
 router.get('/count', controller.countVehicle);
+router.get('/channelheight', controller.getChannelHeight);
+router.get('/queryblocks' , controller.queryBlock);
 module.exports = router;
