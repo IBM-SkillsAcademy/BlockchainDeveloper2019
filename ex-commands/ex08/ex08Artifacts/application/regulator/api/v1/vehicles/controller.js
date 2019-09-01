@@ -324,7 +324,6 @@ exports.getChannelHeight = async (req,res ,next) =>{
   
     });
     
- 
   
 }catch(err) {
   throw new Error (err);
