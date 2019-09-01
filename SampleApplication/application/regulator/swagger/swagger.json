@@ -344,6 +344,76 @@
         }
       }
     },
+    
+    "/api/v1/vehicles/channelheight": {
+      "get": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Get channel height of the network",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+      
+        }],
+        "responses": {
+          "200": {
+            "description": "All channel details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    
+    "/api/v1/vehicles/queryblocks": {
+      "get": {
+        "tags": [
+          "Channel Information"
+        ],
+        "summary": "Get all details of specific Block",
+        "parameters": [{
+          "in": "header",
+          "name": "enrollment-id",
+          "required": "true",
+          "schema": {
+            "type": "string",
+            "example": "user1"
+          }
+        }, {
+          "in": "query",
+          "name": "blockNumber",
+          "schema": {
+            "type": "number",
+            "example": 1
+          }
+        }],
+        "responses": {
+          "200": {
+            "description": "All Block details listed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/vehicles/vin/issue": {
       "post": {
         "tags": [
