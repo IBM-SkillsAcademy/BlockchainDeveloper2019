@@ -20,13 +20,15 @@ Part 2
 =======
 initLedger
 
-["debugOrder","John","Toyota","Accord","Blue"]
+// Vehicle
+["debugOrder","Toyota","Accord","Blue","John"]
 
+//Order
 ["debugOrder","John","Toyota","Accord","Blue"]
 
 ["debugOrder"]
 
-["debugOrder","John","Toyota","Accord","Blue"]
+
 
 =======
 Part 3
