@@ -48,6 +48,12 @@ Manu-User
 =======
 Part 7 
 =======
+Order1
+
+Order11
+
+Order15
+
 docker exec -ti cli bash 
 
 peer chaincode query -C mychannel -n vehicle-manufacture -c '{"args":["getOrdersByStatus", "ISSUED"]}'
@@ -70,4 +76,11 @@ http://localhost:5984/_utils/
 
 
  curl -X POST "http://localhost:5984/mychannel_vehicle-manufacture/_find" -H  "accept: */*"  -H  "Content-Type: application/json" -d "{\"selector\":{\"orderStatus\":\"ISSUED\"},\"use_index\":[\"_design/orderStatusDoc\",\"orderStatusIndex\"],\"execution_stats\":true,\"limit\":2,\"skip\":0}"
+
+=======
+Part 8
+=======
+cd ~/BlockchainDeveloper2019/ex-commands/ex03/
+stopEx03.sh
+
 
