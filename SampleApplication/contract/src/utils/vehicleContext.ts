@@ -5,7 +5,7 @@ import { Vehicle } from '../assets/vehicle';
 import { OrderList } from '../lists/orderList';
 import { VehicleList } from '../lists/vehicleList';
 /**
- * *** Exercise 2 > Part 4 ***
+ * *** Exercise 2 > Part 4 > Step 6 ***
  */
 
 /*

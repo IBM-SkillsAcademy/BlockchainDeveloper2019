@@ -1,5 +1,5 @@
 /**
- * *** Exercise 02 > Part 4 ***
+ * *** Exercise 02 > Part 4 > Step 2***
  */
 
 /*
@@ -29,7 +29,7 @@ policy status for the policy asset.
 // }
 
 /**
- * *** Exercise 02 > Part 4 ***
+ * *** Exercise 02 > Part 4 > Step 3 ***
  */
 /*
 The "@ContractObject" modifier flags the policy class as an "object",
