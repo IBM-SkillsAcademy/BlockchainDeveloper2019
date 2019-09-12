@@ -55,7 +55,7 @@ Part 3
 
  cd ~/BlockchainDeveloper2019/SampleApplication/contract/
 
-code .
+
 
 for (let i = 0; i < roleName.length; i++) {
    // if (clientId.getAttributeValue('role')) {
