@@ -81,6 +81,6 @@ http://localhost:5984/_utils/
 Part 8
 =======
 cd ~/BlockchainDeveloper2019/ex-commands/ex03/
-stopEx03.sh
+./stopEx03.sh
 
 
