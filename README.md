@@ -11,3 +11,6 @@ Any references in this information to non-IBM websites are provided for convenie
 ## Starting the network and application
 1. To start the vehicle network, go to **Vehicle-Network** folder and follow the README file inside
 2. After the network is up, go to **SampleApplication/application** folder and follow the README file inside
+
+## Sample steps used to configure new VM is provided check file ***blockchain.sh*
+
