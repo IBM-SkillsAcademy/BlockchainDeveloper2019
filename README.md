@@ -1,3 +1,8 @@
+# IMPORTANT 
+:warning: :warning: :warning:
+BlockchainDeveloper2019 is in deprecated status. None of the maintainers are actively developing new features. None of the maintainers are actively providing support via GitHub issues. However, if you wish to see latest version of this repo you can check the **
+**New version: [BlockchainDeveloper](https://github.com/IBM-SkillsAcademy/BlockchainDeveloper)**
+:warning: :warning: :warning:
 # BlockchainDeveloper2019
 Blockchain Developer Course Skills Academy
 
